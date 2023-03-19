@@ -22,7 +22,7 @@ public class FilesController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult AddFiles([FromBody] File file)
+    public ActionResult AddFiles([FromForm] File file)
     {
         /*
         if(file is null) return BadRequest();
