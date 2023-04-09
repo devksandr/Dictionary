@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
- 
+using dict_react.Models.Tables;
+
+namespace dict_react.Database;
+
 public class ApplicationContext : DbContext
 {
     public DbSet<Document> Documents { get; set; } = null!;

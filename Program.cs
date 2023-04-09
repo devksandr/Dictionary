@@ -1,7 +1,12 @@
+using dict_react.Database;
+using dict_react.Services;
+using dict_react.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationContext>();
+builder.Services.AddScoped<IFilesService, FilesService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerGen();
 

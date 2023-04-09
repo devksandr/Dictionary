@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
+namespace dict_react.Models.Tables;
+
 public class Sentence
 {
     public int Id { get; set; }

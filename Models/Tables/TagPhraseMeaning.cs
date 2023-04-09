@@ -1,3 +1,5 @@
+namespace dict_react.Models.Tables;
+
 public class TagPhraseMeaning
 {
     public int Id { get; set; }

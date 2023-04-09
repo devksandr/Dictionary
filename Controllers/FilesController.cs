@@ -1,55 +1,32 @@
 using Microsoft.AspNetCore.Mvc;
+using dict_react.Services.Interfaces;
 
-namespace aspreact.Controllers;
+namespace dict_react.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class FilesController : ControllerBase
 {
-    ApplicationContext _db;
-    public FilesController(ApplicationContext db)
+    IFilesService _filesService;
+    public FilesController(IFilesService filesService)
     {
-        _db = db;
+        _filesService = filesService;
     }
 
     [HttpGet]
-    public IEnumerable<string?> GetFilesNames()
+    public IEnumerable<string> GetFilesNames()
     {
-        var fileNames = _db.Documents
-            .Select(d => d.Name)
-            .ToList();
+        var fileNames = _filesService.GetFilesNames();
         return fileNames;
     }
 
     [HttpPost]
-    public ActionResult AddFiles([FromForm] File file)
+    public ActionResult AddFiles([FromForm] Models.File file)
     {
-        /*
-        if(file is null) return BadRequest();
-
-        string dir = "wwwroot/documents/";
-        List<string> text = new();
-        text.Add(file.Text);
-        System.IO.File.WriteAllLines(dir + file.Name, text);
-        Document document = new Document { Name = file.Name };
-        _db.Documents.Add(document);
-        await _db.SaveChangesAsync();
-        return Ok(file);
-        */
-
-        try
+        if(_filesService.AddFiles(file))
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", file.Name);
-            using (Stream stream = new FileStream(path, FileMode.Create))
-            {
-                file.FormFile.CopyTo(stream);
-            }
-
             return StatusCode(StatusCodes.Status201Created);
         }
-        catch (Exception)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
+        return StatusCode(StatusCodes.Status500InternalServerError);
     }
 }
