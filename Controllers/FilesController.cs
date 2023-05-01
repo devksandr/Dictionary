@@ -23,10 +23,16 @@ public class FilesController : ControllerBase
     [HttpPost]
     public ActionResult AddFiles([FromForm] Models.File file)
     {
-        if(_filesService.AddFiles(file))
-        {
-            return StatusCode(StatusCodes.Status201Created);
-        }
-        return StatusCode(StatusCodes.Status500InternalServerError);
+        var statusCode = _filesService.AddFiles(file) ? 
+            StatusCode(StatusCodes.Status201Created) : StatusCode(StatusCodes.Status500InternalServerError);
+        return statusCode;
+    }
+
+    [HttpDelete("{fileName}")]
+    public ActionResult DeleteFile(string fileName)
+    {
+        var statusCode = _filesService.DeleteFile(fileName) ? 
+            StatusCode(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError);
+        return statusCode;
     }
 }
