@@ -3,6 +3,7 @@ using dict_react.Models;
 using dict_react.Models.Tables;
 using dict_react.Database;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace dict_react.Services;
 
@@ -28,7 +29,8 @@ public class SentencesService : ISentencesService
 
     IEnumerable<string> SplitText(string text)
     {
-        // TODO algorythm
-        return new List<string>() { text };
+        var splitTextToSentencesPattern = @"(?<=[\.!\?])\s+";
+        var sentences = Regex.Split(text, splitTextToSentencesPattern);
+        return sentences;
     }
 }
