@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationContext>();
+builder.Services.AddScoped<ISentencesService, SentencesService>();
 builder.Services.AddScoped<IFilesService, FilesService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerGen();

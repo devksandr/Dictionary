@@ -1,8 +1,11 @@
+using dict_react.Models;
+using dict_react.Models.Tables;
 namespace dict_react.Services.Interfaces;
 
 public interface IFilesService
 {
-    IEnumerable<string> GetFilesNames();
-    bool AddFiles(Models.File file);
-    bool DeleteFile(string fileName);
+    IEnumerable<Document> GetFilesNames();
+    Document GetFileName(int fileId);
+    bool AddFiles(FileModel file);
+    bool DeleteFile(int fileId);
 }

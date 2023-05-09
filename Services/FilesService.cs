@@ -17,7 +17,7 @@ public class FilesService : IFilesService
         _environment = environment;
     }
 
-    public bool AddFiles(Models.File file)
+    public bool AddFiles(FileModel file)
     {
         bool saveToStorageState = false;
         bool saveToDBState = false;
@@ -53,9 +53,10 @@ public class FilesService : IFilesService
         return saveState;
     }
 
-    public bool DeleteFile(string fileName)
+    public bool DeleteFile(int fileId)
     {
         var wwwroot = _environment.WebRootPath;
+        var fileName = GetFileName(fileId).Name;
         var filePath = Path.Combine(wwwroot, fileName);
 
         if(!@System.IO.File.Exists(filePath)) return false;
@@ -63,8 +64,7 @@ public class FilesService : IFilesService
 
         System.IO.File.Delete(filePath);
 
-        int documentId = _db.Documents.First(d => d.Name == fileName).Id;
-        var document = _db.Documents.Find(documentId);
+        var document = _db.Documents.Find(fileId);
         if(document is not null)
         {
             _db.Documents.Remove(document);
@@ -74,10 +74,14 @@ public class FilesService : IFilesService
         return true;
     }
 
-    public IEnumerable<string> GetFilesNames()
+    public IEnumerable<Document> GetFilesNames()
     {
-        var fileNames = _db.Documents
-            .Select(d => d.Name);
+        var fileNames = _db.Documents;
         return fileNames;
+    }
+    public Document GetFileName(int fileId)
+    {
+        var file = _db.Documents.Find(fileId);
+        return file;
     }
 }

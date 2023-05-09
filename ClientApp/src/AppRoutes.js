@@ -2,6 +2,7 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import { FilesPage } from "./components/pages/FilesPage";
+import { FilePage } from "./components/pages/FilePage";
 
 const AppRoutes = [
   {
@@ -19,6 +20,10 @@ const AppRoutes = [
   {
     path: '/files',
     element: <FilesPage />
+  },
+  {
+    path: '/file/:id',
+    element: <FilePage />
   }
 ];
 
