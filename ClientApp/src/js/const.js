@@ -1,0 +1,1 @@
+export const SENTENCE_NOT_SELECTED = -1;

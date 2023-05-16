@@ -1,4 +1,8 @@
 .sentence-hover {
     color: black;
-    background-color: red;
+    background-color: pink;
+}
+.sentence-click {
+    color: black;
+    background-color: green;
 }
