@@ -25,7 +25,8 @@ public class FilesService : IFilesService
 
         try
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", file.Name);
+            var wwwroot = _environment.WebRootPath;
+            string path = Path.Combine(wwwroot, file.Name);
             using (Stream stream = new FileStream(path, FileMode.Create))
             {
                 file.FormFile.CopyTo(stream);
