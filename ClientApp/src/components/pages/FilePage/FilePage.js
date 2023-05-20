@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import '../../../css/pages/FilePage/Sentence.css';
-import { SENTENCE_NOT_SELECTED } from '../../../js/const.js';
+import { SENTENCE_NOT_SELECTED, Category } from '../../../js/const.js';
 import { Row, Col } from 'reactstrap';
 import { AddSentencePanel } from './AddSentencePanel';
 import { FileSentences } from './FileSentences';
@@ -13,12 +13,36 @@ import { FileSentences } from './FileSentences';
 
         this.state = { 
             file: {name: '', sentences: []},
+            sentenceCategories: [],
             clickSentenceId: SENTENCE_NOT_SELECTED
         };
     }
 
     componentDidMount() {
-        this.GetFile();
+        this.handleGetFile();
+        this.handleGetCategories();
+    }
+
+    handleGetFile() {
+        const { id } = this.props.params;
+        const res = axios.get('api/files/' + id)
+            .then(response => {
+                this.setState({ file: response.data });
+            }).catch(error => {
+                alert('No file');
+            }
+        );
+    }
+    
+    handleGetCategories() {
+        const { id } = this.props.params;
+        const res = axios.get('api/categories/' + Category.SentenceCategory)
+            .then(response => {
+                this.setState({ sentenceCategories: response.data});
+            }).catch(error => {
+                alert('No categories');
+            }
+        );
     }
 
     clickedSentence(sentenceId) {
@@ -36,20 +60,11 @@ import { FileSentences } from './FileSentences';
                     /></Col>
                     <Col><AddSentencePanel 
                         appearance={this.state.clickSentenceId != SENTENCE_NOT_SELECTED}
+                        sentenceCategories={this.state.sentenceCategories}
                     /></Col>
                 </Row>
             </div>
         );
-    }
-
-    GetFile() {
-        const { id } = this.props.params;
-        const res = axios.get('api/files/' + id)
-            .then(response => {
-                this.setState({ file: response.data });
-            }).catch(error => {
-                alert('No file');
-            });
     }
 }
 

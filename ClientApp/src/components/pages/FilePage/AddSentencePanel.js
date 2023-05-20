@@ -5,20 +5,35 @@ export class AddSentencePanel extends Component {
 
     constructor(props) {
         super(props);
-        
+    }
+
+    onChangeCategory = (e) => {
     }
 
     render() {
         if(!this.props.appearance) return;
+        
+        const sentenceCategoriesOptions = this.props.sentenceCategories.map(
+            (category, index) => <option 
+                value={category.id}
+                key={index}
+            >{category.name}</option>
+        );
+
         return (
             <Form>
                 <FormGroup>
                     <Label for="categoryInput">Category</Label>
-                    <Input type="select" name="category" id="categoryInput" />
+                    <Input 
+                        type="select"
+                        name="category" 
+                        id="categoryInput"
+                        onChange={this.onChangeCategory}
+                    >{sentenceCategoriesOptions}</Input>
                 </FormGroup>
                 <FormGroup>
                     <Label for="phraseInput">Phrase</Label>
-                    <Input type="select" name="phrase" id="phraseInput" />
+                    <Input name="phrase" id="phraseInput" />
                 </FormGroup>
                 <FormGroup>
                     <Label for="meaningInput">Meaning</Label>
