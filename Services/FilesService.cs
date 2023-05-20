@@ -17,11 +17,13 @@ public class FilesService : IFilesService
         _environment = environment;
     }
 
-    public bool AddFiles(FileModel file)
+    public Document AddFiles(FileModel file)
     {
         bool saveToStorageState = false;
         bool saveToDBState = false;
         bool saveState = true;
+
+        Document document = new Document { Name = file.Name };
 
         try
         {
@@ -33,13 +35,14 @@ public class FilesService : IFilesService
                 saveToStorageState = true;
             }
 
-            Document document = new Document { Name = file.Name };
             _db.Documents.Add(document);
             _db.SaveChanges();
             saveToDBState = true;
         }
         catch (Exception)
         {
+            document = null;
+
             saveState = false;
             if(saveToStorageState)
             {
@@ -51,7 +54,7 @@ public class FilesService : IFilesService
             }
         }
 
-        return saveState;
+        return document;
     }
 
     public bool DeleteFile(int fileId)

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { DataVector } from '../../DataVector';
+import { DataVector } from './DataVector';
 import { FileInput } from '../../FileInput';
+import axios from "axios";
 
 export class FilesPage extends Component {
 
@@ -10,7 +11,38 @@ export class FilesPage extends Component {
     }
 
     componentDidMount() {
-        this.GetFilesNames();
+        this.handleGetFiles();
+    }
+
+    handleGetFiles() {
+        axios.get('api/files/')
+            .then(response => {
+                const data = response.data;
+                this.setState({ fileNames: data });
+            }
+        );
+    }
+    handleDelete(fileId) {
+        axios.delete('api/files/' + fileId)
+            .then(response => {
+                // todo modal
+                this.setState({
+                    fileNames: [...this.state.fileNames].filter((id) => id.id !== fileId),
+                });
+            }).catch(error => {
+                alert('error when deleting');
+            }
+        );
+    }
+    handleSubmit(formData) {
+        axios.post('api/files', formData)
+            .then(response => {
+                const file = response.data;
+                this.setState({ fileNames: this.state.fileNames.concat(file) });
+            }).catch(error => {
+                alert('err');
+            }
+        );
     }
 
     render() {
@@ -18,15 +50,14 @@ export class FilesPage extends Component {
             <div>
                 <h1>Files</h1>
                 <p>Count : {this.state.fileNames.length}</p>
-                <DataVector vector={this.state.fileNames} />
-                <FileInput />
+                <FileInput 
+                    handleSubmit={this.handleSubmit.bind(this)}
+                />
+                <DataVector 
+                    vector={this.state.fileNames} 
+                    handleDelete={this.handleDelete.bind(this)}
+                />
             </div>
         );
-    }
-
-    async GetFilesNames() {
-        const response = await fetch('api/files');
-        const data = await response.json();
-        this.setState({ fileNames: data });
     }
 }

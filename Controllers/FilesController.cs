@@ -33,11 +33,10 @@ public class FilesController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult AddFiles([FromForm] FileModel file)
+    public Document AddFiles([FromForm] FileModel file)
     {
-        var statusCode = _filesService.AddFiles(file) ? 
-            StatusCode(StatusCodes.Status201Created) : StatusCode(StatusCodes.Status500InternalServerError);
-        return statusCode;
+        var document = _filesService.AddFiles(file);
+        return document;
     }
 
     [HttpDelete("{fileId}")]

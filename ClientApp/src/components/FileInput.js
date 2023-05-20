@@ -8,20 +8,13 @@ export class FileInput extends Component {
         this.fileInput = React.createRef();
     }
     handleSubmit(event) {
-
         const file = this.fileInput.current.files[0];
         const formData = new FormData();
         formData.append("formFile", file);
         formData.append("name", file.name);
-
-        const res = axios.post('api/files', formData)
-            .then(response => {
-                alert(`Selected file - ${this.fileInput.current.files[0].name}`);
-            }).catch(error => {
-                alert('err');
-            });
-
+        this.props.handleSubmit(formData);
         event.preventDefault();
+        document.getElementById("addFileInput").value = ""; // clear input
     }
 
     render() {
@@ -29,7 +22,7 @@ export class FileInput extends Component {
             <form onSubmit={this.handleSubmit}>
                 <label>
                     Upload file:
-                    <input type="file" ref={this.fileInput} />
+                    <input id="addFileInput" type="file" ref={this.fileInput} />
                 </label>
                 <br />
                 <button type="submit">Submit</button>
