@@ -17,44 +17,35 @@ public class FilesService : IFilesService
         _environment = environment;
     }
 
-    public Document AddFiles(FileModel file)
+    public List<Document> AddFiles(AddFilesModel filesModel)
     {
-        bool saveToStorageState = false;
-        bool saveToDBState = false;
-        bool saveState = true;
+        // todo Check duplicate
 
-        Document document = new Document { Name = file.Name };
+        var wwwroot = _environment.WebRootPath;
+        var documents = new List<Document>();
 
-        try
+        foreach (var file in filesModel.FormFiles)
         {
-            var wwwroot = _environment.WebRootPath;
-            string path = Path.Combine(wwwroot, file.Name);
-            using (Stream stream = new FileStream(path, FileMode.Create))
+            Document document = new Document { Name = file.FileName };
+            try
             {
-                file.FormFile.CopyTo(stream);
-                saveToStorageState = true;
-            }
+                string path = Path.Combine(wwwroot, file.FileName);
+                using (Stream stream = new FileStream(path, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
 
-            _db.Documents.Add(document);
-            _db.SaveChanges();
-            saveToDBState = true;
-        }
-        catch (Exception)
-        {
-            document = null;
-
-            saveState = false;
-            if(saveToStorageState)
-            {
-                // del file
+                _db.Documents.Add(document);
+                _db.SaveChanges();
+                documents.Add(document);
             }
-            if(saveToDBState)
+            catch (Exception ex)
             {
-                // del row
+                documents = null;
+                throw;
             }
         }
-
-        return document;
+        return documents;
     }
 
     public bool DeleteFile(int fileId)

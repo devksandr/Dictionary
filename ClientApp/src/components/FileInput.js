@@ -8,10 +8,12 @@ export class FileInput extends Component {
         this.fileInput = React.createRef();
     }
     handleSubmit(event) {
-        const file = this.fileInput.current.files[0];
+        const files = this.fileInput.current.files;
         const formData = new FormData();
-        formData.append("formFile", file);
-        formData.append("name", file.name);
+        for (var i = 0; i < files.length; i++) {
+            formData.append("formFiles", files[i]);
+        }
+
         this.props.handleSubmit(formData);
         event.preventDefault();
         document.getElementById("addFileInput").value = ""; // clear input
@@ -22,7 +24,12 @@ export class FileInput extends Component {
             <form onSubmit={this.handleSubmit}>
                 <label>
                     Upload file:
-                    <input id="addFileInput" type="file" ref={this.fileInput} />
+                    <input 
+                        id="addFileInput" 
+                        type="file" 
+                        ref={this.fileInput} 
+                        multiple={true}
+                    />
                 </label>
                 <br />
                 <button type="submit">Submit</button>

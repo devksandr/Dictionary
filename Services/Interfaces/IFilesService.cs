@@ -6,6 +6,6 @@ public interface IFilesService
 {
     IEnumerable<Document> GetFilesNames();
     Document GetFileName(int fileId);
-    Document AddFiles(FileModel file);
+    List<Document> AddFiles(AddFilesModel filesModel);
     bool DeleteFile(int fileId);
 }

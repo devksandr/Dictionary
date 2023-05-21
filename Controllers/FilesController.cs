@@ -33,10 +33,10 @@ public class FilesController : ControllerBase
     }
 
     [HttpPost]
-    public Document AddFiles([FromForm] FileModel file)
+    public List<Document> AddFiles([FromForm] AddFilesModel filesModel)
     {
-        var document = _filesService.AddFiles(file);
-        return document;
+        var documents = _filesService.AddFiles(filesModel);
+        return documents;
     }
 
     [HttpDelete("{fileId}")]
