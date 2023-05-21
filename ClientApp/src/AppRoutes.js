@@ -1,29 +1,20 @@
-import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
-import { Home } from "./components/Home";
 import { FilesPage } from "./components/pages/FilesPage/FilesPage";
 import { FilePage } from "./components/pages/FilePage/FilePage";
+import { PhrasesPage } from "./components/pages/PhrasesPage/PhrasesPage";
 
 const AppRoutes = [
   {
     index: true,
-    element: <Home />
-  },
-  {
-    path: '/counter',
-    element: <Counter />
-  },
-  {
-    path: '/fetch-data',
-    element: <FetchData />
-  },
-  {
-    path: '/files',
+    path: '/',
     element: <FilesPage />
   },
   {
     path: '/file/:id',
     element: <FilePage />
+  },
+  {
+    path: '/phrases/',
+    element: <PhrasesPage />
   }
 ];
 

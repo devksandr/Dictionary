@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { DataVector } from './DataVector';
-import { FileInput } from '../../FileInput';
+import { FileInput } from './FileInput';
 import axios from "axios";
 
 export class FilesPage extends Component {
