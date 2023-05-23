@@ -1,0 +1,13 @@
+1. Для получения параметров формы в React можно использовать
+- ref
+- обработчик (возможность валидации)
+
+
+
+2. При Post запросе в действие контроллера приходила пустая модель
+Проблема в Model binding - имя параметра-модели действия не должно совпадать с именами внутри модели
+
+Пример PhraseController:
+    public ActionResult AddPhrase([FromForm] AddPhraseModel phraseModel)
+
+У AddPhraseModel есть параметр Phrase, поэтому параметр AddPhraseModel нельзя называть Phrase

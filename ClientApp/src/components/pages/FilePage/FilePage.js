@@ -49,6 +49,16 @@ import { FileSentences } from './FileSentences';
         this.setState({ clickSentenceId: sentenceId });
     }
 
+    handleAddPhrase(formData) {
+        axios.post('api/phrases', formData)
+            .then(response => {
+                alert("phrase added");
+            }).catch(error => {
+                alert('err');
+            }
+        );
+    }
+
     render() {
         return (
             <div>
@@ -61,6 +71,7 @@ import { FileSentences } from './FileSentences';
                     <Col><AddSentencePanel 
                         appearance={this.state.clickSentenceId != SENTENCE_NOT_SELECTED}
                         sentenceCategories={this.state.sentenceCategories}
+                        handleAddPhrase={this.handleAddPhrase.bind(this)}
                     /></Col>
                 </Row>
             </div>

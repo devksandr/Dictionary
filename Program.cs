@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationContext>();
+builder.Services.AddScoped<IPhrasesService, PhrasesService>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 builder.Services.AddScoped<ISentencesService, SentencesService>();
 builder.Services.AddScoped<IFilesService, FilesService>();
