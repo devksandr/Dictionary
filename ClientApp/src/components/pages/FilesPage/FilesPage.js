@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DataVector } from './DataVector';
+import { FilesVector } from './FilesVector';
 import { FileInput } from './FileInput';
 import axios from "axios";
 
@@ -53,7 +53,7 @@ export class FilesPage extends Component {
                 <FileInput 
                     handleSubmit={this.handleSubmit.bind(this)}
                 />
-                <DataVector 
+                <FilesVector 
                     vector={this.state.fileNames} 
                     handleDelete={this.handleDelete.bind(this)}
                 />

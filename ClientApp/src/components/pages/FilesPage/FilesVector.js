@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import { FileLink } from './FileLink';
 
-export class DataVector extends Component {
+export class FilesVector extends Component {
     render() {
         const filesVector = this.props.vector.map(
             (file, index) => <FileLink 

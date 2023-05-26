@@ -25,7 +25,7 @@ import { FileSentences } from './FileSentences';
 
     handleGetFile() {
         const { id } = this.props.params;
-        const res = axios.get('api/files/' + id)
+        axios.get('api/files/' + id)
             .then(response => {
                 this.setState({ file: response.data });
             }).catch(error => {
@@ -35,8 +35,7 @@ import { FileSentences } from './FileSentences';
     }
     
     handleGetCategories() {
-        const { id } = this.props.params;
-        const res = axios.get('api/categories/' + Category.SentenceCategory)
+        axios.get('api/categories/' + Category.SentenceCategory)
             .then(response => {
                 this.setState({ sentenceCategories: response.data});
             }).catch(error => {
@@ -52,7 +51,7 @@ import { FileSentences } from './FileSentences';
     handleAddPhrase(formData) {
         axios.post('api/phrases', formData)
             .then(response => {
-                alert("phrase added");
+                this.setState({ clickSentenceId: SENTENCE_NOT_SELECTED });
             }).catch(error => {
                 alert('err');
             }
@@ -65,11 +64,12 @@ import { FileSentences } from './FileSentences';
                 <h1>File: {this.state.file.name}</h1>
                 <Row>
                     <Col xs="9"><FileSentences 
-                        sentences={this.state.file.sentences} 
+                        sentences={this.state.file.sentences}
+                        clickSentenceId={this.state.clickSentenceId}
                         clickedSentence={this.clickedSentence.bind(this)}
                     /></Col>
                     <Col><AddSentencePanel 
-                        appearance={this.state.clickSentenceId != SENTENCE_NOT_SELECTED}
+                        appearance={this.state.clickSentenceId !== SENTENCE_NOT_SELECTED}
                         sentenceCategories={this.state.sentenceCategories}
                         handleAddPhrase={this.handleAddPhrase.bind(this)}
                     /></Col>

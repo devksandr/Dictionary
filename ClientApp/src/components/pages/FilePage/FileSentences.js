@@ -8,7 +8,6 @@ export class FileSentences extends Component {
 
         this.state = { 
             hoverSentenceId: SENTENCE_NOT_SELECTED,
-            clickSentenceId: SENTENCE_NOT_SELECTED
         };
     }
 
@@ -19,15 +18,14 @@ export class FileSentences extends Component {
         this.setState({ hoverSentenceId: SENTENCE_NOT_SELECTED });
     }
     handleClick(event, index) {
-        let clickSentenceId = this.state.clickSentenceId == index ? SENTENCE_NOT_SELECTED : index;
+        let clickSentenceId = this.props.clickSentenceId == index ? SENTENCE_NOT_SELECTED : index;
         this.props.clickedSentence(clickSentenceId);
-        this.setState({ clickSentenceId: clickSentenceId });
     }
     
     render() {
         const sentences = this.props.sentences.map((sentence, index) => {
             const hoverClass = this.state.hoverSentenceId==index ? 'sentence-hover' : '';
-            const clickClass = this.state.clickSentenceId==index ? 'sentence-click' : '';
+            const clickClass = this.props.clickSentenceId==index ? 'sentence-click' : '';
 
             return (
                 <span 

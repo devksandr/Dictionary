@@ -9,7 +9,7 @@ export class AddSentencePanel extends Component {
         this.handlePhraseInput = this.handlePhraseInput.bind(this);
 
         this.state = {
-            addPhrase: "",
+            addPhrase: ""
         };
     }
 
@@ -26,6 +26,7 @@ export class AddSentencePanel extends Component {
         formData.append("comment", this.comment.value);
         this.props.handleAddPhrase(formData);
         event.preventDefault();
+        event.target.reset(); // clear inputs
     }
 
     render() {

@@ -15,10 +15,25 @@ public class PhrasesController : ControllerBase
         _phrasesService = phrasesService;
     }
 
+    [HttpGet]
+    public IEnumerable<Phrase> GetPhrases()
+    {
+        var phrases = _phrasesService.GetPhrases();
+        return phrases;
+    }
+
     [HttpPost]
     public ActionResult AddPhrase([FromForm] AddPhraseModel phraseModel)
     {
         var statusCode = _phrasesService.AddPhrase(phraseModel) ?
+            StatusCode(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError);
+        return statusCode;
+    }
+
+    [HttpDelete("{phraseId}")]
+    public ActionResult DeleteFile(int phraseId)
+    {
+        var statusCode = _phrasesService.DeletePhrase(phraseId) ? 
             StatusCode(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError);
         return statusCode;
     }

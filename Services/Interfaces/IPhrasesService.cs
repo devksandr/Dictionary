@@ -6,5 +6,7 @@ namespace dict_react.Services.Interfaces;
 
 public interface IPhrasesService
 {
+    public IEnumerable<Phrase> GetPhrases();
     public bool AddPhrase(AddPhraseModel phraseModel);
+    bool DeletePhrase(int phraseId);
 }
