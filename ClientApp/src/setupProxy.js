@@ -10,6 +10,7 @@ const context = [
   "/api/categories",
   "/api/categories/:id",
   "/api/phrases",
+  "/api/phrases/:id",
   "/swagger"
 ];
 

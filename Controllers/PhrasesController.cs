@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using dict_react.Services.Interfaces;
 using dict_react.Models;
 using dict_react.Models.Tables;
+using dict_react.Models.DTO;
 
 namespace dict_react.Controllers;
 
@@ -16,10 +17,16 @@ public class PhrasesController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Phrase> GetPhrases()
+    public IEnumerable<Phrase> GetPhrasesNames()
     {
-        var phrases = _phrasesService.GetPhrases();
+        var phrases = _phrasesService.GetPhrasesNames();
         return phrases;
+    }
+    [HttpGet("{phraseId}")]
+    public PhraseDTO GetPhrase(int phraseId)
+    {
+        var phrase = _phrasesService.GetPhrase(phraseId);
+        return phrase;
     }
 
     [HttpPost]
@@ -31,7 +38,7 @@ public class PhrasesController : ControllerBase
     }
 
     [HttpDelete("{phraseId}")]
-    public ActionResult DeleteFile(int phraseId)
+    public ActionResult DeletePhrase(int phraseId)
     {
         var statusCode = _phrasesService.DeletePhrase(phraseId) ? 
             StatusCode(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError);

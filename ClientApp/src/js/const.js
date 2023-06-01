@@ -1,4 +1,5 @@
 export const SENTENCE_NOT_SELECTED = -1;
+export const PHRASE_NOT_SELECTED = -1;
 
 export const Category = {
     SentenceCategory: 1,

@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { PHRASE_NOT_SELECTED } from '../../../js/const.js';
 
 export class PhraseLink extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = { 
             modalDeletePhraseState: false 
         };
@@ -21,9 +21,10 @@ export class PhraseLink extends Component {
                     color="danger"
                     onClick={this.toggleModalDeletePhrase}
                 >X</Button>
-                <Link 
-                    to={"/phrase/" + this.props.phrase.id} 
-                >{this.props.phrase.data}</Link>
+                <p
+                    onClick={this.props.clickPhrase}
+                >{this.props.phrase.data}</p>
+                
 
                 <Modal 
                     isOpen={this.state.modalDeletePhraseState} 

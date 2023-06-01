@@ -1,0 +1,13 @@
+.category-header {
+    background-color: blue;
+    text-align: center;
+}
+
+.phrase-header {
+    text-align: center;
+    margin: 5% 0;
+}
+
+.phrase-data {
+    border: solid;
+}
