@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using dict_react.Services.Interfaces;
 using dict_react.Models;
 using dict_react.Models.Tables;
+using dict_react.Models.DTO;
+
 namespace dict_react.Controllers;
 
 [ApiController]
@@ -16,29 +18,24 @@ public class FilesController : ControllerBase
         _sentencesService = sentencesService;
     }
 
+    [HttpGet("{fileId}")]
+    public DocumentDTO_Response_GetSentences GetFile(int fileId)
+    {
+        var file = _filesService.GetFile(fileId);
+        return file;
+    }
     [HttpGet]
-    public IEnumerable<Document> GetFilesNames()
+    public IEnumerable<DocumentDTO_Response_GetName> GetFilesNames()
     {
         var fileNames = _filesService.GetFilesNames();
         return fileNames;
     }
-
-   [HttpGet("{fileId}")]
-    public FileDependenciesModel GetFile(int fileId)
-    {
-        var fileName = _filesService.GetFileName(fileId);
-        var sentences = _sentencesService.GetSentences(fileName.Name);
-        FileDependenciesModel file = new FileDependenciesModel() { Name = fileName.Name, Sentences = sentences};
-        return file;
-    }
-
     [HttpPost]
-    public List<Document> AddFiles([FromForm] AddFilesModel filesModel)
+    public IEnumerable<DocumentDTO_Response_GetName> AddFiles([FromForm] DocumentDTO_Request_AddText filesModel)
     {
         var documents = _filesService.AddFiles(filesModel);
         return documents;
     }
-
     [HttpDelete("{fileId}")]
     public ActionResult DeleteFile(int fileId)
     {

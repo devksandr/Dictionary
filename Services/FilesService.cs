@@ -1,8 +1,10 @@
 using dict_react.Services.Interfaces;
 using dict_react.Models;
 using dict_react.Models.Tables;
+using dict_react.Models.DTO;
 using dict_react.Database;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace dict_react.Services;
 
@@ -17,66 +19,95 @@ public class FilesService : IFilesService
         _environment = environment;
     }
 
-    public List<Document> AddFiles(AddFilesModel filesModel)
+    public DocumentDTO_Response_GetSentences GetFile(int fileId)
+    {
+        var documentName = _db.Documents.Find(fileId).Name;
+
+        var sentences = _db.Sentences
+            .Where(s => s.DocumentId == fileId)
+            .OrderBy(s => s.SentenceNum)
+            .Select(s => s.Data)
+            .ToList();
+
+        DocumentDTO_Response_GetSentences documentDTO = new DocumentDTO_Response_GetSentences
+        {
+            Name = documentName,
+            Sentences = sentences
+        };
+
+        return documentDTO;
+    }
+    public IEnumerable<DocumentDTO_Response_GetName> GetFilesNames()
+    {
+        var documentsDTO = new List<DocumentDTO_Response_GetName>();
+        var documents = _db.Documents;
+        foreach (var d in documents)
+        {
+            DocumentDTO_Response_GetName documentDTO = new DocumentDTO_Response_GetName 
+            { 
+                Id = d.Id, 
+                Name = d.Name 
+            };
+            documentsDTO.Add(documentDTO);
+        } 
+        return documentsDTO;
+    }
+    public IEnumerable<DocumentDTO_Response_GetName> AddFiles(DocumentDTO_Request_AddText filesModel)
     {
         // todo Check duplicate
 
-        var wwwroot = _environment.WebRootPath;
-        var documents = new List<Document>();
-
+        var documentsDTO = new List<DocumentDTO_Response_GetName>();
         foreach (var file in filesModel.FormFiles)
         {
             Document document = new Document { Name = file.FileName };
-            try
-            {
-                string path = Path.Combine(wwwroot, file.FileName);
-                using (Stream stream = new FileStream(path, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+            _db.Documents.Add(document);
+            _db.SaveChanges();
 
-                _db.Documents.Add(document);
+            var text = "";
+            using (var reader = new StreamReader(file.OpenReadStream()))
+            {
+                text = reader.ReadToEnd();
+            }
+            var sentences = SplitText(text);
+            int sentenceNum = 1;
+            foreach (var s in sentences)
+            {
+                Sentence sentence = new Sentence 
+                { 
+                    DocumentId = document.Id, 
+                    Data = s, 
+                    SentenceNum = sentenceNum++
+                };
+                _db.Sentences.Add(sentence);
                 _db.SaveChanges();
-                documents.Add(document);
             }
-            catch (Exception ex)
-            {
-                documents = null;
-                throw;
-            }
-        }
-        return documents;
-    }
 
+            DocumentDTO_Response_GetName documentDTO = new DocumentDTO_Response_GetName 
+            { 
+                Id = document.Id, 
+                Name = document.Name 
+            };
+            documentsDTO.Add(documentDTO);
+        }
+        return documentsDTO;
+    }
     public bool DeleteFile(int fileId)
     {
+        // Need delete Sentences with current fileId except Phrase use Sentence
         var wwwroot = _environment.WebRootPath;
-        var fileName = GetFileName(fileId).Name;
-        var filePath = Path.Combine(wwwroot, fileName);
-
-        if(!@System.IO.File.Exists(filePath)) return false;
-        if(fileName is null) return false;
-
-        System.IO.File.Delete(filePath);
-
         var document = _db.Documents.Find(fileId);
         if(document is not null)
         {
             _db.Documents.Remove(document);
             _db.SaveChanges();
         }
-
         return true;
     }
 
-    public IEnumerable<Document> GetFilesNames()
+    IEnumerable<string> SplitText(string text)
     {
-        var fileNames = _db.Documents;
-        return fileNames;
-    }
-    public Document GetFileName(int fileId)
-    {
-        var file = _db.Documents.Find(fileId);
-        return file;
+        var splitTextToSentencesPattern = @"(?<=[\.!\?])\s+";
+        var sentences = Regex.Split(text, splitTextToSentencesPattern);
+        return sentences.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();;
     }
 }

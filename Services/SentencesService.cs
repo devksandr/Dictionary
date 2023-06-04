@@ -17,20 +17,4 @@ public class SentencesService : ISentencesService
         _db = db;
         _environment = environment;
     }
-
-    public IEnumerable<string> GetSentences(string fileName)
-    {
-        var wwwroot = _environment.WebRootPath;
-        var filePath = Path.Combine(wwwroot, fileName);
-        var text = File.ReadAllText(filePath);
-        var sentences = SplitText(text);
-        return sentences;
-    }
-
-    IEnumerable<string> SplitText(string text)
-    {
-        var splitTextToSentencesPattern = @"(?<=[\.!\?])\s+";
-        var sentences = Regex.Split(text, splitTextToSentencesPattern);
-        return sentences;
-    }
 }
