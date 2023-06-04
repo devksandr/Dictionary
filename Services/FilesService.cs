@@ -9,12 +9,10 @@ namespace dict_react.Services;
 public class FilesService : IFilesService
 {
     private readonly ApplicationContext _db;
-    private readonly IWebHostEnvironment _environment;
 
-    public FilesService(ApplicationContext db, IWebHostEnvironment environment)
+    public FilesService(ApplicationContext db)
     {
         _db = db;
-        _environment = environment;
     }
 
     public DocumentDTO_Response_GetSentences GetFile(int fileId)
@@ -24,7 +22,7 @@ public class FilesService : IFilesService
         var sentences = _db.Sentences
             .Where(s => s.DocumentId == fileId)
             .OrderBy(s => s.SentenceNum)
-            .Select(s => s.Data)
+            .Select(s => new SentenceDTO { Id = s.Id, SentenceNum = s.SentenceNum, Data = s.Data})
             .ToList();
 
         DocumentDTO_Response_GetSentences documentDTO = new DocumentDTO_Response_GetSentences
@@ -67,7 +65,7 @@ public class FilesService : IFilesService
                 text = reader.ReadToEnd();
             }
             var sentences = SplitText(text);
-            int sentenceNum = 1;
+            int sentenceNum = 0;
             foreach (var s in sentences)
             {
                 Sentence sentence = new Sentence 
@@ -92,7 +90,6 @@ public class FilesService : IFilesService
     public bool DeleteFile(int fileId)
     {
         // Need delete Sentences with current fileId except Phrase use Sentence
-        var wwwroot = _environment.WebRootPath;
         var document = _db.Documents.Find(fileId);
         if(document is not null)
         {

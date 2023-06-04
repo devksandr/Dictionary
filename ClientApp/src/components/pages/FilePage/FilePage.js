@@ -4,7 +4,7 @@ import axios from "axios";
 import '../../../css/pages/FilePage/Sentence.css';
 import { SENTENCE_NOT_SELECTED, Category } from '../../../js/const.js';
 import { Row, Col } from 'reactstrap';
-import { AddSentencePanel } from './AddSentencePanel';
+import { AddPhrasePanel } from './AddPhrasePanel';
 import { FileSentences } from './FileSentences';
 
  class FilePageClass extends Component {
@@ -14,7 +14,8 @@ import { FileSentences } from './FileSentences';
         this.state = { 
             file: {name: '', sentences: []},
             sentenceCategories: [],
-            clickSentenceId: SENTENCE_NOT_SELECTED
+            clickedSentenceIndex: SENTENCE_NOT_SELECTED,
+            clickedSentenceId: SENTENCE_NOT_SELECTED
         };
     }
 
@@ -44,14 +45,16 @@ import { FileSentences } from './FileSentences';
         );
     }
 
-    clickedSentence(sentenceId) {
-        this.setState({ clickSentenceId: sentenceId });
+    handleClickSentence(sentenceIndex, sentenceId) {
+        this.setState({ clickedSentenceIndex: sentenceIndex });
+        this.setState({ clickedSentenceId: sentenceId });
     }
 
     handleAddPhrase(formData) {
         axios.post('api/phrases', formData)
             .then(response => {
-                this.setState({ clickSentenceId: SENTENCE_NOT_SELECTED });
+                this.setState({ clickedSentenceIndex: SENTENCE_NOT_SELECTED });
+                this.setState({ clickedSentenceId: SENTENCE_NOT_SELECTED });
             }).catch(error => {
                 alert('err');
             }
@@ -65,11 +68,12 @@ import { FileSentences } from './FileSentences';
                 <Row>
                     <Col xs="9"><FileSentences 
                         sentences={this.state.file.sentences}
-                        clickSentenceId={this.state.clickSentenceId}
-                        clickedSentence={this.clickedSentence.bind(this)}
+                        clickedSentenceIndex={this.state.clickedSentenceIndex}
+                        handleClickSentence={this.handleClickSentence.bind(this)}
                     /></Col>
-                    <Col><AddSentencePanel 
-                        appearance={this.state.clickSentenceId !== SENTENCE_NOT_SELECTED}
+                    <Col><AddPhrasePanel 
+                        appearance={this.state.clickedSentenceIndex !== SENTENCE_NOT_SELECTED}
+                        clickedSentenceId={this.state.clickedSentenceId}
                         sentenceCategories={this.state.sentenceCategories}
                         handleAddPhrase={this.handleAddPhrase.bind(this)}
                     /></Col>

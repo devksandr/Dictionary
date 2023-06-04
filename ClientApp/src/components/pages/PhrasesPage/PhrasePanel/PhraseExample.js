@@ -10,7 +10,7 @@ export class PhraseExample extends Component {
     render() {
         return (
             <li>
-                <p><u>phraseExample</u></p>
+                <p><u>{this.props.phraseExample.sentence}</u></p>
             </li>
         );
     }

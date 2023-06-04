@@ -17,15 +17,15 @@ export class FileSentences extends Component {
     handleMouseLeave(event, index) {
         this.setState({ hoverSentenceId: SENTENCE_NOT_SELECTED });
     }
-    handleClick(event, index) {
-        let clickSentenceId = this.props.clickSentenceId == index ? SENTENCE_NOT_SELECTED : index;
-        this.props.clickedSentence(clickSentenceId);
+    handleClick(event, index, sentenceId) {
+        let clickedSentenceIndex = this.props.clickedSentenceIndex == index ? SENTENCE_NOT_SELECTED : index;
+        this.props.handleClickSentence(clickedSentenceIndex, sentenceId);
     }
     
     render() {
         const sentences = this.props.sentences.map((sentence, index) => {
             const hoverClass = this.state.hoverSentenceId==index ? 'sentence-hover' : '';
-            const clickClass = this.props.clickSentenceId==index ? 'sentence-click' : '';
+            const clickClass = this.props.clickedSentenceIndex==index ? 'sentence-click' : '';
 
             return (
                 <span 
@@ -33,8 +33,8 @@ export class FileSentences extends Component {
                     className={`${hoverClass} ${clickClass}`}
                     onMouseLeave={(e) => this.handleMouseLeave(e, index)}
                     onMouseEnter={(e) => this.handleMouseEnter(e, index)}
-                    onClick={(e) => this.handleClick(e, index)}>
-                    {sentence}
+                    onClick={(e) => this.handleClick(e, index, sentence.id)}>
+                    {sentence.data}
                 </span>
             );
         });

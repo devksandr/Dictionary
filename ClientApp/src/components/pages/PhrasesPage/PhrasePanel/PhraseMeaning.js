@@ -8,9 +8,7 @@ export class PhraseMeaning extends Component {
     }
 
     render() {
-        // TODO
-        const phraseExamples = ['pe1', 'pe2'];
-        const phraseExamplesVector = phraseExamples.map(
+        const phraseExamplesVector = this.props.phraseMeaning.phraseMeaningExamples.map(
             (phraseExample, index) => <PhraseExample 
                 phraseExample={phraseExample} 
                 key={index} 

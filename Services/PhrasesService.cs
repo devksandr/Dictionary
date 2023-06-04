@@ -28,6 +28,8 @@ public class PhrasesService : IPhrasesService
         var phrase = _db.Phrases
             .Include(p => p.SentenceCategory)
             .Include(p => p.PhraseMeaning)
+                .ThenInclude(pm => pm.PhraseMeaningExample)
+                    .ThenInclude(pme => pme.Sentence)
             .FirstOrDefault(p => p.Id == phraseId);
         var sentenceCategory = _db.SentenceCategories.Find(phrase.SentenceCategoryId);
 
@@ -39,11 +41,22 @@ public class PhrasesService : IPhrasesService
         };
         foreach (var pm in phrase.PhraseMeaning)
         {
+            var phraseMeaningExamplesDTO = new List<PhraseMeaningExampleDTO>();
+            foreach (var pme in pm.PhraseMeaningExample)
+            {
+                var phraseMeaningExampleDTO = new PhraseMeaningExampleDTO
+                {
+                    Id = pme.Id,
+                    Sentence = pme.Sentence.Data
+                };
+                phraseMeaningExamplesDTO.Add(phraseMeaningExampleDTO);
+            }
             var phraseMeaningDTO = new PhraseMeaningDTO
             {
                 Id = pm.Id,
                 Meaning = pm.Meaning,
-                Comment = pm.Comment
+                Comment = pm.Comment,
+                PhraseMeaningExamples = phraseMeaningExamplesDTO
             };
             phraseDTO.PhraseMeanings.Add(phraseMeaningDTO);
         }
@@ -57,12 +70,18 @@ public class PhrasesService : IPhrasesService
         {
             try
             {
-                var phrase = new Phrase { Data = phraseModel.Phrase, SentenceCategoryId = phraseModel.Category };
+                var phrase = new Phrase { Data = phraseModel.Phrase, SentenceCategoryId = phraseModel.CategoryId };
                 _db.Phrases.Add(phrase);
                 _db.SaveChanges();
+
                 var phraseMeaning = new PhraseMeaning { Meaning = phraseModel.Meaning, Comment = phraseModel.Comment, PhraseId = phrase.Id };
                 _db.PhraseMeanings.Add(phraseMeaning);
                 _db.SaveChanges();
+
+                var phraseMeaningExample = new PhraseMeaningExample { PhraseMeaningId = phraseMeaning.Id, SentenceId = phraseModel.SentenceId };
+                _db.PhraseMeaningExamples.Add(phraseMeaningExample);
+                _db.SaveChanges();
+
                 transaction.Commit();
             }
             catch (Exception ex)

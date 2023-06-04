@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
-export class AddSentencePanel extends Component {
+export class AddPhrasePanel extends Component {
 
     constructor(props) {
         super(props);
@@ -20,10 +20,11 @@ export class AddSentencePanel extends Component {
 
     handleAddPhrase(event) {
         const formData = new FormData();
-        formData.append("category", this.category.value);
+        formData.append("categoryId", this.categoryId.value);
         formData.append("phrase", this.state.addPhrase);
         formData.append("meaning", this.meaning.value);
         formData.append("comment", this.comment.value);
+        formData.append("sentenceId", this.props.clickedSentenceId);
         this.props.handleAddPhrase(formData);
         event.preventDefault();
         event.target.reset(); // clear inputs
@@ -42,12 +43,12 @@ export class AddSentencePanel extends Component {
         return (
             <Form onSubmit={this.handleAddPhrase}>
                 <FormGroup>
-                    <Label for="categoryInput">Category</Label>
+                    <Label for="categoryIdInput">Category</Label>
                     <Input 
                         type="select"
-                        name="category" 
-                        id="categoryInput"
-                        innerRef={(v) => (this.category = v)}
+                        name="categoryId" 
+                        id="categoryIdInput"
+                        innerRef={(v) => (this.categoryId = v)}
                     >{sentenceCategoriesOptions}</Input>
                 </FormGroup>
                 <FormGroup>
