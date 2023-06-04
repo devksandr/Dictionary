@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using dict_react.Services.Interfaces;
-using dict_react.Models;
 
 namespace dict_react.Controllers;
 

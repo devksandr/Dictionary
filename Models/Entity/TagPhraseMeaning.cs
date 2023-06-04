@@ -1,4 +1,4 @@
-namespace dict_react.Models.Tables;
+namespace dict_react.Models.Entity;
 
 public class TagPhraseMeaning
 {

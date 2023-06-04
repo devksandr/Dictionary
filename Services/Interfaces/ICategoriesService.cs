@@ -1,5 +1,5 @@
-using dict_react.Models;
-using dict_react.Models.Tables.Interfaces;
+using dict_react.Models.Entity.Interfaces;
+using dict_react.Models.Enum;
 
 namespace dict_react.Services.Interfaces;
 

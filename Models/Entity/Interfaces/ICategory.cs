@@ -1,5 +1,4 @@
-using dict_react.Models;
-namespace dict_react.Models.Tables.Interfaces;
+namespace dict_react.Models.Entity.Interfaces;
 
 public interface ICategory
 {

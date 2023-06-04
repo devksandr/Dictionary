@@ -1,5 +1,5 @@
-using dict_react.Models.Tables.Interfaces;
-namespace dict_react.Models.Tables;
+using dict_react.Models.Entity.Interfaces;
+namespace dict_react.Models.Entity;
 public class PhraseMeaningCategory : ICategory
 {
     public int Id { get; set; }

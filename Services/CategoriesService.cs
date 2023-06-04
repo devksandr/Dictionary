@@ -1,10 +1,7 @@
 using dict_react.Services.Interfaces;
-using dict_react.Models;
-using dict_react.Models.Tables;
 using dict_react.Database;
-using System.Linq;
-using System.Text.RegularExpressions;
-using dict_react.Models.Tables.Interfaces;
+using dict_react.Models.Entity.Interfaces;
+using dict_react.Models.Enum;
 
 namespace dict_react.Services;
 

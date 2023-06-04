@@ -1,7 +1,3 @@
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using dict_react.Models.Tables;
-
 namespace dict_react.Models;
 
 public class AddPhraseModel

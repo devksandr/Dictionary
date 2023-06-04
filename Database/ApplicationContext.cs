@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using dict_react.Models.Tables;
+using dict_react.Models.Entity;
 
 namespace dict_react.Database;
 

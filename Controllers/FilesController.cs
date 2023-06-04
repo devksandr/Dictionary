@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using dict_react.Services.Interfaces;
-using dict_react.Models;
-using dict_react.Models.Tables;
 using dict_react.Models.DTO;
 
 namespace dict_react.Controllers;
