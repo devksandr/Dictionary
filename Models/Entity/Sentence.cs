@@ -7,6 +7,5 @@ public class Sentence
     public int SentenceNum { get; set; }
     public string? Data { get; set; }
 
-    public Document? Document { get; set; }
     public List<PhraseMeaningExample>? PhraseMeaningExample { get; set; } = new();
 }

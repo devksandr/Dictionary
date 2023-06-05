@@ -89,12 +89,38 @@ public class FilesService : IFilesService
     }
     public bool DeleteFile(int fileId)
     {
-        // Need delete Sentences with current fileId except Phrase use Sentence
-        var document = _db.Documents.Find(fileId);
-        if(document is not null)
+        using(var transaction = _db.Database.BeginTransaction())
         {
-            _db.Documents.Remove(document);
-            _db.SaveChanges();
+            try
+            {
+                var document = _db.Documents.Find(fileId);
+                _db.Documents.Remove(document);
+                _db.SaveChanges();
+
+                var sentencesIdAll = _db.Sentences
+                    .Where(s => s.DocumentId == fileId)
+                    .Select(s => s.Id)
+                    .ToList();
+                var sentencesIdSave = _db.PhraseMeaningExamples
+                    .Where(pme => sentencesIdAll.Contains(pme.SentenceId))
+                    .Select(pme => pme.SentenceId);
+                var SentencesIdDelete = sentencesIdAll
+                    .Union(sentencesIdSave)
+                    .Except(sentencesIdAll.Intersect(sentencesIdSave));
+                foreach (var sentenceId in SentencesIdDelete)
+                {
+                    var sentence = new Sentence { Id = sentenceId };
+                    _db.Remove(sentence);
+                }
+                _db.SaveChanges();
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                return false;
+            }
         }
         return true;
     }
