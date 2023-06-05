@@ -96,15 +96,35 @@ public class PhrasesService : IPhrasesService
 
     public bool DeletePhrase(int phraseId)
     {
-        try
+        using(var transaction = _db.Database.BeginTransaction())
         {
-            var phrase = new Phrase { Id = phraseId };
-            _db.Phrases.Remove(phrase);
-            _db.SaveChanges();
-        }
-        catch
-        {
-            return false;
+            try
+            {
+                var phrase = _db.Phrases
+                    .Include(p => p.PhraseMeaning)
+                        .ThenInclude(pm => pm.PhraseMeaningExample)
+                        .ThenInclude(pme => pme.Sentence)
+                    .First(p => p.Id == phraseId);
+                HashSet<Sentence> sentences = new HashSet<Sentence>();
+                phrase.PhraseMeaning.ForEach(pm => pm.PhraseMeaningExample.ForEach(pme => sentences.Add(pme.Sentence)));
+                foreach (var sentence in sentences.ToList())
+                {
+                    if (!_db.Documents.Any(d => d.Id == sentence.DocumentId))
+                    {
+                        _db.Sentences.Remove(sentence);
+                    }
+                }
+
+                _db.Phrases.Remove(phrase);
+                _db.SaveChanges();
+
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                return false;
+            }
         }
 
         return true;
