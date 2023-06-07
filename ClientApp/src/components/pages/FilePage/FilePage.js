@@ -13,6 +13,7 @@ import { FileSentences } from './FileSentences';
 
         this.state = { 
             file: {name: '', sentences: []},
+            sentencePhrases: [],
             sentenceCategories: [],
             clickedSentenceIndex: SENTENCE_NOT_SELECTED,
             clickedSentenceId: SENTENCE_NOT_SELECTED
@@ -29,12 +30,24 @@ import { FileSentences } from './FileSentences';
         axios.get('api/files/' + id)
             .then(response => {
                 this.setState({ file: response.data });
+                const fileId = response.data.id;
+                this.handleGetPhrases(fileId);
             }).catch(error => {
                 alert('No file');
             }
         );
     }
     
+    handleGetPhrases(fileId) {
+        axios.get('api/phrases/file/' + fileId)
+            .then(response => {
+                this.setState({ sentencePhrases: response.data});
+            }).catch(error => {
+                alert('No file phrases');
+            }
+        );
+    }
+
     handleGetCategories() {
         axios.get('api/categories/' + Category.SentenceCategory)
             .then(response => {
@@ -68,6 +81,7 @@ import { FileSentences } from './FileSentences';
                 <Row>
                     <Col xs="9"><FileSentences 
                         sentences={this.state.file.sentences}
+                        sentencePhrases={this.state.sentencePhrases}
                         clickedSentenceIndex={this.state.clickedSentenceIndex}
                         handleClickSentence={this.handleClickSentence.bind(this)}
                     /></Col>

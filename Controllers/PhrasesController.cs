@@ -29,6 +29,13 @@ public class PhrasesController : ControllerBase
         return phrase;
     }
 
+    [HttpGet("file/{fileId}")]
+    public List<SentenceDTO_Response_GetForFile> GetPhrasesForSentence(int fileId)
+    {
+        var sentencePhrases = _phrasesService.GetPhrasesForSentence(fileId);
+        return sentencePhrases;
+    }
+
     [HttpPost]
     public ActionResult AddPhrase([FromForm] AddPhraseModel phraseModel)
     {

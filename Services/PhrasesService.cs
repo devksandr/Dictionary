@@ -64,6 +64,42 @@ public class PhrasesService : IPhrasesService
         return phraseDTO;
     }
 
+    public List<SentenceDTO_Response_GetForFile> GetPhrasesForSentence(int fileId)
+    {
+        var sentences = _db.Sentences
+            .Include(s => s.PhraseMeaningExample)
+                .ThenInclude(pme => pme.PhraseMeaning)
+                    .ThenInclude(pm => pm.Phrase)
+            .Where(s => s.DocumentId == fileId && s.PhraseMeaningExample.Count > 0)
+            .ToList();
+        
+        var sentencesDTO = new List<SentenceDTO_Response_GetForFile>();
+
+        foreach (var sentence in sentences)
+        {
+            var PhraseMeaningExamplesDTO = new List<PhraseDTO_Response_GetForFile>();
+            foreach (var PhraseMeaningExample in sentence.PhraseMeaningExample)
+            {
+                var PhraseMeaningExampleDTO = new PhraseDTO_Response_GetForFile()
+                {
+                    Id = PhraseMeaningExample.PhraseMeaning.PhraseId,
+                    Data = PhraseMeaningExample.PhraseMeaning.Phrase.Data,
+                    Comment = PhraseMeaningExample.PhraseMeaning.Comment
+                };
+                PhraseMeaningExamplesDTO.Add(PhraseMeaningExampleDTO);
+            }
+            var sentenceDTO = new SentenceDTO_Response_GetForFile()
+            {
+                Id = sentence.Id,
+                SentenceNum = sentence.SentenceNum,
+                Phrases = PhraseMeaningExamplesDTO
+            };
+            sentencesDTO.Add(sentenceDTO);
+        }
+
+        return sentencesDTO;
+    }   
+
     public bool AddPhrase(AddPhraseModel phraseModel)
     {
         using(var transaction = _db.Database.BeginTransaction())

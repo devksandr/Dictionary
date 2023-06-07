@@ -11,6 +11,7 @@ const context = [
   "/api/categories/:id",
   "/api/phrases",
   "/api/phrases/:id",
+  "/api/phrases/file/:id",
   "/swagger"
 ];
 

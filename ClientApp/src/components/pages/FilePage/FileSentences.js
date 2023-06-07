@@ -26,11 +26,12 @@ export class FileSentences extends Component {
         const sentences = this.props.sentences.map((sentence, index) => {
             const hoverClass = this.state.hoverSentenceId==index ? 'sentence-hover' : '';
             const clickClass = this.props.clickedSentenceIndex==index ? 'sentence-click' : '';
-
+            const hasPhraseClass = this.props.sentencePhrases.some(sp => sp.sentenceNum === index) ? 'sentence-hasPhrase' : '';
+            
             return (
                 <span 
                     key={index}
-                    className={`${hoverClass} ${clickClass}`}
+                    className={`${hoverClass} ${clickClass} ${hasPhraseClass}`}
                     onMouseLeave={(e) => this.handleMouseLeave(e, index)}
                     onMouseEnter={(e) => this.handleMouseEnter(e, index)}
                     onClick={(e) => this.handleClick(e, index, sentence.id)}>

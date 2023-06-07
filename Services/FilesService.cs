@@ -27,6 +27,7 @@ public class FilesService : IFilesService
 
         DocumentDTO_Response_GetSentences documentDTO = new DocumentDTO_Response_GetSentences
         {
+            Id = fileId,
             Name = documentName,
             Sentences = sentences
         };
