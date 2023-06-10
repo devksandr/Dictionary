@@ -9,6 +9,6 @@ public interface IPhrasesService
     public IEnumerable<Phrase> GetPhrasesNames();
     public PhraseDTO GetPhrase(int phraseId);
     public List<SentenceDTO_Response_GetForFile> GetPhrasesForSentence(int fileId);
-    public bool AddPhrase(AddPhraseModel phraseModel);
+    public SentenceDTO_Response_GetForFile AddPhrase(AddPhraseModel phraseModel);
     bool DeletePhrase(int phraseId);
 }

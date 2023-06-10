@@ -37,8 +37,8 @@ export class FilesPage extends Component {
     handleSubmit(formData) {
         axios.post('api/files', formData)
             .then(response => {
-                const files = response.data;
-                this.setState({ fileNames: this.state.fileNames.concat(files) });
+                const newFileNames = response.data;
+                this.setState({ fileNames: this.state.fileNames.concat(newFileNames) });
             }).catch(error => {
                 alert('err');
             }

@@ -37,11 +37,10 @@ public class PhrasesController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult AddPhrase([FromForm] AddPhraseModel phraseModel)
+    public SentenceDTO_Response_GetForFile AddPhrase([FromForm] AddPhraseModel phraseModel)
     {
-        var statusCode = _phrasesService.AddPhrase(phraseModel) ?
-            StatusCode(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError);
-        return statusCode;
+        var sentencePhrase = _phrasesService.AddPhrase(phraseModel);
+        return sentencePhrase;
     }
 
     [HttpDelete("{phraseId}")]

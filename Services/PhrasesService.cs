@@ -100,7 +100,7 @@ public class PhrasesService : IPhrasesService
         return sentencesDTO;
     }   
 
-    public bool AddPhrase(AddPhraseModel phraseModel)
+    public SentenceDTO_Response_GetForFile AddPhrase(AddPhraseModel phraseModel)
     {
         using(var transaction = _db.Database.BeginTransaction())
         {
@@ -118,16 +118,27 @@ public class PhrasesService : IPhrasesService
                 _db.PhraseMeaningExamples.Add(phraseMeaningExample);
                 _db.SaveChanges();
 
+                var sentence = _db.Sentences.Find(phraseModel.SentenceId);
+                var phraseDTO = new List<PhraseDTO_Response_GetForFile>() 
+                { 
+                    new PhraseDTO_Response_GetForFile() { Id = phrase.Id, Data = phraseModel.Phrase, Comment = phraseModel.Comment}
+                };
+                var sentenceDTO = new SentenceDTO_Response_GetForFile()
+                {
+                    Id = phraseModel.SentenceId,
+                    SentenceNum = sentence.SentenceNum,
+                    Phrases = phraseDTO
+                };
+
                 transaction.Commit();
+                return sentenceDTO;
             }
             catch (Exception ex)
             {
                 transaction.Rollback();
-                return false;
+                return null;
             }
         }
-
-        return true;
     }
 
     public bool DeletePhrase(int phraseId)

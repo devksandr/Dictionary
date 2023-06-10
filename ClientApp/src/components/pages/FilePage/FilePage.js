@@ -32,14 +32,14 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
             .then(response => {
                 this.setState({ file: response.data });
                 const fileId = response.data.id;
-                this.handleGetPhrases(fileId);
+                this.handleGetPhrasesForSentences(fileId);
             }).catch(error => {
                 alert('No file');
             }
         );
     }
     
-    handleGetPhrases(fileId) {
+    handleGetPhrasesForSentences(fileId) {
         axios.get('api/phrases/file/' + fileId)
             .then(response => {
                 this.setState({ sentencesWithPhrases: response.data});
@@ -59,6 +59,37 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
         );
     }
 
+    handleAddPhrase(formData) {
+        axios.post('api/phrases', formData)
+            .then(response => {
+                this.setState({ clickedSentenceIndex: NOT_SELECTED });
+                this.setState({ clickedSentenceId: NOT_SELECTED });
+                this.setState({ clickedSentencePhrases: [] });
+                
+                // Add or Update sentence with phrases
+                const newSentencePhrase = response.data;
+                var sentenceWithPhrases = this.state.sentencesWithPhrases.filter(swp => swp.id === newSentencePhrase.id)
+                if(sentenceWithPhrases.length > 0) {
+                    this.setState(state => {
+                        const sentencesWithPhrases = state.sentencesWithPhrases.map((swp) => {
+                            if (swp.id === newSentencePhrase.id) {
+                                const phrases = swp.phrases.concat(newSentencePhrase.phrases)
+                                swp.phrases = phrases;
+                            }
+                            return swp;
+                        });
+                        return sentencesWithPhrases;
+                    });
+                }
+                else {
+                    this.setState({ sentencesWithPhrases: this.state.sentencesWithPhrases.concat(newSentencePhrase) });
+                }
+            }).catch(error => {
+                alert('err');
+            }
+        );
+    }
+
     handleClickSentence(sentenceIndex, sentenceId) {
         this.setState({ clickedSentenceIndex: sentenceIndex });
         this.setState({ clickedSentenceId: sentenceId });
@@ -66,18 +97,6 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
         const clickedSentenceWithPhrases = this.state.sentencesWithPhrases.find(swp => swp.id === sentenceId);
         let clickedSentencePhrases = clickedSentenceWithPhrases !== undefined ? clickedSentenceWithPhrases.phrases : [];
         this.setState({ clickedSentencePhrases: clickedSentencePhrases });
-    }
-
-    handleAddPhrase(formData) {
-        axios.post('api/phrases', formData)
-            .then(response => {
-                this.setState({ clickedSentenceIndex: NOT_SELECTED });
-                this.setState({ clickedSentenceId: NOT_SELECTED });
-                this.setState({ clickedSentencePhrases: [] });
-            }).catch(error => {
-                alert('err');
-            }
-        );
     }
 
     render() {
