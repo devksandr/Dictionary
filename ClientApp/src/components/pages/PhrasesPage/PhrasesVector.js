@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { PhraseLink } from './PhraseLink';
-import { PHRASE_NOT_SELECTED } from '../../../js/const.js';
+import { NOT_SELECTED } from '../../../js/const.js';
 
 export class PhrasesVector extends Component {
 
@@ -8,12 +8,12 @@ export class PhrasesVector extends Component {
         super(props);
 
         this.state = { 
-            clickedPhraseId: PHRASE_NOT_SELECTED,
+            clickedPhraseId: NOT_SELECTED,
         };
     }
 
     handlePhraseClick(event, index) {
-        let clickedPhraseId = this.state.clickedPhraseId == index ? PHRASE_NOT_SELECTED : index;
+        let clickedPhraseId = this.state.clickedPhraseId == index ? NOT_SELECTED : index;
         this.setState({ clickedPhraseId: clickedPhraseId });
         this.props.clickPhrase(clickedPhraseId);
     }

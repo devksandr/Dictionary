@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { PHRASE_NOT_SELECTED } from '../../../js/const.js';
+import { NOT_SELECTED } from '../../../js/const.js';
 
 export class PhraseLink extends Component {
 

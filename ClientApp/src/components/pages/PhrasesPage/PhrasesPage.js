@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios";
 import { PhrasesVector } from './PhrasesVector';
 import { PhrasePanel } from './PhrasePanel/PhrasePanel.js';
-import { PHRASE_NOT_SELECTED } from '../../../js/const.js';
+import { NOT_SELECTED } from '../../../js/const.js';
 
 export class PhrasesPage extends Component {
 
@@ -10,7 +10,7 @@ export class PhrasesPage extends Component {
         super(props);
         this.state = { 
             phrasesList: [],
-            clickedPhraseId: PHRASE_NOT_SELECTED,
+            clickedPhraseId: NOT_SELECTED,
             clickedPhrase: null
         };
     }
@@ -51,7 +51,7 @@ export class PhrasesPage extends Component {
     clickPhrase(phraseIndex) {
         this.setState({ clickedPhraseId: phraseIndex });
 
-        if(phraseIndex != PHRASE_NOT_SELECTED)
+        if(phraseIndex != NOT_SELECTED)
         {
             this.handleGetPhrase(this.state.phrasesList[phraseIndex].id);
         }
@@ -72,7 +72,7 @@ export class PhrasesPage extends Component {
                 />
                 <PhrasePanel
                     // TODO Refactoring clickedPhraseId & clickedPhrase
-                    appearance={this.state.clickedPhraseId !== PHRASE_NOT_SELECTED && this.state.clickedPhrase != null}
+                    appearance={this.state.clickedPhraseId !== NOT_SELECTED && this.state.clickedPhrase != null}
                     phrase={this.state.clickedPhrase}
                 />
             </div>

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import '../../../../css/pages/FilePage/AddPhrasePanel.css';
 
 export class AddPhrasePanel extends Component {
 
@@ -11,6 +12,16 @@ export class AddPhrasePanel extends Component {
         this.state = {
             addPhrase: ""
         };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.clickedSentenceId !== this.props.clickedSentenceId) {
+            this.resetPhraseForm();
+        }
+    }
+
+    resetPhraseForm() {
+        this.phraseForm.reset();
     }
 
     handlePhraseInput(event) {
@@ -27,12 +38,12 @@ export class AddPhrasePanel extends Component {
         formData.append("sentenceId", this.props.clickedSentenceId);
         this.props.handleAddPhrase(formData);
         event.preventDefault();
-        event.target.reset(); // clear inputs
+        this.resetPhraseForm();
     }
 
     render() {
-        if(!this.props.appearance) return;
-        
+        if(!this.props.appearance) return;  // replace with another flag (by panel add/update)
+
         const sentenceCategoriesOptions = this.props.sentenceCategories.map(
             (category, index) => <option 
                 value={category.id}
@@ -41,7 +52,7 @@ export class AddPhrasePanel extends Component {
         );
 
         return (
-            <Form onSubmit={this.handleAddPhrase}>
+            <Form className='form-addPhrase' onSubmit={this.handleAddPhrase} innerRef={(v) => this.phraseForm = v}>
                 <FormGroup>
                     <Label for="categoryIdInput">Category</Label>
                     <Input 

@@ -1,12 +1,12 @@
-.sentence-hasPhrase {
+.element-hasData-theme {
     color: black;
     background-color: blue;
 }
-.sentence-hover {
+.element-hover-theme {
     color: black;
     background-color: pink;
 }
-.sentence-click {
+.element-click-theme {
     color: black;
     background-color: green;
 }

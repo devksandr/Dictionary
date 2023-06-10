@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { SENTENCE_NOT_SELECTED } from '../../../js/const.js';
+import { NOT_SELECTED } from '../../../js/const.js';
 
 export class FileSentences extends Component {
 
@@ -7,7 +7,7 @@ export class FileSentences extends Component {
         super(props);
 
         this.state = { 
-            hoverSentenceId: SENTENCE_NOT_SELECTED,
+            hoverSentenceId: NOT_SELECTED,
         };
     }
 
@@ -15,18 +15,18 @@ export class FileSentences extends Component {
         this.setState({ hoverSentenceId: index });
     }
     handleMouseLeave(event, index) {
-        this.setState({ hoverSentenceId: SENTENCE_NOT_SELECTED });
+        this.setState({ hoverSentenceId: NOT_SELECTED });
     }
     handleClick(event, index, sentenceId) {
-        let clickedSentenceIndex = this.props.clickedSentenceIndex == index ? SENTENCE_NOT_SELECTED : index;
+        let clickedSentenceIndex = this.props.clickedSentenceIndex == index ? NOT_SELECTED : index;
         this.props.handleClickSentence(clickedSentenceIndex, sentenceId);
     }
     
     render() {
         const sentences = this.props.sentences.map((sentence, index) => {
-            const hoverClass = this.state.hoverSentenceId==index ? 'sentence-hover' : '';
-            const clickClass = this.props.clickedSentenceIndex==index ? 'sentence-click' : '';
-            const hasPhraseClass = this.props.sentencePhrases.some(sp => sp.sentenceNum === index) ? 'sentence-hasPhrase' : '';
+            const hoverClass = this.state.hoverSentenceId==index ? 'element-hover-theme' : '';
+            const clickClass = this.props.clickedSentenceIndex==index ? 'element-click-theme' : '';
+            const hasPhraseClass = this.props.sentencesWithPhrasesIndexes.some(i => i === index) ? 'element-hasData-theme' : '';
             
             return (
                 <span 

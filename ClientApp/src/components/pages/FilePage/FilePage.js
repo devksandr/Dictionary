@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import '../../../css/pages/FilePage/Sentence.css';
-import { SENTENCE_NOT_SELECTED, Category } from '../../../js/const.js';
+import '../../../css/Theme.css';
+import { NOT_SELECTED, Category } from '../../../js/const.js';
 import { Row, Col } from 'reactstrap';
-import { AddPhrasePanel } from './AddPhrasePanel';
 import { FileSentences } from './FileSentences';
+import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
 
  class FilePageClass extends Component {
     constructor(props) {
@@ -13,10 +13,11 @@ import { FileSentences } from './FileSentences';
 
         this.state = { 
             file: {name: '', sentences: []},
-            sentencePhrases: [],
+            sentencesWithPhrases: [],
             sentenceCategories: [],
-            clickedSentenceIndex: SENTENCE_NOT_SELECTED,
-            clickedSentenceId: SENTENCE_NOT_SELECTED
+            clickedSentenceIndex: NOT_SELECTED,
+            clickedSentenceId: NOT_SELECTED,
+            clickedSentencePhrases: []
         };
     }
 
@@ -41,7 +42,7 @@ import { FileSentences } from './FileSentences';
     handleGetPhrases(fileId) {
         axios.get('api/phrases/file/' + fileId)
             .then(response => {
-                this.setState({ sentencePhrases: response.data});
+                this.setState({ sentencesWithPhrases: response.data});
             }).catch(error => {
                 alert('No file phrases');
             }
@@ -61,13 +62,18 @@ import { FileSentences } from './FileSentences';
     handleClickSentence(sentenceIndex, sentenceId) {
         this.setState({ clickedSentenceIndex: sentenceIndex });
         this.setState({ clickedSentenceId: sentenceId });
+
+        const clickedSentenceWithPhrases = this.state.sentencesWithPhrases.find(swp => swp.id === sentenceId);
+        let clickedSentencePhrases = clickedSentenceWithPhrases !== undefined ? clickedSentenceWithPhrases.phrases : [];
+        this.setState({ clickedSentencePhrases: clickedSentencePhrases });
     }
 
     handleAddPhrase(formData) {
         axios.post('api/phrases', formData)
             .then(response => {
-                this.setState({ clickedSentenceIndex: SENTENCE_NOT_SELECTED });
-                this.setState({ clickedSentenceId: SENTENCE_NOT_SELECTED });
+                this.setState({ clickedSentenceIndex: NOT_SELECTED });
+                this.setState({ clickedSentenceId: NOT_SELECTED });
+                this.setState({ clickedSentencePhrases: [] });
             }).catch(error => {
                 alert('err');
             }
@@ -81,15 +87,17 @@ import { FileSentences } from './FileSentences';
                 <Row>
                     <Col xs="9"><FileSentences 
                         sentences={this.state.file.sentences}
-                        sentencePhrases={this.state.sentencePhrases}
+                        sentencesWithPhrasesIndexes={this.state.sentencesWithPhrases.map(swp => swp.sentenceNum)}
                         clickedSentenceIndex={this.state.clickedSentenceIndex}
                         handleClickSentence={this.handleClickSentence.bind(this)}
                     /></Col>
-                    <Col><AddPhrasePanel 
-                        appearance={this.state.clickedSentenceIndex !== SENTENCE_NOT_SELECTED}
+                    <Col><SavePhrasePanel 
+                        appearance={this.state.clickedSentenceIndex !== NOT_SELECTED}
                         clickedSentenceId={this.state.clickedSentenceId}
+                        clickedSentenceIndex={this.state.clickedSentenceIndex}
                         sentenceCategories={this.state.sentenceCategories}
                         handleAddPhrase={this.handleAddPhrase.bind(this)}
+                        clickedSentencePhrases={this.state.clickedSentencePhrases}
                     /></Col>
                 </Row>
             </div>
