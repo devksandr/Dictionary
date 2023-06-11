@@ -1,0 +1,7 @@
+.panel-dragAndDropFiles {
+    border: 2px solid gray;
+    max-width: 100%;
+    text-align: center;
+    
+    color: red;
+}

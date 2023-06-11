@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { FilesVector } from './FilesVector';
 import { FileInput } from './FileInput';
+import { UploadFilesModal } from './UploadFiles/UploadFilesModal';
+import { Button } from 'reactstrap';
 import axios from "axios";
 
 export class FilesPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { fileNames: [] };
+        this.state = { 
+            fileNames: [],
+            modalUploadFilesState: false
+        };
     }
 
     componentDidMount() {
@@ -45,6 +50,9 @@ export class FilesPage extends Component {
         );
     }
 
+    handleOpenModalUploadFiles = () => this.setState({ modalUploadFilesState: true });
+    handleToggleModalUploadFiles = () => this.setState({ modalUploadFilesState: !this.state.modalUploadFilesState });
+
     render() {
         return (
             <div>
@@ -52,6 +60,15 @@ export class FilesPage extends Component {
                 <p>Count : {this.state.fileNames.length}</p>
                 <FileInput 
                     handleSubmit={this.handleSubmit.bind(this)}
+                />
+                <Button
+                    color="primary"
+                    onClick={this.handleOpenModalUploadFiles.bind(this)}>
+                    Добавить
+                </Button>
+                <UploadFilesModal
+                    modalUploadFilesState={this.state.modalUploadFilesState}
+                    handleToggleModalUploadFiles={this.handleToggleModalUploadFiles.bind(this)}
                 />
                 <FilesVector 
                     vector={this.state.fileNames} 
