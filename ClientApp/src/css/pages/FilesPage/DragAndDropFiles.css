@@ -3,6 +3,7 @@
     border: 2px dashed black;
     text-align: center;
     height: 300px;
+    user-select: none;
 }
 
 .panel-dragAndDropFiles span {

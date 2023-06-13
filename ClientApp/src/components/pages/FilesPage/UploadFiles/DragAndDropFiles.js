@@ -23,6 +23,7 @@ export class DragAndDropFiles extends Component {
     handleClickEvent = (e) => {
         this.handleEventDefaultOptions(e);
 
+        this.inputFileRef.current.value = "";   // clear input
         this.inputFileRef.current.click();
     };
     handleChangeEvent = (e) => {
