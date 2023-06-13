@@ -53,6 +53,32 @@ export class FilesPage extends Component {
     handleOpenModalUploadFiles = () => this.setState({ modalUploadFilesState: true });
     handleToggleModalUploadFiles = () => this.setState({ modalUploadFilesState: !this.state.modalUploadFilesState });
 
+    handleSubmitUploadFiles(dropFiles) {
+        if(!this.validateDuplicatesUploadDropFiles(dropFiles)) {
+            alert('Duplicate found. Upload canceled');
+            return;
+        }
+
+        const files = dropFiles;
+        const formData = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            formData.append("formFiles", files[i]);
+        }
+        this.handleSubmit(formData);
+    }
+
+    validateDuplicatesUploadDropFiles(dropfiles) {
+        let currentfiles = this.state.fileNames;
+        for (let i = 0; i < dropfiles.length; i++) {
+            for (let j = 0; j < currentfiles.length; j++) {
+                if(dropfiles[i].name === currentfiles[j].name) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     render() {
         return (
             <div>
@@ -69,6 +95,7 @@ export class FilesPage extends Component {
                 <UploadFilesModal
                     modalUploadFilesState={this.state.modalUploadFilesState}
                     handleToggleModalUploadFiles={this.handleToggleModalUploadFiles.bind(this)}
+                    handleSubmitUploadFiles={this.handleSubmitUploadFiles.bind(this)}
                 />
                 <FilesVector 
                     vector={this.state.fileNames} 

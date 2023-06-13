@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
 import { FileLink } from './FileLink';
 
 export class FilesVector extends Component {

@@ -1,0 +1,9 @@
+div.noSidePadding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+div.noSideMargin {
+    margin-left: 0;
+    margin-right: 0;
+}

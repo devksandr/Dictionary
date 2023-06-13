@@ -7,15 +7,27 @@ export class UploadFilesModal extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = { 
+            uploadButtonState: false
+        };
+
         this.handleToggleModalUploadFiles = this.handleToggleModalUploadFiles.bind(this);
+        this.dndRef = React.createRef();
     }
 
     handleToggleModalUploadFiles() {
+        this.setState({ uploadButtonState: false });
         this.props.handleToggleModalUploadFiles();
     }
 
-    handleSubmitUploadFiles() {
-        // TODO
+    handleUpdateDropFilesCount(dropFilesCount) {
+        this.setState({ uploadButtonState: dropFilesCount > 0 });
+    }
+
+    handleSubmitUploadFiles(dropfiles) {
+        this.props.handleSubmitUploadFiles(dropfiles);
+        this.handleToggleModalUploadFiles();
     }
 
     render() {
@@ -26,15 +38,26 @@ export class UploadFilesModal extends Component {
                     className='modal-lg'>
                     <ModalHeader 
                         toggle={this.handleToggleModalUploadFiles}>
-                        headdddder
+                        Добавление новых файлов
                     </ModalHeader>
                     <ModalBody>
                         <DragAndDropFiles 
-                            handleSubmitUploadFiles={this.handleSubmitUploadFiles.bind(this)} 
+                            ref={this.dndRef}
+                            handleUpdateDropFilesCount={this.handleUpdateDropFilesCount.bind(this)}
                         />
                     </ModalBody>
                     <ModalFooter className="justify-content-between">
-                        <p>fffooter</p>
+                        <Button
+                            color="primary"
+                            disabled={!this.state.uploadButtonState}
+                            onClick={() => this.handleSubmitUploadFiles(this.dndRef.current.state.dropfiles)}>
+                            Upload
+                        </Button>{' '}
+                        <Button
+                            color="danger"
+                            onClick={this.handleToggleModalUploadFiles}>
+                            Cancel
+                        </Button>
                     </ModalFooter>
                 </Modal>
         );

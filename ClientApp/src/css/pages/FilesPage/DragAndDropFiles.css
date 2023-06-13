@@ -1,7 +1,18 @@
 .panel-dragAndDropFiles {
-    border: 2px solid gray;
-    max-width: 100%;
+    position: relative;
+    border: 2px dashed black;
     text-align: center;
-    
-    color: red;
+    height: 300px;
+}
+
+.panel-dragAndDropFiles span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.icon-dragAndDropFiles {
+    width: 50px;
+    height: 50px;
 }

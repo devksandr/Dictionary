@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { DragAndDropFile } from "./DragAndDropFile";
 import "../../../../css/pages/FilesPage/DragAndDropFiles.css";
+import DragAndDropIcon from '../../../../img/drag-and-drop-icon.png';
 
 export class DragAndDropFiles extends Component {
     constructor(props) {
@@ -47,16 +48,56 @@ export class DragAndDropFiles extends Component {
     };
 
     handleDropFiles(dropfiles) {
+        if(!this.validateDuplicatesDropFiles(dropfiles)) {
+            alert('Drop files have duplicates. Reselect files');
+            return;
+        }
+        
         let dropfilesList = this.state.dropfiles;
         for (var i = 0; i < dropfiles.length; i++) {
-            dropfilesList.push(dropfiles[i].name);
+            dropfilesList.push(dropfiles[i]);
         }
         this.setState({ dropfiles: dropfilesList });
+        this.props.handleUpdateDropFilesCount(dropfilesList.length);
+    }
+
+    validateDuplicatesDropFiles(newDropfiles) {
+        // Compare new files with each other
+        for (let i = 0; i < newDropfiles.length; i++) {
+            for (let j = i+1; j < newDropfiles.length; j++) {
+                if(newDropfiles[i].name === newDropfiles[j].name) {
+                    return false;
+                }
+            }
+        }
+
+        // Compare new files with each old one
+        let oldDropfiles = this.state.dropfiles;
+        for (let i = 0; i < newDropfiles.length; i++) {
+            for (let j = 0; j < oldDropfiles.length; j++) {
+                if(newDropfiles[i].name === oldDropfiles[j].name) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    handleRemoveDropFile(dropFileName) {
+        const updatedDropfiles = this.state.dropfiles.filter(dropFile => dropFile.name !== dropFileName)
+        this.setState({ dropfiles: updatedDropfiles });
+        this.props.handleUpdateDropFilesCount(updatedDropfiles.length);
     }
 
     render() {
         const dropfilesList = this.state.dropfiles.map(
-            (file, index) => <DragAndDropFile file={file} key={index} />
+            (file, index) => 
+                <DragAndDropFile 
+                    file={file} 
+                    key={index}
+                    handleRemoveDropFile={this.handleRemoveDropFile.bind(this)}
+                />
         );
 
         return (
@@ -67,10 +108,12 @@ export class DragAndDropFiles extends Component {
                     onDragLeave={this.handleDragLeaveEvent}
                     onDrop={this.handleDropEvent}
                     className="panel-dragAndDropFiles">
-                    Click or drop files here
+                    <span>
+                        <img src={DragAndDropIcon} className="icon-dragAndDropFiles" />
+                        <p>Click or drop files here</p>
+                    </span>
                 </div>
                 <div>
-                    <p>files names:</p>
                     {dropfilesList}
                 </div>
             </div>

@@ -1,0 +1,20 @@
+.row-dragAndDropFile {
+    border: 2px dashed black;
+    display: flex;
+    align-items: center;
+
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-right: 7px;
+}
+
+.icon-dragAndDropFile {
+    width: 50px;
+    height: 50px;
+}
+
+.col-removeDragAndDropFile {
+    display: flex;
+    justify-content: right;
+    height: 100%;
+}
