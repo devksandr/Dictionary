@@ -10,6 +10,8 @@ export class DragAndDropFiles extends Component {
             drag: false,
             dropfiles: []
         };
+        
+        this.inputFileRef = React.createRef();
     }
 
     handleEventDefaultOptions = (e) => {
@@ -17,6 +19,19 @@ export class DragAndDropFiles extends Component {
         e.stopPropagation();
     }
 
+    // Click
+    handleClickEvent = (e) => {
+        this.handleEventDefaultOptions(e);
+
+        this.inputFileRef.current.click();
+    };
+    handleChangeEvent = (e) => {
+        this.handleEventDefaultOptions(e);
+
+        this.handleDropFiles(this.inputFileRef.current.files);
+    };
+
+    // Drop
     handleDragOverEvent = (e) => {
         this.handleEventDefaultOptions(e);
     };
@@ -102,7 +117,16 @@ export class DragAndDropFiles extends Component {
 
         return (
             <div>
+                <input 
+                    type="file" 
+                    multiple={true}
+                    id="fileInput"
+                    className="input-hiddenAddFiles"
+                    ref={this.inputFileRef}
+                    onChange={this.handleChangeEvent}>
+                </input>
                 <div
+                    onClick={this.handleClickEvent}
                     onDragOver={this.handleDragOverEvent}
                     onDragEnter={this.handleDragEnterEvent}
                     onDragLeave={this.handleDragLeaveEvent}
