@@ -23,5 +23,11 @@ export const Pages = {
     Files: 1,
     File: 2,
     Phrases: 3,
-    Menu: 4
+    Menu: 4,
+    Settings: 5
+};
+
+export const CultureCode = {
+    Russian: 'ru',
+    English: 'en'
 };

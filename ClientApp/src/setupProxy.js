@@ -14,6 +14,7 @@ const context = [
   "/api/phrases/file/:id",
   "/api/localization",
   "/api/localization/page/:page",
+  "/api/localization/culture",
   "/api/localization/culture/:code",
   "/swagger"
 ];

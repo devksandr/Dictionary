@@ -4,5 +4,6 @@ public enum Page
     Files = 1,
     File,
     Phrases,
-    Menu
+    Menu,
+    Settings
 }

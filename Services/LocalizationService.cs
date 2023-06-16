@@ -8,17 +8,23 @@ namespace dict_react.Services;
 public class LocalizationService : ILocalizationService
 {
     private readonly IStringLocalizer<LocalizationService> _localizer;
-    string _currentLocalizationCode;
+    string _currentCultureCode;
+    public string CurrentCultureCode 
+    {
+        get => _currentCultureCode; 
+        set => _currentCultureCode = value;
+    }
+
 
     public LocalizationService(IStringLocalizer<LocalizationService> localizer)
     {
         _localizer = localizer;
-        _currentLocalizationCode = CultureInfo.CurrentCulture.Name;
+        CurrentCultureCode = CultureInfo.CurrentCulture.Name;
     }
 
     public Dictionary<string, string> GetPageLocalization(Page page)
     {
-        ChangeCulture(_currentLocalizationCode);
+        ChangeCulture(CurrentCultureCode);
         var pageLocalization = new Dictionary<string, string>();
         switch (page)
         {
@@ -46,9 +52,11 @@ public class LocalizationService : ILocalizationService
         return pageLocalization;
     }
 
+    public string GetCulture() => CurrentCultureCode;
+
     public void ChangeCulture(string code)
     {
-        _currentLocalizationCode = code;
+        CurrentCultureCode = code;
         var cultureInfo = new CultureInfo(code);
         CultureInfo.CurrentCulture = cultureInfo;
         CultureInfo.CurrentUICulture = cultureInfo;

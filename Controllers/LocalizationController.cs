@@ -22,7 +22,14 @@ public class LocalizationController : ControllerBase
         return value;
     }
 
-    [HttpGet("culture/{code}")]
+    [HttpGet("culture")]
+    public string GetCulture()
+    {
+        var code = _localizationService.GetCulture();
+        return code;
+    }
+
+    [HttpPut("culture/{code}")]
     public void ChangeCulture(string code)
     {
         _localizationService.ChangeCulture(code);
