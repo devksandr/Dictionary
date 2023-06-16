@@ -18,3 +18,10 @@ export const PhraseMeaningCategory = {
     Synonims: 1,
     Antonims: 2
 };
+
+export const Pages = {
+    Files: 1,
+    File: 2,
+    Phrases: 3,
+    Menu: 4
+};

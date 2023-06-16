@@ -4,19 +4,31 @@ import { FileInput } from './FileInput';
 import { UploadFilesModal } from './UploadFiles/UploadFilesModal';
 import { Button } from 'reactstrap';
 import axios from "axios";
+import { Pages } from '../../../js/const.js';
 
 export class FilesPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = { 
+            localization: [],
             fileNames: [],
             modalUploadFilesState: false
         };
     }
 
     componentDidMount() {
+        this.handleGetLocalization();
         this.handleGetFiles();
+    }
+
+    handleGetLocalization() {
+        axios.get('api/localization/page/' + Pages.Files)
+            .then(response => {
+                const data = response.data;
+                this.setState({ localization: data });
+            }
+        );
     }
 
     handleGetFiles() {
@@ -82,15 +94,15 @@ export class FilesPage extends Component {
     render() {
         return (
             <div>
-                <h1>Files</h1>
-                <p>Count : {this.state.fileNames.length}</p>
+                <h1>{this.state.localization.FilesList}</h1>
+                <p>{this.state.localization.FilesCount} : {this.state.fileNames.length}</p>
                 <FileInput 
                     handleSubmit={this.handleSubmit.bind(this)}
                 />
                 <Button
                     color="primary"
                     onClick={this.handleOpenModalUploadFiles.bind(this)}>
-                    Добавить
+                    {this.state.localization.AddFiles}
                 </Button>
                 <UploadFilesModal
                     modalUploadFilesState={this.state.modalUploadFilesState}

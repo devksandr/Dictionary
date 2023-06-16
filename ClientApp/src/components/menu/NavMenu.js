@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import '../../css/menu/NavMenu.css';
+import { Pages } from '../../js/const.js';
+import axios from "axios";
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -11,8 +13,22 @@ export class NavMenu extends Component {
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
+      localization: [],
       collapsed: true
     };
+  }
+
+  componentDidMount() {
+    this.handleGetLocalization();
+  }
+
+  handleGetLocalization() {
+    axios.get('api/localization/page/' + Pages.Menu)
+        .then(response => {
+            const data = response.data;
+            this.setState({ localization: data });
+        }
+    );
   }
 
   toggleNavbar () {
@@ -30,7 +46,7 @@ export class NavMenu extends Component {
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">Files</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/">{this.state.localization.FilesItem}</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/phrases">Phrases</NavLink>
