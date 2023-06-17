@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { FilesVector } from './FilesVector';
-import { FileInput } from './FileInput';
 import { UploadFilesModal } from './UploadFiles/UploadFilesModal';
 import { Button } from 'reactstrap';
 import axios from "axios";
@@ -96,9 +95,6 @@ export class FilesPage extends Component {
             <div>
                 <h1>{this.state.localization.FilesList}</h1>
                 <p>{this.state.localization.FilesCount} : {this.state.fileNames.length}</p>
-                <FileInput 
-                    handleSubmit={this.handleSubmit.bind(this)}
-                />
                 <Button
                     color="primary"
                     onClick={this.handleOpenModalUploadFiles.bind(this)}>
