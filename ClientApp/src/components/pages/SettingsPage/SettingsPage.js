@@ -44,7 +44,10 @@ export class SettingsPage extends Component {
     handleSubmitChangeCulture() {
         axios.put('api/localization/culture/' + this.state.currentCulture)
             .then(response => {
-                this.handleGetLocalization();
+                //this.handleGetLocalization();
+                
+                window.location.reload(false);  // Fast way to update menu localization
+                // TODO find way to pass params to menu from page
             }).catch(error => {
                 alert('culture err');
             }
