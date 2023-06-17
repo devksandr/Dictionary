@@ -133,4 +133,24 @@
     <value>Добавить новые файлы</value>
     <comment>FilesPage.Body.Button Add files</comment>
   </data>
+  <data name="SettingsHeader" xml:space="preserve">
+    <value>Настройки</value>
+    <comment>SettingsPage.Body.Header</comment>
+  </data>
+  <data name="SettingsLanguageLabel" xml:space="preserve">
+    <value>Язык</value>
+    <comment>SettingsPage.Body.LanguageSelect.Label</comment>
+  </data>
+  <data name="SettingsLanguageRussian" xml:space="preserve">
+    <value>Русский</value>
+    <comment>SettingsPage.Body.LanguageSelect.Language Russian</comment>
+  </data>
+  <data name="SettingsLanguageEnglish" xml:space="preserve">
+    <value>Английский</value>
+    <comment>SettingsPage.Body.LanguageSelect.Language English</comment>
+  </data>
+  <data name="SettingsButtonSave" xml:space="preserve">
+    <value>Сохранить</value>
+    <comment>SettingsPage.Body.Button Save</comment>
+  </data>
 </root>

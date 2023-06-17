@@ -46,6 +46,16 @@ public class LocalizationService : ILocalizationService
                     {"FilesItem",  _localizer["FilesItem"]},
                 };
                 break;
+            case Page.Settings:
+                pageLocalization = new Dictionary<string, string>
+                {
+                    {"SettingsHeader",  _localizer["SettingsHeader"]},
+                    {"SettingsLanguageLabel",  _localizer["SettingsLanguageLabel"]},
+                    {"SettingsLanguageRussian",  _localizer["SettingsLanguageRussian"]},
+                    {"SettingsLanguageEnglish",  _localizer["SettingsLanguageEnglish"]},
+                    {"SettingsButtonSave",  _localizer["SettingsButtonSave"]},
+                };
+                break;
             default:
                 break;
         }

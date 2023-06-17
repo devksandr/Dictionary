@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import { Pages, CultureCode } from '../../../js/const.js';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, FormGroup, Label, Input } from 'reactstrap';
 
 export class SettingsPage extends Component {
 
@@ -22,11 +22,11 @@ export class SettingsPage extends Component {
             .then(response => {
                 const data = response.data;
                 this.setState({ currentCulture: data });
+                this.handleGetLocalization();
             }
         );
     }
 
-    /*
     handleGetLocalization() {
         axios.get('api/localization/page/' + Pages.Settings)
             .then(response => {
@@ -35,7 +35,6 @@ export class SettingsPage extends Component {
             }
         );
     }
-    */
 
     handleChangeCulture(event) {
         const lang = event.target.value;
@@ -43,12 +42,9 @@ export class SettingsPage extends Component {
     }
 
     handleSubmitChangeCulture() {
-        const formData = new FormData();
-        formData.append("cultureCode", this.state.currentCulture);
-
         axios.put('api/localization/culture/' + this.state.currentCulture)
             .then(response => {
-                //this.handleGetLocalization();
+                this.handleGetLocalization();
             }).catch(error => {
                 alert('culture err');
             }
@@ -58,9 +54,9 @@ export class SettingsPage extends Component {
     render() {
         return (
             <div>
-                <h1>Настройки</h1>
+                <h1>{this.state.localization.SettingsHeader}</h1>
                 <div>
-                    <legend>Язык</legend>
+                    <legend>{this.state.localization.SettingsLanguageLabel}</legend>
                     <FormGroup check>
                         <Label check>
                             <Input 
@@ -69,7 +65,7 @@ export class SettingsPage extends Component {
                                 value={CultureCode.Russian}
                                 onChange={this.handleChangeCulture.bind(this)}
                                 checked={this.state.currentCulture === CultureCode.Russian} />
-                                Русский
+                                {this.state.localization.SettingsLanguageRussian}
                         </Label>
                     </FormGroup>
                     <FormGroup check>
@@ -80,10 +76,10 @@ export class SettingsPage extends Component {
                                 value={CultureCode.English}
                                 onChange={this.handleChangeCulture.bind(this)}
                                 checked={this.state.currentCulture === CultureCode.English} />
-                                Английский
+                                {this.state.localization.SettingsLanguageEnglish}
                         </Label>
                     </FormGroup>
-                    <Button onClick={this.handleSubmitChangeCulture.bind(this)}>Submit</Button>
+                    <Button onClick={this.handleSubmitChangeCulture.bind(this)}>{this.state.localization.SettingsButtonSave}</Button>
                 </div>
             </div>
         );
