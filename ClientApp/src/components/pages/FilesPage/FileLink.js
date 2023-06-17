@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { makeUrlSlug } from '../../../js/functions.js';
 
 export class FileLink extends Component {
 
@@ -22,7 +23,7 @@ export class FileLink extends Component {
                     onClick={this.toggleModalDeleteFile}
                 >X</Button>
                 <Link 
-                    to={"/file/" + this.props.file.id} 
+                    to={"/file/" + this.props.file.id + '/' + makeUrlSlug(this.props.file.name)} 
                     state={{mydata: "myvalue"}}
                 >{this.props.file.name}</Link>
 

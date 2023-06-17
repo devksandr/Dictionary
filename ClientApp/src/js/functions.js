@@ -9,3 +9,12 @@ export function formatBytes(bytes, decimals = 2) {
 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
+
+export function makeUrlSlug(str) {
+    str = str.replace(/^\s+|\s+$/g, '');
+    str = str.toLowerCase();
+    str = str.replace(/[^a-z0-9 -]/g, '-')
+             .replace(/\s+/g, '-')
+             .replace(/-+/g, '-');
+    return str;
+  }

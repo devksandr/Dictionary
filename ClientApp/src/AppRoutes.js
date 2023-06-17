@@ -14,6 +14,10 @@ const AppRoutes = [
     element: <FilePage />
   },
   {
+    path: '/file/:id/:slugname',
+    element: <FilePage />
+  },
+  {
     path: '/phrases/',
     element: <PhrasesPage />
   },
