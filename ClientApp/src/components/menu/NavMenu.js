@@ -46,13 +46,13 @@ export class NavMenu extends Component {
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">{this.state.localization.FilesItem}</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/">{this.state.localization.MenuFilesItem}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/phrases">Phrases</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/phrases">{this.state.localization.MenuPhrasesItem}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/settings">Settings</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/settings">{this.state.localization.MenuSettingsItem}</NavLink>
               </NavItem>
             </ul>
           </Collapse>

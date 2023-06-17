@@ -125,7 +125,7 @@
     <value>Files count</value>
     <comment>FilesPage.Body.Paragraph files count</comment>
   </data>
-  <data name="FilesItem" xml:space="preserve">
+  <data name="MenuFilesItem" xml:space="preserve">
     <value>Files</value>
     <comment>Menu.Item Files</comment>
   </data>
@@ -152,5 +152,13 @@
   <data name="SettingsButtonSave" xml:space="preserve">
     <value>Save</value>
     <comment>SettingsPage.Body.Button Save</comment>
+  </data>
+  <data name="MenuPhrasesItem" xml:space="preserve">
+    <value>Phrases</value>
+    <comment>Menu.Item Phrases</comment>
+  </data>
+  <data name="MenuSettingsItem" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Menu.Item Settings</comment>
   </data>
 </root>

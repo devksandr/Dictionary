@@ -25,40 +25,44 @@ public class LocalizationService : ILocalizationService
     public Dictionary<string, string> GetPageLocalization(Page page)
     {
         ChangeCulture(CurrentCultureCode);
-        var pageLocalization = new Dictionary<string, string>();
+        var phraseKeys = new List<string>();
+
         switch (page)
         {
             case Page.Files:
-                pageLocalization = new Dictionary<string, string>
-                {
-                    {"FilesList",  _localizer["FilesList"]},
-                    {"FilesCount",  _localizer["FilesCount"]},
-                    {"AddFiles",  _localizer["AddFiles"]}
-                };
+                phraseKeys.AddRange(new string[] 
+                { 
+                    "FilesList", 
+                    "FilesCount", 
+                    "AddFiles"
+                });
                 break;
             case Page.File:
                 break;
             case Page.Phrases:
                 break;
             case Page.Menu:
-                pageLocalization = new Dictionary<string, string>
-                {
-                    {"FilesItem",  _localizer["FilesItem"]},
-                };
+                phraseKeys.AddRange(new string[]
+                { 
+                    "MenuFilesItem", 
+                    "MenuPhrasesItem", 
+                    "MenuSettingsItem"
+                });
                 break;
             case Page.Settings:
-                pageLocalization = new Dictionary<string, string>
-                {
-                    {"SettingsHeader",  _localizer["SettingsHeader"]},
-                    {"SettingsLanguageLabel",  _localizer["SettingsLanguageLabel"]},
-                    {"SettingsLanguageRussian",  _localizer["SettingsLanguageRussian"]},
-                    {"SettingsLanguageEnglish",  _localizer["SettingsLanguageEnglish"]},
-                    {"SettingsButtonSave",  _localizer["SettingsButtonSave"]},
-                };
+                phraseKeys.AddRange(new string[] 
+                { 
+                    "SettingsHeader", 
+                    "SettingsLanguageLabel", 
+                    "SettingsLanguageRussian", 
+                    "SettingsLanguageEnglish", 
+                    "SettingsButtonSave"
+                });
                 break;
             default:
                 break;
         }
+        var pageLocalization = CreateLocalization(phraseKeys);
         return pageLocalization;
     }
 
@@ -71,4 +75,7 @@ public class LocalizationService : ILocalizationService
         CultureInfo.CurrentCulture = cultureInfo;
         CultureInfo.CurrentUICulture = cultureInfo;
     }
+
+    Dictionary<string, string> CreateLocalization(List<string> phraseKeys) 
+        => phraseKeys.ToDictionary(k => k, k => _localizer[k].ToString());
 }

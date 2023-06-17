@@ -125,7 +125,7 @@
     <value>Количество файлов</value>
     <comment>FilesPage.Body.Paragraph files count</comment>
   </data>
-  <data name="FilesItem" xml:space="preserve">
+  <data name="MenuFilesItem" xml:space="preserve">
     <value>Файлы</value>
     <comment>Menu.Item Files</comment>
   </data>
@@ -152,5 +152,13 @@
   <data name="SettingsButtonSave" xml:space="preserve">
     <value>Сохранить</value>
     <comment>SettingsPage.Body.Button Save</comment>
+  </data>
+  <data name="MenuPhrasesItem" xml:space="preserve">
+    <value>Фразы</value>
+    <comment>Menu.Item Phrases</comment>
+  </data>
+  <data name="MenuSettingsItem" xml:space="preserve">
+    <value>Настройки</value>
+    <comment>Menu.Item Settings</comment>
   </data>
 </root>
