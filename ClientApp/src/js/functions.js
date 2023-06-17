@@ -18,3 +18,18 @@ export function makeUrlSlug(str) {
              .replace(/-+/g, '-');
     return str;
   }
+
+export function renameFile(file, name) {
+    try {
+        return new File(file, name);
+    } catch (e) {
+        var myBlob = new Blob(file);
+        myBlob.lastModified = new Date();
+        myBlob.name = name;
+        return myBlob;
+    }
+}
+
+export function getFileNameWithoutExtension(fullFileName) {
+    return fullFileName.replace(/\.[^/\\.]+$/, "");
+}

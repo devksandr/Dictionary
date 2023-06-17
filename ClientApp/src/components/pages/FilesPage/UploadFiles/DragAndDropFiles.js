@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { DragAndDropFile } from "./DragAndDropFile";
 import "../../../../css/pages/FilesPage/DragAndDropFiles.css";
 import DragAndDropIcon from '../../../../img/drag-and-drop-icon.png';
-
+import { renameFile, getFileNameWithoutExtension } from '../../../../js/functions.js';
 export class DragAndDropFiles extends Component {
     constructor(props) {
         super(props);
@@ -64,17 +64,28 @@ export class DragAndDropFiles extends Component {
     };
 
     handleDropFiles(dropfiles) {
-        if(!this.validateDuplicatesDropFiles(dropfiles)) {
+        const filesWithoutExtension = this.dropFilesExtension(dropfiles);
+        if(!this.validateDuplicatesDropFiles(filesWithoutExtension)) {
             alert('Drop files have duplicates. Reselect files');
             return;
         }
         
-        let dropfilesList = this.state.dropfiles;
-        for (var i = 0; i < dropfiles.length; i++) {
-            dropfilesList.push(dropfiles[i]);
+        let filesList = this.state.dropfiles;
+        for (var i = 0; i < filesWithoutExtension.length; i++) {
+            filesList.push(filesWithoutExtension[i]);
         }
-        this.setState({ dropfiles: dropfilesList });
-        this.props.handleUpdateDropFilesCount(dropfilesList.length);
+        this.setState({ dropfiles: filesList });
+        this.props.handleUpdateDropFilesCount(filesList.length);
+    }
+
+    dropFilesExtension(files) {
+        const filesWithoutExtension = [];
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            const fileWithoutExtension = renameFile([file], getFileNameWithoutExtension(file.name));
+            filesWithoutExtension.push(fileWithoutExtension);
+        }
+        return filesWithoutExtension;
     }
 
     validateDuplicatesDropFiles(newDropfiles) {
