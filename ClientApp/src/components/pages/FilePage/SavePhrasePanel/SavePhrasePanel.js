@@ -21,15 +21,17 @@ export class SavePhrasePanel extends Component {
 
     handleClickPhrase(index) {
         this.setState({ clickedPhraseIndex: index });
+        const clickedPhrase = this.props.clickedSentencePhrases[index];
     }
 
     render() {
         if(!this.props.appearance) return;
-        
+        const clickedSentencePhrasesData = this.props.clickedSentencePhrases.map(p => p.data);
+
         return (
             <div>
                 <SelectPhrasePanel
-                    clickedSentencePhrases={this.props.clickedSentencePhrases}
+                    clickedSentencePhrasesData={clickedSentencePhrasesData}
                     clickedPhraseIndex={this.state.clickedPhraseIndex}
                     handleClickPhrase={this.handleClickPhrase.bind(this)}
                 />

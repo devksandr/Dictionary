@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import { Button } from 'reactstrap';
 import '../../../../css/pages/FilePage/SelectPhrasePanel.css';
 import '../../../../css/Theme.css';
 import { NOT_SELECTED } from '../../../../js/const.js';
-
 
 export class SelectPhrasePanel extends Component {
 
@@ -28,7 +26,7 @@ export class SelectPhrasePanel extends Component {
     }
 
     render() {
-        let phrases = this.props.clickedSentencePhrases.map((phrase, index) => {
+        let phrasesData = this.props.clickedSentencePhrasesData.map((phraseData, index) => {
                 const hoverClass = this.state.hoverPhraseIndex==index ? 'element-hover-theme' : '';
                 const clickClass = this.props.clickedPhraseIndex==index ? 'element-click-theme' : '';
 
@@ -39,18 +37,18 @@ export class SelectPhrasePanel extends Component {
                         onMouseLeave={(e) => this.handleMouseLeave(e, index)}
                         onMouseEnter={(e) => this.handleMouseEnter(e, index)}
                         onClick={(e) => this.handleClickPhrase(e, index)}>
-                        {phrase.data}
+                        {phraseData}
                     </li>
                 );
             }
         );
-        const addOption = <li key={phrases.length+1}>Add</li>;
-        phrases.push(addOption);
+        const addOption = <li key={phrasesData.length+1}>Add</li>;
+        phrasesData.push(addOption);
 
         return (
             <div className='panel-selectPhrase'>
                 <p>Phrases</p>
-                <ul>{phrases}</ul>
+                <ul>{phrasesData}</ul>
             </div>
         );
     }
