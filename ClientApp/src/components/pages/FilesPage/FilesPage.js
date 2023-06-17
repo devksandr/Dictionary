@@ -3,7 +3,7 @@ import { FilesVector } from './FilesVector';
 import { UploadFilesModal } from './UploadFiles/UploadFilesModal';
 import { Button } from 'reactstrap';
 import axios from "axios";
-import { Pages } from '../../../js/const.js';
+import { Pages, ApiRequest } from '../../../js/const.js';
 
 export class FilesPage extends Component {
 
@@ -18,47 +18,25 @@ export class FilesPage extends Component {
 
     componentDidMount() {
         this.handleGetLocalization();
-        this.handleGetFiles();
+        this.handleGetFileNames();
     }
 
-    handleGetLocalization() {
-        axios.get('api/localization/page/' + Pages.Files)
-            .then(response => {
-                const data = response.data;
-                this.setState({ localization: data });
-            }
-        );
+    async handleGetLocalization() {
+        const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Files);
+        this.setState({ localization: response.data });
     }
-
-    handleGetFiles() {
-        axios.get('api/files/')
-            .then(response => {
-                const data = response.data;
-                this.setState({ fileNames: data });
-            }
-        );
+    async handleGetFileNames() {
+        const response = await axios.get(ApiRequest.Files.GetNames);
+        this.setState({ fileNames: response.data });
     }
-    handleDelete(fileId) {
-        axios.delete('api/files/' + fileId)
-            .then(response => {
-                // todo modal
-                this.setState({
-                    fileNames: [...this.state.fileNames].filter((id) => id.id !== fileId),
-                });
-            }).catch(error => {
-                alert('error when deleting');
-            }
-        );
+    async handleDelete(fileId) {
+        await axios.delete(ApiRequest.Files.Delete + fileId);
+        this.setState({ fileNames: [...this.state.fileNames].filter((id) => id.id !== fileId) });
     }
-    handleSubmit(formData) {
-        axios.post('api/files', formData)
-            .then(response => {
-                const newFileNames = response.data;
-                this.setState({ fileNames: this.state.fileNames.concat(newFileNames) });
-            }).catch(error => {
-                alert('err');
-            }
-        );
+    async handleSubmit(formData) {
+        const response = await axios.post(ApiRequest.Files.Add, formData);
+        const newFileNames = response.data;
+        this.setState({ fileNames: this.state.fileNames.concat(newFileNames) });
     }
 
     handleOpenModalUploadFiles = () => this.setState({ modalUploadFilesState: true });

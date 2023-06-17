@@ -31,3 +31,27 @@ export const CultureCode = {
     Russian: 'ru',
     English: 'en'
 };
+
+export const ApiRequest = {
+    Localization: {
+        GetPage: 'api/localization/page/',
+        GetCulture: 'api/localization/culture/',
+        UpdateCulture: 'api/localization/culture/'
+    },
+    Files: {
+        Get: 'api/files/',
+        GetNames: 'api/files/',
+        Add: 'api/files/',
+        Delete: 'api/files/'
+    },
+    Phrases: {
+        Get: 'api/phrases/',
+        GetNames: 'api/phrases/',
+        GetForSentence: 'api/phrases/file/',
+        Add: 'api/phrases/',
+        Delete: 'api/phrases/'
+    },
+    Categories: {
+        Get: 'api/categories/'
+    }
+}

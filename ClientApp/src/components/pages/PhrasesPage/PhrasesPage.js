@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios";
 import { PhrasesVector } from './PhrasesVector';
 import { PhrasePanel } from './PhrasePanel/PhrasePanel.js';
-import { NOT_SELECTED } from '../../../js/const.js';
+import { NOT_SELECTED, ApiRequest } from '../../../js/const.js';
 
 export class PhrasesPage extends Component {
 
@@ -19,39 +19,23 @@ export class PhrasesPage extends Component {
         this.handleGetPhrasesNames();
     }
 
-    handleGetPhrasesNames() {
-        axios.get('api/phrases/')
-            .then(response => {
-                const data = response.data;
-                this.setState({ phrasesList: data });
-            }
-        );
+    async handleGetPhrasesNames() {
+        const response = await axios.get(ApiRequest.Phrases.GetNames);
+        this.setState({ phrasesList: response.data });
     }
-    handleDelete(phraseId) {
-        axios.delete('api/phrases/' + phraseId)
-            .then(response => {
-                this.setState({
-                    phrasesList: [...this.state.phrasesList].filter((p) => p.id !== phraseId),
-                });
-            }).catch(error => {
-                alert('error when deleting');
-            }
-        );
+    async handleDelete(phraseId) {
+        await axios.delete(ApiRequest.Phrases.Delete + phraseId);
+        this.setState({ phrasesList: [...this.state.phrasesList].filter((p) => p.id !== phraseId) });
     }
-    handleGetPhrase(phraseId) {
-        axios.get('api/phrases/' + phraseId)
-            .then(response => {
-                const data = response.data;
-                this.setState({ clickedPhrase: data });
-            }).catch(error => {
-                alert('error get p');
-            }
-        );
+    async handleGetPhrase(phraseId) {
+        const response = await axios.get(ApiRequest.Phrases.Get + phraseId);
+        this.setState({ clickedPhrase: response.data });
     }
+    
     clickPhrase(phraseIndex) {
         this.setState({ clickedPhraseId: phraseIndex });
 
-        if(phraseIndex != NOT_SELECTED)
+        if(phraseIndex !== NOT_SELECTED)
         {
             this.handleGetPhrase(this.state.phrasesList[phraseIndex].id);
         }

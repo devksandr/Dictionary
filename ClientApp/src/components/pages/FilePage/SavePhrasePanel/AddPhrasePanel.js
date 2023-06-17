@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../../../../css/pages/FilePage/AddPhrasePanel.css';
+import { Category, ApiRequest } from '../../../../js/const.js';
+import axios from "axios";
 
 export class AddPhrasePanel extends Component {
 
@@ -10,8 +12,18 @@ export class AddPhrasePanel extends Component {
         this.handlePhraseInput = this.handlePhraseInput.bind(this);
 
         this.state = {
-            addPhrase: ""
+            addPhrase: "",
+            sentenceCategories: [],
         };
+    }
+
+    componentDidMount() {
+        this.handleGetCategories();
+    }
+
+    async handleGetCategories() {
+        const response = await axios.get(ApiRequest.Categories.Get + Category.SentenceCategory);
+        this.setState({ sentenceCategories: response.data});
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -44,7 +56,7 @@ export class AddPhrasePanel extends Component {
     render() {
         if(!this.props.appearance) return;  // replace with another flag (by panel add/update)
 
-        const sentenceCategoriesOptions = this.props.sentenceCategories.map(
+        const sentenceCategoriesOptions = this.state.sentenceCategories.map(
             (category, index) => <option 
                 value={category.id}
                 key={index}

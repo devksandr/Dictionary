@@ -38,7 +38,6 @@ export class SavePhrasePanel extends Component {
                 <AddPhrasePanel 
                     appearance={this.props.appearance}
                     clickedSentenceId={this.props.clickedSentenceId}
-                    sentenceCategories={this.props.sentenceCategories}
                     handleAddPhrase={this.props.handleAddPhrase}
                 />
             </div>

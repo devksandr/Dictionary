@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import { Pages, CultureCode } from '../../../js/const.js';
+import { Pages, CultureCode, ApiRequest } from '../../../js/const.js';
 import { Button, FormGroup, Label, Input } from 'reactstrap';
 
 export class SettingsPage extends Component {
@@ -17,41 +17,25 @@ export class SettingsPage extends Component {
         this.handleGetCultureCode();
     }
 
-    handleGetCultureCode() {
-        axios.get('api/localization/culture/')
-            .then(response => {
-                const data = response.data;
-                this.setState({ currentCulture: data });
-                this.handleGetLocalization();
-            }
-        );
+    async handleGetCultureCode() {
+        const response = await axios.get(ApiRequest.Localization.GetCulture);
+        this.setState({ currentCulture: response.data });
+        this.handleGetLocalization();
     }
-
-    handleGetLocalization() {
-        axios.get('api/localization/page/' + Pages.Settings)
-            .then(response => {
-                const data = response.data;
-                this.setState({ localization: data });
-            }
-        );
+    async handleGetLocalization() {
+        const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Settings);
+        this.setState({ localization: response.data });
+    }
+    async handleSubmitChangeCulture() {
+        await axios.put(ApiRequest.Localization.UpdateCulture + this.state.currentCulture);
+        window.location.reload(false);  // Fast way to update menu localization
+        // TODO find way to pass params to menu from page
+        //this.handleGetLocalization();
     }
 
     handleChangeCulture(event) {
         const lang = event.target.value;
         this.setState({ currentCulture: lang });
-    }
-
-    handleSubmitChangeCulture() {
-        axios.put('api/localization/culture/' + this.state.currentCulture)
-            .then(response => {
-                //this.handleGetLocalization();
-                
-                window.location.reload(false);  // Fast way to update menu localization
-                // TODO find way to pass params to menu from page
-            }).catch(error => {
-                alert('culture err');
-            }
-        );
     }
 
     render() {

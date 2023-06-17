@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import '../../css/menu/NavMenu.css';
-import { Pages } from '../../js/const.js';
+import { Pages, ApiRequest } from '../../js/const.js';
 import axios from "axios";
 
 export class NavMenu extends Component {
@@ -22,13 +22,9 @@ export class NavMenu extends Component {
     this.handleGetLocalization();
   }
 
-  handleGetLocalization() {
-    axios.get('api/localization/page/' + Pages.Menu)
-        .then(response => {
-            const data = response.data;
-            this.setState({ localization: data });
-        }
-    );
+  async handleGetLocalization() {
+    const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Menu);
+    this.setState({ localization: response.data });
   }
 
   toggleNavbar () {
