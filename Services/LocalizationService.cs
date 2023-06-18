@@ -59,6 +59,12 @@ public class LocalizationService : ILocalizationService
                     "SettingsButtonSave"
                 });
                 break;
+            case Page.NotFound:
+                phraseKeys.AddRange(new string[] 
+                { 
+                    "NotFoundPageText"
+                });
+                break;
             default:
                 break;
         }

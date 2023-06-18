@@ -1,4 +1,5 @@
 export const NOT_SELECTED = -1;
+export const NOT_FOUND_CODE = 404;
 
 export const Category = {
     SentenceCategory: 1,
@@ -24,7 +25,8 @@ export const Pages = {
     File: 2,
     Phrases: 3,
     Menu: 4,
-    Settings: 5
+    Settings: 5,
+    NotFound: 6
 };
 
 export const CultureCode = {

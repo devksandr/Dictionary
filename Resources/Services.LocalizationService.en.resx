@@ -161,4 +161,8 @@
     <value>Settings</value>
     <comment>Menu.Item Settings</comment>
   </data>
+  <data name="NotFoundPageText" xml:space="preserve">
+    <value>Page not found</value>
+    <comment>NotFoundPage.Body Text</comment>
+  </data>
 </root>

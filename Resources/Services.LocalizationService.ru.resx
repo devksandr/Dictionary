@@ -161,4 +161,8 @@
     <value>Настройки</value>
     <comment>Menu.Item Settings</comment>
   </data>
+  <data name="NotFoundPageText" xml:space="preserve">
+    <value>Страница не найдена</value>
+    <comment>NotFoundPage.Body Text</comment>
+  </data>
 </root>

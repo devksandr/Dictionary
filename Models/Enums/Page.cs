@@ -5,5 +5,6 @@ public enum Page
     File,
     Phrases,
     Menu,
-    Settings
+    Settings,
+    NotFound
 }
