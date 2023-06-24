@@ -18,6 +18,47 @@ public class PhrasesService : IPhrasesService
         _environment = environment;
     }
 
+    public SentenceDTO_Response_GetForFile AddPhrase(AddPhraseModel phraseModel)
+    {
+        using(var transaction = _db.Database.BeginTransaction())
+        {
+            try
+            {
+                var phrase = new Phrase { Data = phraseModel.Phrase, SentenceCategoryId = phraseModel.CategoryId };
+                _db.Phrases.Add(phrase);
+                _db.SaveChanges();
+
+                var phraseMeaning = new PhraseMeaning { Meaning = phraseModel.Meaning, Comment = phraseModel.Comment, PhraseId = phrase.Id };
+                _db.PhraseMeanings.Add(phraseMeaning);
+                _db.SaveChanges();
+
+                var phraseMeaningExample = new PhraseMeaningExample { PhraseMeaningId = phraseMeaning.Id, SentenceId = phraseModel.SentenceId };
+                _db.PhraseMeaningExamples.Add(phraseMeaningExample);
+                _db.SaveChanges();
+
+                var sentence = _db.Sentences.Find(phraseModel.SentenceId);
+                var phraseDTO = new List<PhraseDTO_Response_GetForFile>() 
+                { 
+                    new PhraseDTO_Response_GetForFile() { Id = phrase.Id, Data = phraseModel.Phrase, Comment = phraseModel.Comment}
+                };
+                var sentenceDTO = new SentenceDTO_Response_GetForFile()
+                {
+                    Id = phraseModel.SentenceId,
+                    SentenceNum = sentence.SentenceNum,
+                    Phrases = phraseDTO
+                };
+
+                transaction.Commit();
+                return sentenceDTO;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                return null;
+            }
+        }
+    }
+
     public IEnumerable<Phrase> GetPhrasesNames()
     {
         return _db.Phrases;
@@ -83,7 +124,10 @@ public class PhrasesService : IPhrasesService
                 var PhraseMeaningExampleDTO = new PhraseDTO_Response_GetForFile()
                 {
                     Id = PhraseMeaningExample.PhraseMeaning.PhraseId,
+                    PhraseMeaningId = PhraseMeaningExample.PhraseMeaning.Id,
+                    CategoryId = PhraseMeaningExample.PhraseMeaning.Phrase.SentenceCategoryId,
                     Data = PhraseMeaningExample.PhraseMeaning.Phrase.Data,
+                    Meaning = PhraseMeaningExample.PhraseMeaning.Meaning,
                     Comment = PhraseMeaningExample.PhraseMeaning.Comment
                 };
                 PhraseMeaningExamplesDTO.Add(PhraseMeaningExampleDTO);
@@ -100,46 +144,44 @@ public class PhrasesService : IPhrasesService
         return sentencesDTO;
     }   
 
-    public SentenceDTO_Response_GetForFile AddPhrase(AddPhraseModel phraseModel)
+    public PhraseUpdateResponse UpdatePhrase(PhraseUpdateRequest phraseModel)
     {
         using(var transaction = _db.Database.BeginTransaction())
         {
             try
             {
-                var phrase = new Phrase { Data = phraseModel.Phrase, SentenceCategoryId = phraseModel.CategoryId };
-                _db.Phrases.Add(phrase);
+                var phrase = _db.Phrases.Find(phraseModel.Id);
+                var sentenceCategory = _db.SentenceCategories.Find(phraseModel.CategoryId);
+                phrase.Data = phraseModel.Phrase;
+                phrase.SentenceCategory = sentenceCategory;
+                
+                var phraseMeaning = _db.PhraseMeanings.Find(phraseModel.PhraseMeaningId);
+                phraseMeaning.Meaning = phraseModel.Meaning;
+                phraseMeaning.Comment = phraseModel.Comment;
+
                 _db.SaveChanges();
-
-                var phraseMeaning = new PhraseMeaning { Meaning = phraseModel.Meaning, Comment = phraseModel.Comment, PhraseId = phrase.Id };
-                _db.PhraseMeanings.Add(phraseMeaning);
-                _db.SaveChanges();
-
-                var phraseMeaningExample = new PhraseMeaningExample { PhraseMeaningId = phraseMeaning.Id, SentenceId = phraseModel.SentenceId };
-                _db.PhraseMeaningExamples.Add(phraseMeaningExample);
-                _db.SaveChanges();
-
-                var sentence = _db.Sentences.Find(phraseModel.SentenceId);
-                var phraseDTO = new List<PhraseDTO_Response_GetForFile>() 
-                { 
-                    new PhraseDTO_Response_GetForFile() { Id = phrase.Id, Data = phraseModel.Phrase, Comment = phraseModel.Comment}
-                };
-                var sentenceDTO = new SentenceDTO_Response_GetForFile()
-                {
-                    Id = phraseModel.SentenceId,
-                    SentenceNum = sentence.SentenceNum,
-                    Phrases = phraseDTO
-                };
-
                 transaction.Commit();
-                return sentenceDTO;
+
+                var phraseDTO = new PhraseUpdateResponse()
+                {
+                    Id = phraseModel.Id,
+                    PhraseMeaningId = phraseModel.PhraseMeaningId,
+                    SentenceId = phraseModel.SentenceId,
+                    CategoryId = phraseModel.CategoryId,
+                    Data = phraseModel.Phrase,
+                    Meaning = phraseModel.Meaning,
+                    Comment = phraseModel.Comment
+                };
+
+                return phraseDTO;
             }
             catch (Exception ex)
             {
                 transaction.Rollback();
                 return null;
             }
-        }
-    }
+		}
+	}
 
     public bool DeletePhrase(int phraseId)
     {

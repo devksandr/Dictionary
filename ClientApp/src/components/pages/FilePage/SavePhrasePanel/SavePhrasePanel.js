@@ -59,16 +59,19 @@ export class SavePhrasePanel extends Component {
         this.setState(prevState => ({ phraseFormData: { ...prevState.phraseFormData, [name]: value }}));
     }
 
-    handleAddPhraseSubmit(event) {
+    handlePhraseFormSubmit(event) {
         const formData = new FormData();
-
+        formData.append("phraseId", this.state.clickedPhrase.data.id);
+        formData.append("phraseMeaningId", this.state.clickedPhrase.data.phraseMeaningId);
+        formData.append("sentenceId", this.props.clickedSentenceId);
         formData.append("categoryId", this.state.phraseFormData.categoryId);
         formData.append("phrase", this.state.phraseFormData.phrase);
         formData.append("meaning", this.state.phraseFormData.meaning);
         formData.append("comment", this.state.phraseFormData.comment);
-        formData.append("sentenceId", this.props.clickedSentenceId);
 
-        //this.props.handleAddPhrase(formData);
+        const isAdd = this.state.clickedPhrase.state ? false : true;
+        this.props.handlePhraseFormSubmit(formData, isAdd);
+        
         event.preventDefault();
         this.resetPhraseFormData();
     }
@@ -80,7 +83,7 @@ export class SavePhrasePanel extends Component {
     render() {
         if(!this.props.appearance) return;
         const clickedSentencePhrasesData = this.props.clickedSentencePhrases.map(p => p.data);
-        const submitButtonText = this.state.clickedPhrase.state ? 'Change' : 'Add';
+        const submitButtonText = this.state.clickedPhrase.state ? 'Update' : 'Add';
         
         return (
             <div>
@@ -96,7 +99,7 @@ export class SavePhrasePanel extends Component {
                     phraseFormData={this.state.phraseFormData}
                     submitButtonText={submitButtonText}
                     handleInputChange={this.handleInputChange.bind(this)}
-                    handleAddPhraseSubmit={this.handleAddPhraseSubmit.bind(this)}
+                    handlePhraseFormSubmit={this.handlePhraseFormSubmit.bind(this)}
                 />
             </div>
         );

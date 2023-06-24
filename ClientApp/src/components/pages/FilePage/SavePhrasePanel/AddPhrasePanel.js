@@ -9,7 +9,7 @@ export class AddPhrasePanel extends Component {
         if(!this.props.appearance) return;  // replace with another flag (by panel add/update)
 
         return (
-            <Form className='form-addPhrase' onSubmit={this.props.handleAddPhraseSubmit}>
+            <Form className='form-addPhrase' onSubmit={this.props.handlePhraseFormSubmit}>
                 <FormGroup>
                     <Label for="categoryIdInput">Category</Label>
                     <Input 

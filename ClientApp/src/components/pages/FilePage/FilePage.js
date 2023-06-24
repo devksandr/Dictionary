@@ -36,31 +36,60 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
         this.setState({ sentencesWithPhrases: response.data});
     }
 
-    async handleAddPhrase(formData) {
-        const response = await axios.post(ApiRequest.Phrases.Add, formData);
-        
-        this.setState({ clickedSentenceIndex: NOT_SELECTED });
-        this.setState({ clickedSentenceId: NOT_SELECTED });
-        this.setState({ clickedSentencePhrases: [] });
-        
-        // Add or Update sentence with phrases
-        const newSentencePhrase = response.data;
-        var sentenceWithPhrases = this.state.sentencesWithPhrases.filter(swp => swp.id === newSentencePhrase.id)
-        if(sentenceWithPhrases.length > 0) {
+    async handlePhraseFormSubmit(formData, isAdd) {
+
+        if(isAdd) {
+            const response = await axios.post(ApiRequest.Phrases.Add, formData);
+
+            // Set sentencesWithPhrases after Add new phrase (Add or Update)
+            const newSentencePhrase = response.data;
+            var sentenceWithPhrases = this.state.sentencesWithPhrases.filter(swp => swp.id === newSentencePhrase.id)
+            if(sentenceWithPhrases.length > 0) {
+                this.setState(state => {
+                    const sentencesWithPhrases = state.sentencesWithPhrases.map((swp) => {
+                        if (swp.id === newSentencePhrase.id) {
+                            const phrases = swp.phrases.concat(newSentencePhrase.phrases)
+                            swp.phrases = phrases;
+                        }
+                        return swp;
+                    });
+                    return sentencesWithPhrases;
+                });
+            }
+            else {
+                this.setState({ sentencesWithPhrases: this.state.sentencesWithPhrases.concat(newSentencePhrase) });
+            }
+        }
+        else {
+            const phraseId = formData.get("phraseId");
+            const response = await axios.put(ApiRequest.Phrases.Update + phraseId, formData);
+
+            // Set sentencesWithPhrases after Update phrase
+            const updatedSentencePhrase = response.data;
             this.setState(state => {
                 const sentencesWithPhrases = state.sentencesWithPhrases.map((swp) => {
-                    if (swp.id === newSentencePhrase.id) {
-                        const phrases = swp.phrases.concat(newSentencePhrase.phrases)
-                        swp.phrases = phrases;
+                    if (swp.id === updatedSentencePhrase.sentenceId) {
+                        const phrases = swp.phrases.map((phrase) => {
+                            if(phrase.id === updatedSentencePhrase.id) {
+                                // TODO refactoring: phrase = updatedSentencePhrase
+                                phrase.categoryId = updatedSentencePhrase.categoryId;
+                                phrase.data = updatedSentencePhrase.data;
+                                phrase.comment = updatedSentencePhrase.comment;
+                                phrase.meaning = updatedSentencePhrase.meaning;
+                            }
+                            return phrase;
+                        });
+                        return phrases;
                     }
                     return swp;
                 });
                 return sentencesWithPhrases;
             });
         }
-        else {
-            this.setState({ sentencesWithPhrases: this.state.sentencesWithPhrases.concat(newSentencePhrase) });
-        }
+
+        this.setState({ clickedSentenceIndex: NOT_SELECTED });
+        this.setState({ clickedSentenceId: NOT_SELECTED });
+        this.setState({ clickedSentencePhrases: [] });
     }
 
     handleClickSentence(sentenceIndex, sentenceId) {
@@ -87,7 +116,7 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
                         appearance={this.state.clickedSentenceIndex !== NOT_SELECTED}
                         clickedSentenceId={this.state.clickedSentenceId}
                         clickedSentenceIndex={this.state.clickedSentenceIndex}
-                        handleAddPhrase={this.handleAddPhrase.bind(this)}
+                        handlePhraseFormSubmit={this.handlePhraseFormSubmit.bind(this)}
                         clickedSentencePhrases={this.state.clickedSentencePhrases}
                     /></Col>
                 </Row>

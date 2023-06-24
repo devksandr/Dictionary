@@ -50,6 +50,7 @@ export const ApiRequest = {
         Get: 'api/phrases/',
         GetNames: 'api/phrases/',
         GetForSentence: 'api/phrases/file/',
+        Update: 'api/phrases/',
         Add: 'api/phrases/',
         Delete: 'api/phrases/'
     },

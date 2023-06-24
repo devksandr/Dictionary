@@ -43,6 +43,13 @@ public class PhrasesController : ControllerBase
         return sentencePhrase;
     }
 
+    [HttpPut("{phraseId}")]
+    public PhraseUpdateResponse UpdatePhrase([FromForm] PhraseUpdateRequest phraseModel)
+    {
+        var phrase = _phrasesService.UpdatePhrase(phraseModel);
+        return phrase;
+    }
+
     [HttpDelete("{phraseId}")]
     public ActionResult DeletePhrase(int phraseId)
     {
