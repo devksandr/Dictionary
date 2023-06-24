@@ -21,28 +21,37 @@ export class SelectPhrasePanel extends Component {
     }
 
     handleClickPhrase(e, index) {
+        this.clickPhrase(index, false);
+    }
+    handleClickAddPhrase(e, index) {
+        this.clickPhrase(index, true);
+    }
+    clickPhrase(index, isAdd) {
         let clickedPhraseIndex = this.props.clickedPhraseIndex == index ? NOT_SELECTED : index;
-        this.props.handleClickPhrase(clickedPhraseIndex);
+        this.props.handleClickPhrase(clickedPhraseIndex, isAdd);
+    }
+
+
+    createPhraseOption(phraseData, index, onClickHandler) {
+        const hoverClass = this.state.hoverPhraseIndex==index ? 'element-hover-theme' : '';
+        const clickClass = this.props.clickedPhraseIndex==index ? 'element-click-theme' : '';
+
+        return(
+            <li 
+                key={index}
+                className={`${hoverClass} ${clickClass}`}
+                onMouseLeave={(e) => this.handleMouseLeave(e, index)}
+                onMouseEnter={(e) => this.handleMouseEnter(e, index)}
+                onClick={(e) => onClickHandler(e, index)}>
+                {phraseData}
+            </li>
+        );
     }
 
     render() {
-        let phrasesData = this.props.clickedSentencePhrasesData.map((phraseData, index) => {
-                const hoverClass = this.state.hoverPhraseIndex==index ? 'element-hover-theme' : '';
-                const clickClass = this.props.clickedPhraseIndex==index ? 'element-click-theme' : '';
-
-                return(
-                    <li 
-                        key={index}
-                        className={`${hoverClass} ${clickClass}`}
-                        onMouseLeave={(e) => this.handleMouseLeave(e, index)}
-                        onMouseEnter={(e) => this.handleMouseEnter(e, index)}
-                        onClick={(e) => this.handleClickPhrase(e, index)}>
-                        {phraseData}
-                    </li>
-                );
-            }
-        );
-        const addOption = <li key={phrasesData.length+1}>Add</li>;
+        let phrasesData = this.props.clickedSentencePhrasesData.map((phraseData, index) => 
+            this.createPhraseOption(phraseData, index, this.handleClickPhrase.bind(this)));
+        const addOption = this.createPhraseOption('Add', phrasesData.length+1, this.handleClickAddPhrase.bind(this))
         phrasesData.push(addOption);
 
         return (

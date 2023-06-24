@@ -39,9 +39,13 @@ export class SavePhrasePanel extends Component {
         this.setState({ sentenceCategories: sentenceCategoriesOptions});
     }
 
-    handleClickPhrase(index) {
+    handleClickPhrase(index, isAdd) {
         if(index === NOT_SELECTED) {
             this.setState({ clickedPhrase: { index: NOT_SELECTED, data: NOT_SELECTED, state: false } });
+            this.resetPhraseFormData();
+        }
+        else if(isAdd) {
+            this.setState({ clickedPhrase: { index: index, data: NOT_SELECTED, state: true } });
             this.resetPhraseFormData();
         }
         else {
@@ -69,7 +73,7 @@ export class SavePhrasePanel extends Component {
         formData.append("meaning", this.state.phraseFormData.meaning);
         formData.append("comment", this.state.phraseFormData.comment);
 
-        const isAdd = this.state.clickedPhrase.state ? false : true;
+        const isAdd = this.state.clickedPhrase.data !== NOT_SELECTED ? false : true;
         this.props.handlePhraseFormSubmit(formData, isAdd);
         
         event.preventDefault();
@@ -83,7 +87,7 @@ export class SavePhrasePanel extends Component {
     render() {
         if(!this.props.appearance) return;
         const clickedSentencePhrasesData = this.props.clickedSentencePhrases.map(p => p.data);
-        const submitButtonText = this.state.clickedPhrase.state ? 'Update' : 'Add';
+        const submitButtonText = this.state.clickedPhrase.data !== NOT_SELECTED ? 'Update' : 'Add';
         
         return (
             <div>

@@ -39,7 +39,15 @@ public class PhrasesService : IPhrasesService
                 var sentence = _db.Sentences.Find(phraseModel.SentenceId);
                 var phraseDTO = new List<PhraseDTO_Response_GetForFile>() 
                 { 
-                    new PhraseDTO_Response_GetForFile() { Id = phrase.Id, Data = phraseModel.Phrase, Comment = phraseModel.Comment}
+                    new PhraseDTO_Response_GetForFile() 
+                    { 
+                        Id = phrase.Id, 
+                        PhraseMeaningId = phraseMeaning.Id,
+                        CategoryId = phraseModel.CategoryId,
+                        Data = phraseModel.Phrase, 
+                        Meaning = phraseModel.Meaning, 
+                        Comment = phraseModel.Comment
+                    }
                 };
                 var sentenceDTO = new SentenceDTO_Response_GetForFile()
                 {
