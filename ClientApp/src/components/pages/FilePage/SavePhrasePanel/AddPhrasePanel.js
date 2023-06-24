@@ -1,85 +1,33 @@
 import React, {Component} from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../../../../css/pages/FilePage/AddPhrasePanel.css';
-import { Category, ApiRequest } from '../../../../js/const.js';
+import { Category, ApiRequest, NOT_SELECTED } from '../../../../js/const.js';
 import axios from "axios";
 
 export class AddPhrasePanel extends Component {
-
-    constructor(props) {
-        super(props);
-        this.handleAddPhrase = this.handleAddPhrase.bind(this);
-        this.handlePhraseInput = this.handlePhraseInput.bind(this);
-
-        this.state = {
-            addPhrase: "",
-            sentenceCategories: [],
-        };
-    }
-
-    componentDidMount() {
-        this.handleGetCategories();
-    }
-
-    async handleGetCategories() {
-        const response = await axios.get(ApiRequest.Categories.Get + Category.SentenceCategory);
-        this.setState({ sentenceCategories: response.data});
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.clickedSentenceId !== this.props.clickedSentenceId) {
-            this.resetPhraseForm();
-        }
-    }
-
-    resetPhraseForm() {
-        this.phraseForm.reset();
-    }
-
-    handlePhraseInput(event) {
-        // validate phrase input
-        this.setState({ addPhrase: event.target.value });
-    }
-
-    handleAddPhrase(event) {
-        const formData = new FormData();
-        formData.append("categoryId", this.categoryId.value);
-        formData.append("phrase", this.state.addPhrase);
-        formData.append("meaning", this.meaning.value);
-        formData.append("comment", this.comment.value);
-        formData.append("sentenceId", this.props.clickedSentenceId);
-        this.props.handleAddPhrase(formData);
-        event.preventDefault();
-        this.resetPhraseForm();
-    }
-
     render() {
         if(!this.props.appearance) return;  // replace with another flag (by panel add/update)
 
-        const sentenceCategoriesOptions = this.state.sentenceCategories.map(
-            (category, index) => <option 
-                value={category.id}
-                key={index}
-            >{category.name}</option>
-        );
-
         return (
-            <Form className='form-addPhrase' onSubmit={this.handleAddPhrase} innerRef={(v) => this.phraseForm = v}>
+            <Form className='form-addPhrase' onSubmit={this.props.handleAddPhraseSubmit}>
                 <FormGroup>
                     <Label for="categoryIdInput">Category</Label>
                     <Input 
                         type="select"
                         name="categoryId" 
                         id="categoryIdInput"
-                        innerRef={(v) => (this.categoryId = v)}
-                    >{sentenceCategoriesOptions}</Input>
+                        onChange={this.props.handleInputChange}
+                        value={this.props.phraseFormData.categoryId}
+                    >{this.props.sentenceCategories}</Input>
                 </FormGroup>
                 <FormGroup>
                     <Label for="phraseInput">Phrase</Label>
                     <Input 
                         name="phrase" 
                         id="phraseInput"
-                        onChange={this.handlePhraseInput}
+                        innerRef={(v) => (this.phrase = v)}
+                        onChange={this.props.handleInputChange}
+                        value={this.props.phraseFormData.phrase}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -87,7 +35,8 @@ export class AddPhrasePanel extends Component {
                     <Input 
                         name="meaning"
                         id="meaningInput"
-                        innerRef={(v) => (this.meaning = v)}
+                        onChange={this.props.handleInputChange}
+                        value={this.props.phraseFormData.meaning}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -95,10 +44,11 @@ export class AddPhrasePanel extends Component {
                     <Input 
                         name="comment"
                         id="commentInput"
-                        innerRef={(v) => (this.comment = v)}
+                        onChange={this.props.handleInputChange}
+                        value={this.props.phraseFormData.comment}
                     />
                 </FormGroup>
-                <Button type="submit">Submit</Button>
+                <Button type="submit">{this.props.submitButtonText}</Button>
             </Form>
         );
     }
