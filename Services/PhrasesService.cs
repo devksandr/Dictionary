@@ -1,5 +1,4 @@
 using dict_react.Services.Interfaces;
-using dict_react.Models;
 using dict_react.Models.Entity;
 using dict_react.Models.DTO;
 using dict_react.Database;
