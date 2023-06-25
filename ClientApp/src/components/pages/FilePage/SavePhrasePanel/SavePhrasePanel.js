@@ -65,15 +65,21 @@ export class SavePhrasePanel extends Component {
 
     handlePhraseFormSubmit(event) {
         const formData = new FormData();
-        formData.append("phraseId", this.state.clickedPhrase.data.id);
-        formData.append("phraseMeaningId", this.state.clickedPhrase.data.phraseMeaningId);
-        formData.append("sentenceId", this.props.clickedSentenceId);
         formData.append("categoryId", this.state.phraseFormData.categoryId);
         formData.append("phrase", this.state.phraseFormData.phrase);
         formData.append("meaning", this.state.phraseFormData.meaning);
         formData.append("comment", this.state.phraseFormData.comment);
 
         const isAdd = this.state.clickedPhrase.data !== NOT_SELECTED ? false : true;
+
+        if(isAdd) {
+            formData.append("sentenceId", this.props.clickedSentenceId);
+        }
+        else {
+            formData.append("phraseId", this.state.clickedPhrase.data.id);
+            formData.append("phraseMeaningId", this.state.clickedPhrase.data.phraseMeaningId);
+        }
+
         this.props.handlePhraseFormSubmit(formData, isAdd);
         
         event.preventDefault();

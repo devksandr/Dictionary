@@ -37,17 +37,25 @@ public class PhrasesController : ControllerBase
     }
 
     [HttpPost]
-    public SentenceDTO_Response_GetForFile AddPhrase([FromForm] AddPhraseModel phraseModel)
+    public ActionResult AddPhrase([FromForm] PhraseCreateRequestDTO phraseModel)
     {
-        var sentencePhrase = _phrasesService.AddPhrase(phraseModel);
-        return sentencePhrase;
+        var result = _phrasesService.AddPhrase(phraseModel);
+        if (result is null)
+        {
+            return StatusCode(500);
+        }
+        return Ok(result);
     }
 
     [HttpPut("{phraseId}")]
-    public PhraseUpdateResponse UpdatePhrase([FromForm] PhraseUpdateRequest phraseModel)
+    public ActionResult UpdatePhrase([FromForm] PhraseUpdateRequestDTO phraseModel)
     {
-        var phrase = _phrasesService.UpdatePhrase(phraseModel);
-        return phrase;
+        var result = _phrasesService.UpdatePhrase(phraseModel);
+        if(!result)
+        {
+            return StatusCode(500);
+        }
+        return NoContent();
     }
 
     [HttpDelete("{phraseId}")]

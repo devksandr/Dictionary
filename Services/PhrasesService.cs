@@ -18,7 +18,7 @@ public class PhrasesService : IPhrasesService
         _environment = environment;
     }
 
-    public SentenceDTO_Response_GetForFile AddPhrase(AddPhraseModel phraseModel)
+    public PhraseCreateResponseDTO AddPhrase(PhraseCreateRequestDTO phraseModel)
     {
         using(var transaction = _db.Database.BeginTransaction())
         {
@@ -37,27 +37,16 @@ public class PhrasesService : IPhrasesService
                 _db.SaveChanges();
 
                 var sentence = _db.Sentences.Find(phraseModel.SentenceId);
-                var phraseDTO = new List<PhraseDTO_Response_GetForFile>() 
-                { 
-                    new PhraseDTO_Response_GetForFile() 
-                    { 
-                        Id = phrase.Id, 
-                        PhraseMeaningId = phraseMeaning.Id,
-                        CategoryId = phraseModel.CategoryId,
-                        Data = phraseModel.Phrase, 
-                        Meaning = phraseModel.Meaning, 
-                        Comment = phraseModel.Comment
-                    }
-                };
-                var sentenceDTO = new SentenceDTO_Response_GetForFile()
+                
+                var phraseDTO = new PhraseCreateResponseDTO()
                 {
-                    Id = phraseModel.SentenceId,
-                    SentenceNum = sentence.SentenceNum,
-                    Phrases = phraseDTO
+                    PhraseId = phrase.Id,
+                    PhraseMeaningId = phraseMeaning.Id,
+                    SentenceNum = sentence.SentenceNum
                 };
 
                 transaction.Commit();
-                return sentenceDTO;
+                return phraseDTO;
             }
             catch (Exception ex)
             {
@@ -152,13 +141,13 @@ public class PhrasesService : IPhrasesService
         return sentencesDTO;
     }   
 
-    public PhraseUpdateResponse UpdatePhrase(PhraseUpdateRequest phraseModel)
+    public bool UpdatePhrase(PhraseUpdateRequestDTO phraseModel)
     {
         using(var transaction = _db.Database.BeginTransaction())
         {
             try
             {
-                var phrase = _db.Phrases.Find(phraseModel.Id);
+                var phrase = _db.Phrases.Find(phraseModel.PhraseId);
                 var sentenceCategory = _db.SentenceCategories.Find(phraseModel.CategoryId);
                 phrase.Data = phraseModel.Phrase;
                 phrase.SentenceCategory = sentenceCategory;
@@ -170,23 +159,12 @@ public class PhrasesService : IPhrasesService
                 _db.SaveChanges();
                 transaction.Commit();
 
-                var phraseDTO = new PhraseUpdateResponse()
-                {
-                    Id = phraseModel.Id,
-                    PhraseMeaningId = phraseModel.PhraseMeaningId,
-                    SentenceId = phraseModel.SentenceId,
-                    CategoryId = phraseModel.CategoryId,
-                    Data = phraseModel.Phrase,
-                    Meaning = phraseModel.Meaning,
-                    Comment = phraseModel.Comment
-                };
-
-                return phraseDTO;
+                return true;
             }
             catch (Exception ex)
             {
                 transaction.Rollback();
-                return null;
+                return false;
             }
 		}
 	}

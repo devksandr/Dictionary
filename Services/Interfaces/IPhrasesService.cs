@@ -6,10 +6,10 @@ namespace dict_react.Services.Interfaces;
 
 public interface IPhrasesService
 {
-    public SentenceDTO_Response_GetForFile AddPhrase(AddPhraseModel phraseModel);
+    public PhraseCreateResponseDTO AddPhrase(PhraseCreateRequestDTO phraseModel);
     public IEnumerable<Phrase> GetPhrasesNames();
     public PhraseDTO GetPhrase(int phraseId);
     public List<SentenceDTO_Response_GetForFile> GetPhrasesForSentence(int fileId);
-    public PhraseUpdateResponse UpdatePhrase(PhraseUpdateRequest phraseModel);
+    public bool UpdatePhrase(PhraseUpdateRequestDTO phraseModel);
     bool DeletePhrase(int phraseId);
 }
