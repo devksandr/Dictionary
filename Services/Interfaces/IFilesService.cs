@@ -4,8 +4,8 @@ namespace dict_react.Services.Interfaces;
 
 public interface IFilesService
 {
-    DocumentDTO_Response_GetSentences GetFile(int fileId);
-    IEnumerable<DocumentDTO_Response_GetName> GetFilesNames();
-    IEnumerable<DocumentDTO_Response_GetName> AddFiles(DocumentDTO_Request_AddText filesModel);
+    IEnumerable<FileCreateResponseDTO> AddFiles(FileCreateRequestDTO filesModel);
+    FileGetResponseDTO GetFile(int fileId);
+    IEnumerable<FileGetInfoResponseDTO> GetAllFilesInfo();
     bool DeleteFile(int fileId);
 }

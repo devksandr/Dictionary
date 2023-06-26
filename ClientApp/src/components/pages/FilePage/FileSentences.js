@@ -34,7 +34,7 @@ export class FileSentences extends Component {
                     className={`${hoverClass} ${clickClass} ${hasPhraseClass}`}
                     onMouseLeave={(e) => this.handleMouseLeave(e, index)}
                     onMouseEnter={(e) => this.handleMouseEnter(e, index)}
-                    onClick={(e) => this.handleClick(e, index, sentence.id)}>
+                    onClick={(e) => this.handleClick(e, index, sentence.sentenceId)}>
                     {sentence.data}
                 </span>
             );

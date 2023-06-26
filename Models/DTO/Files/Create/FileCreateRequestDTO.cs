@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
 namespace dict_react.Models.DTO;
 
-public class DocumentDTO_Request_AddText
+public class FileCreateRequestDTO
 {
     public List<IFormFile>? FormFiles { get; set; }
 }

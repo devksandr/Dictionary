@@ -42,7 +42,7 @@ export const ApiRequest = {
     },
     Files: {
         Get: 'api/files/',
-        GetNames: 'api/files/',
+        GetAllFilesInfo: 'api/files/',
         Add: 'api/files/',
         Delete: 'api/files/'
     },

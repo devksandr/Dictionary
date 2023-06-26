@@ -16,23 +16,35 @@ public class FilesController : ControllerBase
         _sentencesService = sentencesService;
     }
 
-    [HttpGet("{fileId}")]
-    public DocumentDTO_Response_GetSentences GetFile(int fileId)
+    [HttpPost]
+    public ActionResult AddFiles([FromForm] FileCreateRequestDTO filesModel)
     {
-        var file = _filesService.GetFile(fileId);
-        return file;
+        var result = _filesService.AddFiles(filesModel);
+        if (result is null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return Ok(result);
+    }
+    [HttpGet("{fileId}")]
+    public ActionResult GetFile(int fileId)
+    {
+        var result = _filesService.GetFile(fileId);
+        if (result is null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return Ok(result);
     }
     [HttpGet]
-    public IEnumerable<DocumentDTO_Response_GetName> GetFilesNames()
+    public ActionResult GetAllFilesInfo()
     {
-        var fileNames = _filesService.GetFilesNames();
-        return fileNames;
-    }
-    [HttpPost]
-    public IEnumerable<DocumentDTO_Response_GetName> AddFiles([FromForm] DocumentDTO_Request_AddText filesModel)
-    {
-        var documents = _filesService.AddFiles(filesModel);
-        return documents;
+        var result = _filesService.GetAllFilesInfo();
+        if (result is null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return Ok(result);
     }
     [HttpDelete("{fileId}")]
     public ActionResult DeleteFile(int fileId)

@@ -15,78 +15,107 @@ public class FilesService : IFilesService
         _db = db;
     }
 
-    public DocumentDTO_Response_GetSentences GetFile(int fileId)
+    public IEnumerable<FileCreateResponseDTO> AddFiles(FileCreateRequestDTO filesModel)
     {
-        var documentName = _db.Documents.Find(fileId).Name;
+        // TODO Check duplicate
 
-        var sentences = _db.Sentences
-            .Where(s => s.DocumentId == fileId)
-            .OrderBy(s => s.SentenceNum)
-            .Select(s => new SentenceDTO { Id = s.Id, SentenceNum = s.SentenceNum, Data = s.Data})
-            .ToList();
-
-        DocumentDTO_Response_GetSentences documentDTO = new DocumentDTO_Response_GetSentences
+        using(var transaction = _db.Database.BeginTransaction())
         {
-            Id = fileId,
-            Name = documentName,
-            Sentences = sentences
-        };
-
-        return documentDTO;
-    }
-    public IEnumerable<DocumentDTO_Response_GetName> GetFilesNames()
-    {
-        var documentsDTO = new List<DocumentDTO_Response_GetName>();
-        var documents = _db.Documents;
-        foreach (var d in documents)
-        {
-            DocumentDTO_Response_GetName documentDTO = new DocumentDTO_Response_GetName 
-            { 
-                Id = d.Id, 
-                Name = d.Name 
-            };
-            documentsDTO.Add(documentDTO);
-        } 
-        return documentsDTO;
-    }
-    public IEnumerable<DocumentDTO_Response_GetName> AddFiles(DocumentDTO_Request_AddText filesModel)
-    {
-        // todo Check duplicate
-
-        var documentsDTO = new List<DocumentDTO_Response_GetName>();
-        foreach (var file in filesModel.FormFiles)
-        {
-            Document document = new Document { Name = file.FileName };
-            _db.Documents.Add(document);
-            _db.SaveChanges();
-
-            var text = "";
-            using (var reader = new StreamReader(file.OpenReadStream()))
+            try
             {
-                text = reader.ReadToEnd();
-            }
-            var sentences = SplitText(text);
-            int sentenceNum = 0;
-            foreach (var s in sentences)
-            {
-                Sentence sentence = new Sentence 
-                { 
-                    DocumentId = document.Id, 
-                    Data = s, 
-                    SentenceNum = sentenceNum++
-                };
-                _db.Sentences.Add(sentence);
-                _db.SaveChanges();
-            }
+                var documentsDTO = new List<FileCreateResponseDTO>();
+                foreach (var file in filesModel.FormFiles)
+                {
+                    var text = "";
+                    using (var reader = new StreamReader(file.OpenReadStream()))
+                    {
+                        text = reader.ReadToEnd();
+                    }
+                    var sentences = SplitText(text);
+                    int sentenceNum = 0;
 
-            DocumentDTO_Response_GetName documentDTO = new DocumentDTO_Response_GetName 
-            { 
-                Id = document.Id, 
-                Name = document.Name 
-            };
-            documentsDTO.Add(documentDTO);
+                    Document document = new Document { Name = file.FileName };
+                    _db.Documents.Add(document);
+                    _db.SaveChanges();
+
+                    foreach (var s in sentences)
+                    {
+                        Sentence sentence = new Sentence 
+                        { 
+                            DocumentId = document.Id, 
+                            Data = s, 
+                            SentenceNum = sentenceNum++
+                        };
+                        _db.Sentences.Add(sentence);
+                        _db.SaveChanges();
+                    }
+
+                    FileCreateResponseDTO documentDTO = new FileCreateResponseDTO 
+                    { 
+                        FileId = document.Id, 
+                        Name = document.Name 
+                    };
+                    documentsDTO.Add(documentDTO);
+                }
+
+                transaction.Commit();
+
+                return documentsDTO;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                return null;
+            }
         }
-        return documentsDTO;
+    }
+    public FileGetResponseDTO GetFile(int fileId)
+    {
+        try
+        {
+            var documentName = _db.Documents.Find(fileId).Name;
+
+            var sentences = _db.Sentences
+                .Where(s => s.DocumentId == fileId)
+                .OrderBy(s => s.SentenceNum)
+                .Select(s => new SentenceGetResponseDTO { SentenceId = s.Id, SentenceNum = s.SentenceNum, Data = s.Data})
+                .ToList();
+
+            FileGetResponseDTO documentDTO = new FileGetResponseDTO
+            {
+                FileId = fileId,
+                Name = documentName,
+                Sentences = sentences
+            };
+
+            return documentDTO;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public IEnumerable<FileGetInfoResponseDTO> GetAllFilesInfo()
+    {
+        try
+        {
+            var documentsDTO = new List<FileGetInfoResponseDTO>();
+            var documents = _db.Documents;
+            foreach (var d in documents)
+            {
+                FileGetInfoResponseDTO documentDTO = new FileGetInfoResponseDTO 
+                { 
+                    FileId = d.Id, 
+                    Name = d.Name 
+                };
+                documentsDTO.Add(documentDTO);
+            } 
+            return documentsDTO;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
     public bool DeleteFile(int fileId)
     {

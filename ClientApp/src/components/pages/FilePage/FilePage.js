@@ -28,8 +28,7 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
         const { id } = this.props.params;
         const response = await axios.get(ApiRequest.Files.Get + id);
         this.setState({ file: response.data });
-        const fileId = response.data.id;
-        this.handleGetPhrasesForSentences(fileId);
+        this.handleGetPhrasesForSentences(id);
     }
     async handleGetPhrasesForSentences(fileId) {
         const response = await axios.get(ApiRequest.Phrases.GetForSentence + fileId);

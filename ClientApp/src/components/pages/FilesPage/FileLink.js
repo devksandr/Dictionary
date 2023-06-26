@@ -23,7 +23,7 @@ export class FileLink extends Component {
                     onClick={this.toggleModalDeleteFile}
                 >X</Button>
                 <Link 
-                    to={"/file/" + this.props.file.id + '/' + makeUrlSlug(this.props.file.name)} 
+                    to={"/file/" + this.props.file.fileId + '/' + makeUrlSlug(this.props.file.name)} 
                     state={{mydata: "myvalue"}}
                 >{this.props.file.name}</Link>
 
@@ -36,7 +36,7 @@ export class FileLink extends Component {
                     <ModalFooter className="justify-content-between">
                         <Button
                             color="danger"
-                            onClick={() => this.props.handleDelete(this.props.file.id)}
+                            onClick={() => this.props.handleDelete(this.props.file.fileId)}
                         >Да</Button>{' '}
                         <Button
                             color="primary"

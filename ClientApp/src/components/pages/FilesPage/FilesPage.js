@@ -11,32 +11,36 @@ export class FilesPage extends Component {
         super(props);
         this.state = { 
             localization: [],
-            fileNames: [],
+            filesInfo: [],
             modalUploadFilesState: false
         };
     }
 
     componentDidMount() {
         this.handleGetLocalization();
-        this.handleGetFileNames();
+        this.handleGetFilesInfo();
     }
 
     async handleGetLocalization() {
         const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Files);
         this.setState({ localization: response.data });
     }
-    async handleGetFileNames() {
-        const response = await axios.get(ApiRequest.Files.GetNames);
-        this.setState({ fileNames: response.data });
+    async handleGetFilesInfo() {
+        try {
+            const response = await axios.get(ApiRequest.Files.GetAllFilesInfo);
+            this.setState({ filesInfo: response.data });
+        } catch (error) {
+            alert('Unable to get files info');
+        }
     }
     async handleDelete(fileId) {
         await axios.delete(ApiRequest.Files.Delete + fileId);
-        this.setState({ fileNames: [...this.state.fileNames].filter((id) => id.id !== fileId) });
+        this.setState({ filesInfo: [...this.state.filesInfo].filter((f) => f.fileId !== fileId) });
     }
     async handleSubmit(formData) {
         const response = await axios.post(ApiRequest.Files.Add, formData);
-        const newFileNames = response.data;
-        this.setState({ fileNames: this.state.fileNames.concat(newFileNames) });
+        const newFilesInfo = response.data;
+        this.setState({ filesInfo: this.state.filesInfo.concat(newFilesInfo) });
     }
 
     handleOpenModalUploadFiles = () => this.setState({ modalUploadFilesState: true });
@@ -57,7 +61,7 @@ export class FilesPage extends Component {
     }
 
     validateDuplicatesUploadDropFiles(dropfiles) {
-        let currentfiles = this.state.fileNames;
+        let currentfiles = this.state.filesInfo;
         for (let i = 0; i < dropfiles.length; i++) {
             for (let j = 0; j < currentfiles.length; j++) {
                 if(dropfiles[i].name === currentfiles[j].name) {
@@ -72,7 +76,7 @@ export class FilesPage extends Component {
         return (
             <div>
                 <h1>{this.state.localization.FilesList}</h1>
-                <p>{this.state.localization.FilesCount} : {this.state.fileNames.length}</p>
+                <p>{this.state.localization.FilesCount} : {this.state.filesInfo.length}</p>
                 <Button
                     color="primary"
                     onClick={this.handleOpenModalUploadFiles.bind(this)}>
@@ -84,7 +88,7 @@ export class FilesPage extends Component {
                     handleSubmitUploadFiles={this.handleSubmitUploadFiles.bind(this)}
                 />
                 <FilesVector 
-                    vector={this.state.fileNames} 
+                    vector={this.state.filesInfo} 
                     handleDelete={this.handleDelete.bind(this)}
                 />
             </div>
