@@ -25,7 +25,7 @@ export class PhrasesPage extends Component {
     }
     async handleDelete(phraseId) {
         await axios.delete(ApiRequest.Phrases.Delete + phraseId);
-        this.setState({ phrasesList: [...this.state.phrasesList].filter((p) => p.id !== phraseId) });
+        this.setState({ phrasesList: [...this.state.phrasesList].filter((p) => p.phraseId !== phraseId) });
     }
     async handleGetPhrase(phraseId) {
         const response = await axios.get(ApiRequest.Phrases.Get + phraseId);
@@ -37,7 +37,7 @@ export class PhrasesPage extends Component {
 
         if(phraseIndex !== NOT_SELECTED)
         {
-            this.handleGetPhrase(this.state.phrasesList[phraseIndex].id);
+            this.handleGetPhrase(this.state.phrasesList[phraseIndex].phraseId);
         }
         else
         {

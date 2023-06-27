@@ -35,7 +35,7 @@ export class PhraseLink extends Component {
                     <ModalFooter className="justify-content-between">
                         <Button
                             color="danger"
-                            onClick={() => this.props.handleDelete(this.props.phrase.id)}
+                            onClick={() => this.props.handleDelete(this.props.phrase.phraseId)}
                         >Да</Button>{' '}
                         <Button
                             color="primary"

@@ -76,7 +76,7 @@ export class SavePhrasePanel extends Component {
             formData.append("sentenceId", this.props.clickedSentenceId);
         }
         else {
-            formData.append("phraseId", this.state.clickedPhrase.data.id);
+            formData.append("phraseId", this.state.clickedPhrase.data.phraseId);
             formData.append("phraseMeaningId", this.state.clickedPhrase.data.phraseMeaningId);
         }
 

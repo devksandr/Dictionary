@@ -49,7 +49,7 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
             // Set sentencesWithPhrases after Add new phrase (Add or Update)
             const newSentencePhrase = response.data;
             const newPhrase = { 
-                id: newSentencePhrase.phraseId,
+                phraseId: newSentencePhrase.phraseId,
                 phraseMeaningId: newSentencePhrase.phraseMeaningId,
                 categoryId: Number(formData.get("categoryId")), 
                 data: formData.get("phrase"),
@@ -57,12 +57,12 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
                 meaning: formData.get("meaning"),
             };
 
-            var sentenceWithPhrases = this.state.sentencesWithPhrases.filter(swp => swp.id === this.state.clickedSentenceId)
+            var sentenceWithPhrases = this.state.sentencesWithPhrases.filter(swp => swp.sentenceId === this.state.clickedSentenceId)
             
             if(sentenceWithPhrases.length > 0) {
                 this.setState(state => {
                     const sentencesWithPhrases = state.sentencesWithPhrases.map((swp) => {
-                        if (swp.id === this.state.clickedSentenceId) {
+                        if (swp.sentenceId === this.state.clickedSentenceId) {
                             const phrases = swp.phrases.concat(newPhrase)
                             swp.phrases = phrases;
                         }
@@ -73,7 +73,7 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
             }
             else {
                 const newSentenceWithPhrase = { 
-                    id: this.state.clickedSentenceId, 
+                    sentenceId: this.state.clickedSentenceId, 
                     sentenceNum: newSentencePhrase.sentenceNum,
                     phrases: [newPhrase]
                 };
@@ -92,9 +92,9 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
             // Set sentencesWithPhrases after Update phrase
             this.setState(state => {
                 const sentencesWithPhrases = state.sentencesWithPhrases.map((swp) => {
-                    if (swp.id === this.state.clickedSentenceId) {
+                    if (swp.sentenceId === this.state.clickedSentenceId) {
                         const phrases = swp.phrases.map((phrase) => {
-                            if(phrase.id === phraseId) {
+                            if(phrase.phraseId === phraseId) {
                                 phrase.categoryId = Number(formData.get("categoryId"));
                                 phrase.data = formData.get("phrase");
                                 phrase.comment = formData.get("comment");
@@ -117,7 +117,7 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
         this.setState({ clickedSentenceIndex: sentenceIndex });
         this.setState({ clickedSentenceId: sentenceId });
 
-        const clickedSentenceWithPhrases = this.state.sentencesWithPhrases.find(swp => swp.id === sentenceId);
+        const clickedSentenceWithPhrases = this.state.sentencesWithPhrases.find(swp => swp.sentenceId === sentenceId);
         let clickedSentencePhrases = clickedSentenceWithPhrases !== undefined ? clickedSentenceWithPhrases.phrases : [];
         this.setState({ clickedSentencePhrases: clickedSentencePhrases });
     }

@@ -55,89 +55,121 @@ public class PhrasesService : IPhrasesService
         }
     }
 
-    public IEnumerable<Phrase> GetPhrasesNames()
+    public PhraseGetResponseDTO GetPhrase(int phraseId)
     {
-        return _db.Phrases;
+        try
+        {
+            var phrase = _db.Phrases
+                .Include(p => p.SentenceCategory)
+                .Include(p => p.PhraseMeaning)
+                    .ThenInclude(pm => pm.PhraseMeaningExample)
+                        .ThenInclude(pme => pme.Sentence)
+                .FirstOrDefault(p => p.Id == phraseId);
+            var sentenceCategory = _db.SentenceCategories.Find(phrase.SentenceCategoryId);
+
+            var phraseDTO = new PhraseGetResponseDTO
+            {
+                PhraseId = phrase.Id,
+                Data = phrase.Data,
+                SentenceCategory = sentenceCategory.Name
+            };
+            foreach (var pm in phrase.PhraseMeaning)
+            {
+                var phraseMeaningExamplesDTO = new List<PhraseMeaningExampleGetResponseDTO>();
+                foreach (var pme in pm.PhraseMeaningExample)
+                {
+                    var phraseMeaningExampleDTO = new PhraseMeaningExampleGetResponseDTO
+                    {
+                        PhraseMeaningExampleId = pme.Id,
+                        Sentence = pme.Sentence.Data
+                    };
+                    phraseMeaningExamplesDTO.Add(phraseMeaningExampleDTO);
+                }
+                var phraseMeaningDTO = new PhraseMeaningGetResponseDTO
+                {
+                    PhraseMeaningId = pm.Id,
+                    Meaning = pm.Meaning,
+                    Comment = pm.Comment,
+                    PhraseMeaningExamples = phraseMeaningExamplesDTO
+                };
+                phraseDTO.PhraseMeanings.Add(phraseMeaningDTO);
+            }
+
+            return phraseDTO;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
-    public PhraseDTO GetPhrase(int phraseId)
+    public IEnumerable<PhraseGetInfoResponseDTO> GetAllPhrasesInfo()
     {
-        var phrase = _db.Phrases
-            .Include(p => p.SentenceCategory)
-            .Include(p => p.PhraseMeaning)
-                .ThenInclude(pm => pm.PhraseMeaningExample)
-                    .ThenInclude(pme => pme.Sentence)
-            .FirstOrDefault(p => p.Id == phraseId);
-        var sentenceCategory = _db.SentenceCategories.Find(phrase.SentenceCategoryId);
-
-        var phraseDTO = new PhraseDTO
+        try
         {
-            Id = phrase.Id,
-            Data = phrase.Data,
-            SentenceCategory = sentenceCategory.Name
-        };
-        foreach (var pm in phrase.PhraseMeaning)
-        {
-            var phraseMeaningExamplesDTO = new List<PhraseMeaningExampleDTO>();
-            foreach (var pme in pm.PhraseMeaningExample)
+            var phrasesDTO = new List<PhraseGetInfoResponseDTO>();
+            var phrases = _db.Phrases;
+            foreach (var phrase in phrases)
             {
-                var phraseMeaningExampleDTO = new PhraseMeaningExampleDTO
-                {
-                    Id = pme.Id,
-                    Sentence = pme.Sentence.Data
+                PhraseGetInfoResponseDTO phraseDTO = new PhraseGetInfoResponseDTO 
+                { 
+                    PhraseId = phrase.Id, 
+                    Data = phrase.Data 
                 };
-                phraseMeaningExamplesDTO.Add(phraseMeaningExampleDTO);
-            }
-            var phraseMeaningDTO = new PhraseMeaningDTO
-            {
-                Id = pm.Id,
-                Meaning = pm.Meaning,
-                Comment = pm.Comment,
-                PhraseMeaningExamples = phraseMeaningExamplesDTO
-            };
-            phraseDTO.PhraseMeanings.Add(phraseMeaningDTO);
+                phrasesDTO.Add(phraseDTO);
+            } 
+            return phrasesDTO;
         }
-
-        return phraseDTO;
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
-    public List<SentenceDTO_Response_GetForFile> GetPhrasesForSentence(int fileId)
+    public IEnumerable<SentenceGetForFileResponseDTO> GetAllPhrasesForFile(int fileId)
     {
-        var sentences = _db.Sentences
-            .Include(s => s.PhraseMeaningExample)
-                .ThenInclude(pme => pme.PhraseMeaning)
-                    .ThenInclude(pm => pm.Phrase)
-            .Where(s => s.DocumentId == fileId && s.PhraseMeaningExample.Count > 0)
-            .ToList();
-        
-        var sentencesDTO = new List<SentenceDTO_Response_GetForFile>();
-
-        foreach (var sentence in sentences)
+        try
         {
-            var PhraseMeaningExamplesDTO = new List<PhraseDTO_Response_GetForFile>();
-            foreach (var PhraseMeaningExample in sentence.PhraseMeaningExample)
-            {
-                var PhraseMeaningExampleDTO = new PhraseDTO_Response_GetForFile()
-                {
-                    Id = PhraseMeaningExample.PhraseMeaning.PhraseId,
-                    PhraseMeaningId = PhraseMeaningExample.PhraseMeaning.Id,
-                    CategoryId = PhraseMeaningExample.PhraseMeaning.Phrase.SentenceCategoryId,
-                    Data = PhraseMeaningExample.PhraseMeaning.Phrase.Data,
-                    Meaning = PhraseMeaningExample.PhraseMeaning.Meaning,
-                    Comment = PhraseMeaningExample.PhraseMeaning.Comment
-                };
-                PhraseMeaningExamplesDTO.Add(PhraseMeaningExampleDTO);
-            }
-            var sentenceDTO = new SentenceDTO_Response_GetForFile()
-            {
-                Id = sentence.Id,
-                SentenceNum = sentence.SentenceNum,
-                Phrases = PhraseMeaningExamplesDTO
-            };
-            sentencesDTO.Add(sentenceDTO);
-        }
+            var sentences = _db.Sentences
+                .Include(s => s.PhraseMeaningExample)
+                    .ThenInclude(pme => pme.PhraseMeaning)
+                        .ThenInclude(pm => pm.Phrase)
+                .Where(s => s.DocumentId == fileId && s.PhraseMeaningExample.Count > 0)
+                .ToList();
+            
+            var sentencesDTO = new List<SentenceGetForFileResponseDTO>();
 
-        return sentencesDTO;
+            foreach (var sentence in sentences)
+            {
+                var PhrasesDTO = new List<PhraseGetForFileResponseDTO>();
+                foreach (var PhraseMeaningExample in sentence.PhraseMeaningExample)
+                {
+                    var PhraseDTO = new PhraseGetForFileResponseDTO()
+                    {
+                        PhraseId = PhraseMeaningExample.PhraseMeaning.PhraseId,
+                        PhraseMeaningId = PhraseMeaningExample.PhraseMeaning.Id,
+                        CategoryId = PhraseMeaningExample.PhraseMeaning.Phrase.SentenceCategoryId,
+                        Data = PhraseMeaningExample.PhraseMeaning.Phrase.Data,
+                        Meaning = PhraseMeaningExample.PhraseMeaning.Meaning,
+                        Comment = PhraseMeaningExample.PhraseMeaning.Comment
+                    };
+                    PhrasesDTO.Add(PhraseDTO);
+                }
+                var sentenceDTO = new SentenceGetForFileResponseDTO()
+                {
+                    SentenceId = sentence.Id,
+                    SentenceNum = sentence.SentenceNum,
+                    Phrases = PhrasesDTO
+                };
+                sentencesDTO.Add(sentenceDTO);
+            }
+
+            return sentencesDTO;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }   
 
     public bool UpdatePhrase(PhraseUpdateRequestDTO phraseModel)

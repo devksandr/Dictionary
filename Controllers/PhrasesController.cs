@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using dict_react.Services.Interfaces;
-using dict_react.Models.Entity;
 using dict_react.Models.DTO;
 
 namespace dict_react.Controllers;
@@ -26,23 +25,35 @@ public class PhrasesController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet]
-    public IEnumerable<Phrase> GetPhrasesNames()
-    {
-        var phrases = _phrasesService.GetPhrasesNames();
-        return phrases;
-    }
     [HttpGet("{phraseId}")]
-    public PhraseDTO GetPhrase(int phraseId)
+    public ActionResult GetPhrase(int phraseId)
     {
-        var phrase = _phrasesService.GetPhrase(phraseId);
-        return phrase;
+        var result = _phrasesService.GetPhrase(phraseId);
+        if (result is null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return Ok(result);
+    }
+    [HttpGet]
+    public ActionResult GetAllPhrasesInfo()
+    {
+        var result = _phrasesService.GetAllPhrasesInfo();
+        if (result is null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return Ok(result);
     }
     [HttpGet("file/{fileId}")]
-    public List<SentenceDTO_Response_GetForFile> GetPhrasesForSentence(int fileId)
+    public ActionResult GetAllPhrasesForFile(int fileId)
     {
-        var sentencePhrases = _phrasesService.GetPhrasesForSentence(fileId);
-        return sentencePhrases;
+        var result = _phrasesService.GetAllPhrasesForFile(fileId);
+        if (result is null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return Ok(result);
     }
 
     [HttpPut("{phraseId}")]
