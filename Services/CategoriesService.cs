@@ -1,27 +1,32 @@
 using dict_react.Services.Interfaces;
 using dict_react.Database;
-using dict_react.Models.Entity.Interfaces;
 using dict_react.Models.Enum;
+using dict_react.Models.DTO;
 
 namespace dict_react.Services;
 
 public class CategoriesService : ICategoriesService
 {
     private readonly ApplicationContext _db;
-    private readonly IWebHostEnvironment _environment;
 
-    public CategoriesService(ApplicationContext db, IWebHostEnvironment environment)
+    public CategoriesService(ApplicationContext db)
     {
         _db = db;
-        _environment = environment;
     }
 
     public IEnumerable<ICategory> GetCategories(Category category)
     {
-        return category switch
+        try
         {
-            Category.SentenceCategory => _db.SentenceCategories,
-            Category.PhraseMeaningCategory => _db.PhraseMeaningCategories
-        };
+            return category switch
+            {
+                Category.SentenceCategory => _db.SentenceCategories,
+                Category.PhraseMeaningCategory => _db.PhraseMeaningCategories
+            };
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 }

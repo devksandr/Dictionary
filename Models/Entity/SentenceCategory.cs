@@ -1,4 +1,5 @@
-using dict_react.Models.Entity.Interfaces;
+using dict_react.Models.DTO;
+
 namespace dict_react.Models.Entity;
 
 public class SentenceCategory : ICategory

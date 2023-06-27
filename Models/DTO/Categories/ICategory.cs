@@ -1,4 +1,4 @@
-namespace dict_react.Models.Entity.Interfaces;
+namespace dict_react.Models.DTO;
 
 public interface ICategory
 {

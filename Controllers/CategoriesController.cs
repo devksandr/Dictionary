@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using dict_react.Services.Interfaces;
-using dict_react.Models.Entity.Interfaces;
 using dict_react.Models.Enum;
 
 namespace dict_react.Controllers;
@@ -16,9 +15,13 @@ public class CategoriesController : ControllerBase
     }
 
    [HttpGet("{category}")]
-    public IEnumerable<ICategory> GetCategories(Category category)
+    public ActionResult GetCategories(Category category)
     {
-        var categories = _categoriesService.GetCategories(category);
-        return categories;
+        var result = _categoriesService.GetCategories(category);
+        if (result is null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return Ok(result);
     }
 }
