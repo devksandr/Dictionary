@@ -24,7 +24,7 @@ export class DragAndDropFile extends Component {
                     <Button 
                         color="danger"
                         onClick={() => this.props.handleRemoveDropFile(this.props.file.name)}>
-                        Remove
+                        {this.props.removeButtonText}
                     </Button>
                 </Col>
             </Row>

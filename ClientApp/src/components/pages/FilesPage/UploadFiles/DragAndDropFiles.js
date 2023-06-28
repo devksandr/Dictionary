@@ -124,6 +124,7 @@ export class DragAndDropFiles extends Component {
                     file={file} 
                     key={index}
                     handleRemoveDropFile={this.handleRemoveDropFile.bind(this)}
+                    removeButtonText={this.props.removeButtonText}
                 />
         );
 
@@ -146,7 +147,7 @@ export class DragAndDropFiles extends Component {
                     className="panel-dragAndDropFiles">
                     <span>
                         <img src={DragAndDropIcon} className="icon-dragAndDropFiles" />
-                        <p>Click or drop files here</p>
+                        <p>{this.props.text}</p>
                     </span>
                 </div>
                 <div>

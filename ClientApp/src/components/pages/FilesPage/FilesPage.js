@@ -73,19 +73,22 @@ export class FilesPage extends Component {
     }
 
     render() {
+        if(this.state.localization.length === 0) return;
+
         return (
             <div>
-                <h1>{this.state.localization.FilesList}</h1>
-                <p>{this.state.localization.FilesCount} : {this.state.filesInfo.length}</p>
+                <h1>{this.state.localization.body.FilesList}</h1>
+                <p>{this.state.localization.body.FilesCount} : {this.state.filesInfo.length}</p>
                 <Button
                     color="primary"
                     onClick={this.handleOpenModalUploadFiles.bind(this)}>
-                    {this.state.localization.AddFiles}
+                    {this.state.localization.body.AddFiles}
                 </Button>
                 <UploadFilesModal
                     modalUploadFilesState={this.state.modalUploadFilesState}
                     handleToggleModalUploadFiles={this.handleToggleModalUploadFiles.bind(this)}
                     handleSubmitUploadFiles={this.handleSubmitUploadFiles.bind(this)}
+                    localization={this.state.localization.modal}
                 />
                 <FilesVector 
                     vector={this.state.filesInfo} 

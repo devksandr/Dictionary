@@ -38,12 +38,14 @@ export class UploadFilesModal extends Component {
                     className='modal-lg'>
                     <ModalHeader 
                         toggle={this.handleToggleModalUploadFiles}>
-                        Добавление новых файлов
+                        {this.props.localization.FilesModalHeaderAdd}
                     </ModalHeader>
                     <ModalBody>
                         <DragAndDropFiles 
                             ref={this.dndRef}
                             handleUpdateDropFilesCount={this.handleUpdateDropFilesCount.bind(this)}
+                            text={this.props.localization.FilesModalTextDragAndDrop}
+                            removeButtonText={this.props.localization.FilesModalButtonRemove}
                         />
                     </ModalBody>
                     <ModalFooter className="justify-content-between">
@@ -51,12 +53,12 @@ export class UploadFilesModal extends Component {
                             color="primary"
                             disabled={!this.state.uploadButtonState}
                             onClick={() => this.handleSubmitUploadFiles(this.dndRef.current.state.dropfiles)}>
-                            Upload
+                            {this.props.localization.FilesModalButtonUpload}
                         </Button>{' '}
                         <Button
                             color="danger"
                             onClick={this.handleToggleModalUploadFiles}>
-                            Cancel
+                            {this.props.localization.FilesModalButtonCancel}
                         </Button>
                     </ModalFooter>
                 </Modal>

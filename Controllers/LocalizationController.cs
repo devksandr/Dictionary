@@ -16,7 +16,7 @@ public class LocalizationController : ControllerBase
     }
 
     [HttpGet("page/{page}")]
-    public Dictionary<string, string> GetPageLocalization(Page page)
+    public Dictionary<string, Dictionary<string, string>> GetPageLocalization(Page page)
     {
         var value = _localizationService.GetPageLocalization(page);
         return value;

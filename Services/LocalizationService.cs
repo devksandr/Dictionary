@@ -22,53 +22,78 @@ public class LocalizationService : ILocalizationService
         CurrentCultureCode = CultureInfo.CurrentCulture.Name;
     }
 
-    public Dictionary<string, string> GetPageLocalization(Page page)
+    public Dictionary<string, Dictionary<string, string>> GetPageLocalization(Page page)
     {
         ChangeCulture(CurrentCultureCode);
-        var phraseKeys = new List<string>();
+        var subPagesKeys = new Dictionary<string, List<string>>();
 
         switch (page)
         {
             case Page.Files:
-                phraseKeys.AddRange(new string[] 
-                { 
-                    "FilesList", 
-                    "FilesCount", 
-                    "AddFiles"
-                });
+                subPagesKeys = new Dictionary<string, List<string>>
+                {
+                    {"body", new List<string> 
+                        { 
+                            "FilesList", 
+                            "FilesCount", 
+                            "AddFiles"
+                        }
+                    },
+                    {"modal", new List<string> 
+                        { 
+                            "FilesModalHeaderAdd",
+                            "FilesModalTextDragAndDrop",
+                            "FilesModalButtonRemove",
+                            "FilesModalButtonUpload",
+                            "FilesModalButtonCancel"
+                        }
+                    }
+                };
                 break;
             case Page.File:
                 break;
             case Page.Phrases:
                 break;
             case Page.Menu:
-                phraseKeys.AddRange(new string[]
-                { 
-                    "MenuFilesItem", 
-                    "MenuPhrasesItem", 
-                    "MenuSettingsItem"
-                });
+                subPagesKeys = new Dictionary<string, List<string>>
+                {
+                    {"items", new List<string> 
+                        { 
+                            "MenuFilesItem", 
+                            "MenuPhrasesItem", 
+                            "MenuSettingsItem"
+                        }
+                    }
+                };
                 break;
             case Page.Settings:
-                phraseKeys.AddRange(new string[] 
-                { 
-                    "SettingsHeader", 
-                    "SettingsLanguageLabel", 
-                    "SettingsLanguageRussian", 
-                    "SettingsLanguageEnglish", 
-                    "SettingsButtonSave"
-                });
+                subPagesKeys = new Dictionary<string, List<string>>
+                {
+                    {"body", new List<string> 
+                        { 
+                            "SettingsHeader", 
+                            "SettingsLanguageLabel", 
+                            "SettingsLanguageRussian", 
+                            "SettingsLanguageEnglish", 
+                            "SettingsButtonSave"
+                        }
+                    }
+                };
                 break;
             case Page.NotFound:
-                phraseKeys.AddRange(new string[] 
-                { 
-                    "NotFoundPageText"
-                });
+                subPagesKeys = new Dictionary<string, List<string>>
+                {
+                    {"body", new List<string> 
+                        { 
+                            "NotFoundPageText"
+                        }
+                    }
+                };
                 break;
             default:
                 break;
         }
-        var pageLocalization = CreateLocalization(phraseKeys);
+        var pageLocalization = CreateLocalization(subPagesKeys);
         return pageLocalization;
     }
 
@@ -82,6 +107,9 @@ public class LocalizationService : ILocalizationService
         CultureInfo.CurrentUICulture = cultureInfo;
     }
 
-    Dictionary<string, string> CreateLocalization(List<string> phraseKeys) 
-        => phraseKeys.ToDictionary(k => k, k => _localizer[k].ToString());
+    Dictionary<string, Dictionary<string, string>> CreateLocalization(Dictionary<string, List<string>> subPagesKeys) => 
+        subPagesKeys.ToDictionary(
+            entry => entry.Key, 
+            entry => entry.Value
+                .ToDictionary(k => k, k => _localizer[k].ToString())); 
 }

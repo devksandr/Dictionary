@@ -39,11 +39,13 @@ export class SettingsPage extends Component {
     }
 
     render() {
+        if(this.state.localization.length === 0) return;
+
         return (
             <div>
-                <h1>{this.state.localization.SettingsHeader}</h1>
+                <h1>{this.state.localization.body.SettingsHeader}</h1>
                 <div>
-                    <legend>{this.state.localization.SettingsLanguageLabel}</legend>
+                    <legend>{this.state.localization.body.SettingsLanguageLabel}</legend>
                     <FormGroup check>
                         <Label check>
                             <Input 
@@ -52,7 +54,7 @@ export class SettingsPage extends Component {
                                 value={CultureCode.Russian}
                                 onChange={this.handleChangeCulture.bind(this)}
                                 checked={this.state.currentCulture === CultureCode.Russian} />
-                                {this.state.localization.SettingsLanguageRussian}
+                                {this.state.localization.body.SettingsLanguageRussian}
                         </Label>
                     </FormGroup>
                     <FormGroup check>
@@ -63,10 +65,10 @@ export class SettingsPage extends Component {
                                 value={CultureCode.English}
                                 onChange={this.handleChangeCulture.bind(this)}
                                 checked={this.state.currentCulture === CultureCode.English} />
-                                {this.state.localization.SettingsLanguageEnglish}
+                                {this.state.localization.body.SettingsLanguageEnglish}
                         </Label>
                     </FormGroup>
-                    <Button onClick={this.handleSubmitChangeCulture.bind(this)}>{this.state.localization.SettingsButtonSave}</Button>
+                    <Button onClick={this.handleSubmitChangeCulture.bind(this)}>{this.state.localization.body.SettingsButtonSave}</Button>
                 </div>
             </div>
         );

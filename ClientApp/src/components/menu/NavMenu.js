@@ -34,6 +34,8 @@ export class NavMenu extends Component {
   }
 
   render() {
+    if(this.state.localization.length === 0) return;
+    
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
@@ -42,13 +44,13 @@ export class NavMenu extends Component {
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">{this.state.localization.MenuFilesItem}</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/">{this.state.localization.items.MenuFilesItem}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/phrases">{this.state.localization.MenuPhrasesItem}</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/phrases">{this.state.localization.items.MenuPhrasesItem}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/settings">{this.state.localization.MenuSettingsItem}</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/settings">{this.state.localization.items.MenuSettingsItem}</NavLink>
               </NavItem>
             </ul>
           </Collapse>

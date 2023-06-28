@@ -117,41 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FilesList" xml:space="preserve">
-    <value>Files list</value>
-    <comment>FilesPage.Body.Header</comment>
-  </data>
-  <data name="FilesCount" xml:space="preserve">
-    <value>Files count</value>
-    <comment>FilesPage.Body.Paragraph files count</comment>
-  </data>
   <data name="MenuFilesItem" xml:space="preserve">
     <value>Files</value>
     <comment>Menu.Item Files</comment>
-  </data>
-  <data name="AddFiles" xml:space="preserve">
-    <value>Add new files</value>
-    <comment>FilesPage.Body.Button Add files</comment>
-  </data>
-  <data name="SettingsHeader" xml:space="preserve">
-    <value>Settings</value>
-    <comment>SettingsPage.Body.Header</comment>
-  </data>
-  <data name="SettingsLanguageLabel" xml:space="preserve">
-    <value>Language</value>
-    <comment>SettingsPage.Body.LanguageSelect.Label</comment>
-  </data>
-  <data name="SettingsLanguageRussian" xml:space="preserve">
-    <value>Russian</value>
-    <comment>SettingsPage.Body.LanguageSelect.Language Russian</comment>
-  </data>
-  <data name="SettingsLanguageEnglish" xml:space="preserve">
-    <value>English</value>
-    <comment>SettingsPage.Body.LanguageSelect.Language English</comment>
-  </data>
-  <data name="SettingsButtonSave" xml:space="preserve">
-    <value>Save</value>
-    <comment>SettingsPage.Body.Button Save</comment>
   </data>
   <data name="MenuPhrasesItem" xml:space="preserve">
     <value>Phrases</value>
@@ -161,8 +129,60 @@
     <value>Settings</value>
     <comment>Menu.Item Settings</comment>
   </data>
+  <data name="FilesList" xml:space="preserve">
+    <value>Files list</value>
+    <comment>Files.Body.Header</comment>
+  </data>
+  <data name="FilesCount" xml:space="preserve">
+    <value>Files count</value>
+    <comment>Files.Body.Paragraph files count</comment>
+  </data>
+  <data name="AddFiles" xml:space="preserve">
+    <value>Add new files</value>
+    <comment>Files.Body.Button Add files</comment>
+  </data>
+  <data name="FilesModalHeaderAdd" xml:space="preserve">
+    <value>Adding new files</value>
+    <comment>Files.Modal.Header add files</comment>
+  </data>
+  <data name="FilesModalTextDragAndDrop" xml:space="preserve">
+    <value>Click or drop files here</value>
+    <comment>Files.Modal.Text drag and drop</comment>
+  </data>
+  <data name="FilesModalButtonRemove" xml:space="preserve">
+    <value>Remove</value>
+    <comment>Files.Modal.Button remove</comment>
+  </data>
+  <data name="FilesModalButtonUpload" xml:space="preserve">
+    <value>Upload</value>
+    <comment>Files.Modal.Button upload</comment>
+  </data>
+  <data name="FilesModalButtonCancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Files.Modal.Button cancel</comment>
+  </data>
+  <data name="SettingsHeader" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Settings.Body.Header</comment>
+  </data>
+  <data name="SettingsLanguageLabel" xml:space="preserve">
+    <value>Language</value>
+    <comment>Settings.Body.LanguageSelect.Label</comment>
+  </data>
+  <data name="SettingsLanguageRussian" xml:space="preserve">
+    <value>Russian</value>
+    <comment>Settings.Body.LanguageSelect.Language Russian</comment>
+  </data>
+  <data name="SettingsLanguageEnglish" xml:space="preserve">
+    <value>English</value>
+    <comment>Settings.Body.LanguageSelect.Language English</comment>
+  </data>
+  <data name="SettingsButtonSave" xml:space="preserve">
+    <value>Save</value>
+    <comment>Settings.Body.Button Save</comment>
+  </data>
   <data name="NotFoundPageText" xml:space="preserve">
     <value>Page not found</value>
-    <comment>NotFoundPage.Body Text</comment>
+    <comment>NotFound.Body Text</comment>
   </data>
 </root>

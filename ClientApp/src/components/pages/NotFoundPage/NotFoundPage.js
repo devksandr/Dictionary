@@ -21,11 +21,13 @@ export class NotFoundPage extends Component {
     }
 
     render() {
+        if(this.state.localization.length === 0) return;
+
         return (
             <div className='notFound-container'>
                 <span>
                     <p className='notFound-code'>{NOT_FOUND_CODE}</p>
-                    <p className='notFound-text'>{this.state.localization.NotFoundPageText}</p>
+                    <p className='notFound-text'>{this.state.localization.body.NotFoundPageText}</p>
                 </span>
             </div>
         );
