@@ -25,14 +25,22 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
     }
 
     async handleGetFile() {
-        const { id } = this.props.params;
-        const response = await axios.get(ApiRequest.Files.Get + id);
-        this.setState({ file: response.data });
-        this.handleGetPhrasesForSentences(id);
+        try {
+            const { id } = this.props.params;
+            const response = await axios.get(ApiRequest.Files.Get + id);
+            this.setState({ file: response.data });
+            this.handleGetPhrasesForSentences(id);
+        } catch (error) {
+            alert('Unable to get file');
+        }
     }
     async handleGetPhrasesForSentences(fileId) {
-        const response = await axios.get(ApiRequest.Phrases.GetForSentence + fileId);
-        this.setState({ sentencesWithPhrases: response.data});
+        try {
+            const response = await axios.get(ApiRequest.Phrases.GetForSentence + fileId);
+            this.setState({ sentencesWithPhrases: response.data});
+        } catch (error) {
+            alert('Unable to get phrases for file/sentences');
+        }
     }
 
     async handlePhraseFormSubmit(formData, isAdd) {

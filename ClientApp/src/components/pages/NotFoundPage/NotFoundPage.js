@@ -16,8 +16,12 @@ export class NotFoundPage extends Component {
     }
 
     async handleGetLocalization() {
-        const response = await axios.get(ApiRequest.Localization.GetPage + Pages.NotFound);
-        this.setState({ localization: response.data });
+        try {
+            const response = await axios.get(ApiRequest.Localization.GetPage + Pages.NotFound);
+            this.setState({ localization: response.data });
+        } catch (error) {
+            alert('Unable to get localization');
+        }
     }
 
     render() {

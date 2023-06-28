@@ -27,16 +27,20 @@ export class SavePhrasePanel extends Component {
     }
 
     async handleGetCategories() {
-        const response = await axios.get(ApiRequest.Categories.Get + Category.SentenceCategory);
+        try {
+            const response = await axios.get(ApiRequest.Categories.Get + Category.SentenceCategory);
 
-        const sentenceCategoriesOptions = response.data.map(
-            (category, index) => <option 
-                value={category.id}
-                key={index}
-            >{category.name}</option>
-        );
+            const sentenceCategoriesOptions = response.data.map(
+                (category, index) => <option 
+                    value={category.id}
+                    key={index}
+                >{category.name}</option>
+            );
 
-        this.setState({ sentenceCategories: sentenceCategoriesOptions});
+            this.setState({ sentenceCategories: sentenceCategoriesOptions});
+        } catch (error) {
+            alert('Unable to get sentence categories');
+        }
     }
 
     handleClickPhrase(index, isAdd) {

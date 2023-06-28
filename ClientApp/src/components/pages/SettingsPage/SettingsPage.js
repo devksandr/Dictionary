@@ -18,19 +18,31 @@ export class SettingsPage extends Component {
     }
 
     async handleGetCultureCode() {
-        const response = await axios.get(ApiRequest.Localization.GetCulture);
-        this.setState({ currentCulture: response.data });
-        this.handleGetLocalization();
+        try {
+            const response = await axios.get(ApiRequest.Localization.GetCulture);
+            this.setState({ currentCulture: response.data });
+            this.handleGetLocalization();
+        } catch (error) {
+            alert('Unable to get localization code');
+        }
     }
     async handleGetLocalization() {
-        const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Settings);
-        this.setState({ localization: response.data });
+        try {
+            const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Settings);
+            this.setState({ localization: response.data });
+        } catch (error) {
+            alert('Unable to get localization');
+        }
     }
     async handleSubmitChangeCulture() {
-        await axios.put(ApiRequest.Localization.UpdateCulture + this.state.currentCulture);
-        window.location.reload(false);  // Fast way to update menu localization
-        // TODO find way to pass params to menu from page
-        //this.handleGetLocalization();
+        try {
+            await axios.put(ApiRequest.Localization.UpdateCulture + this.state.currentCulture);
+            window.location.reload(false);  // Fast way to update menu localization
+            // TODO find way to pass params to menu from page
+            //this.handleGetLocalization();
+        } catch (error) {
+            alert('Unable to update language');
+        }
     }
 
     handleChangeCulture(event) {

@@ -22,8 +22,12 @@ export class FilesPage extends Component {
     }
 
     async handleGetLocalization() {
-        const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Files);
-        this.setState({ localization: response.data });
+        try {
+            const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Files);
+            this.setState({ localization: response.data });
+        } catch (error) {
+            alert('Unable to get localization');
+        }
     }
     async handleGetFilesInfo() {
         try {
@@ -34,13 +38,21 @@ export class FilesPage extends Component {
         }
     }
     async handleDelete(fileId) {
-        await axios.delete(ApiRequest.Files.Delete + fileId);
-        this.setState({ filesInfo: [...this.state.filesInfo].filter((f) => f.fileId !== fileId) });
+        try {
+            await axios.delete(ApiRequest.Files.Delete + fileId);
+            this.setState({ filesInfo: [...this.state.filesInfo].filter((f) => f.fileId !== fileId) });
+        } catch (error) {
+            alert('Unable to delete file');
+        }
     }
     async handleSubmit(formData) {
-        const response = await axios.post(ApiRequest.Files.Add, formData);
-        const newFilesInfo = response.data;
-        this.setState({ filesInfo: this.state.filesInfo.concat(newFilesInfo) });
+        try {
+            const response = await axios.post(ApiRequest.Files.Add, formData);
+            const newFilesInfo = response.data;
+            this.setState({ filesInfo: this.state.filesInfo.concat(newFilesInfo) });
+        } catch (error) {
+            alert('Unable to create file');
+        }
     }
 
     handleOpenModalUploadFiles = () => this.setState({ modalUploadFilesState: true });

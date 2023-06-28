@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../../../../css/pages/FilePage/AddPhrasePanel.css';
-import { Category, ApiRequest, NOT_SELECTED } from '../../../../js/const.js';
-import axios from "axios";
 
 export class AddPhrasePanel extends Component {
     render() {

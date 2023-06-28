@@ -20,16 +20,28 @@ export class PhrasesPage extends Component {
     }
 
     async handleGetPhrasesNames() {
-        const response = await axios.get(ApiRequest.Phrases.GetNames);
-        this.setState({ phrasesList: response.data });
+        try {
+            const response = await axios.get(ApiRequest.Phrases.GetNames);
+            this.setState({ phrasesList: response.data });
+        } catch (error) {
+            alert('Unable to get all phrases');
+        }
     }
     async handleDelete(phraseId) {
-        await axios.delete(ApiRequest.Phrases.Delete + phraseId);
-        this.setState({ phrasesList: [...this.state.phrasesList].filter((p) => p.phraseId !== phraseId) });
+        try {
+            await axios.delete(ApiRequest.Phrases.Delete + phraseId);
+            this.setState({ phrasesList: [...this.state.phrasesList].filter((p) => p.phraseId !== phraseId) });
+        } catch (error) {
+            alert('Unable to delete phrase');
+        }
     }
     async handleGetPhrase(phraseId) {
-        const response = await axios.get(ApiRequest.Phrases.Get + phraseId);
-        this.setState({ clickedPhrase: response.data });
+        try {
+            const response = await axios.get(ApiRequest.Phrases.Get + phraseId);
+            this.setState({ clickedPhrase: response.data });
+        } catch (error) {
+            alert('Unable to get phrase');
+        }
     }
     
     clickPhrase(phraseIndex) {
