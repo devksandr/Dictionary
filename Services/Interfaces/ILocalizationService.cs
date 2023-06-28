@@ -6,5 +6,5 @@ public interface ILocalizationService
 {
     Dictionary<string, Dictionary<string, string>> GetPageLocalization(Page page);
     string GetCulture();
-    void ChangeCulture(string code);
+    bool ChangeCulture(string code);
 }

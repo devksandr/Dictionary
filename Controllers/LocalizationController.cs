@@ -16,22 +16,35 @@ public class LocalizationController : ControllerBase
     }
 
     [HttpGet("page/{page}")]
-    public Dictionary<string, Dictionary<string, string>> GetPageLocalization(Page page)
+    public ActionResult GetPageLocalization(Page page)
     {
-        var value = _localizationService.GetPageLocalization(page);
-        return value;
+        var result = _localizationService.GetPageLocalization(page);
+        if (result is null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return Ok(result);
     }
 
     [HttpGet("culture")]
-    public string GetCulture()
+    public ActionResult GetCulture()
     {
-        var code = _localizationService.GetCulture();
-        return code;
+        var result = _localizationService.GetCulture();
+        if (result is null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return Ok(result);
     }
 
     [HttpPut("culture/{code}")]
-    public void ChangeCulture(string code)
+    public ActionResult ChangeCulture(string code)
     {
-        _localizationService.ChangeCulture(code);
+        var result = _localizationService.ChangeCulture(code);
+        if(!result)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return NoContent();
     }
 }

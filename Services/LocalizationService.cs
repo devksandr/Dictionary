@@ -24,38 +24,77 @@ public class LocalizationService : ILocalizationService
 
     public Dictionary<string, Dictionary<string, string>> GetPageLocalization(Page page)
     {
-        ChangeCulture(CurrentCultureCode);
-        var subPagesKeys = new Dictionary<string, List<string>>();
-
-        switch (page)
+        try
         {
-            case Page.Files:
-                subPagesKeys = new Dictionary<string, List<string>>
+            ChangeCulture(CurrentCultureCode);
+            var subPagesKeys = SelectPageLocalization(page);
+            var pageLocalization = CreateLocalization(subPagesKeys);
+            return pageLocalization;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public string GetCulture() => CurrentCultureCode;
+
+    public bool ChangeCulture(string code)
+    {
+        try
+        {
+            CurrentCultureCode = code;
+            var cultureInfo = new CultureInfo(code);
+            CultureInfo.CurrentCulture = cultureInfo;
+            CultureInfo.CurrentUICulture = cultureInfo;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    Dictionary<string, List<string>> SelectPageLocalization(Page page)
+    {
+        return page switch
+        {
+            Page.Files => new Dictionary<string, List<string>>
+            {
+                {"body", new List<string> 
+                    { 
+                        "FilesList", 
+                        "FilesCount", 
+                        "AddFiles"
+                    }
+                },
+                {"modal", new List<string> 
+                    { 
+                        "FilesModalHeaderAdd",
+                        "FilesModalTextDragAndDrop",
+                        "FilesModalButtonRemove",
+                        "FilesModalButtonUpload",
+                        "FilesModalButtonCancel"
+                    }
+                }
+            },
+            Page.File => new Dictionary<string, List<string>>
                 {
                     {"body", new List<string> 
-                        { 
-                            "FilesList", 
-                            "FilesCount", 
-                            "AddFiles"
-                        }
-                    },
-                    {"modal", new List<string> 
-                        { 
-                            "FilesModalHeaderAdd",
-                            "FilesModalTextDragAndDrop",
-                            "FilesModalButtonRemove",
-                            "FilesModalButtonUpload",
-                            "FilesModalButtonCancel"
+                        {
+
                         }
                     }
-                };
-                break;
-            case Page.File:
-                break;
-            case Page.Phrases:
-                break;
-            case Page.Menu:
-                subPagesKeys = new Dictionary<string, List<string>>
+                },
+            Page.Phrases => new Dictionary<string, List<string>>
+                {
+                    {"body", new List<string> 
+                        {
+
+                        }
+                    }
+                },
+            Page.Menu => new Dictionary<string, List<string>>
                 {
                     {"items", new List<string> 
                         { 
@@ -64,10 +103,8 @@ public class LocalizationService : ILocalizationService
                             "MenuSettingsItem"
                         }
                     }
-                };
-                break;
-            case Page.Settings:
-                subPagesKeys = new Dictionary<string, List<string>>
+                },
+            Page.Settings => new Dictionary<string, List<string>>
                 {
                     {"body", new List<string> 
                         { 
@@ -78,35 +115,18 @@ public class LocalizationService : ILocalizationService
                             "SettingsButtonSave"
                         }
                     }
-                };
-                break;
-            case Page.NotFound:
-                subPagesKeys = new Dictionary<string, List<string>>
+                },
+            Page.NotFound => new Dictionary<string, List<string>>
                 {
                     {"body", new List<string> 
                         { 
                             "NotFoundPageText"
                         }
                     }
-                };
-                break;
-            default:
-                break;
-        }
-        var pageLocalization = CreateLocalization(subPagesKeys);
-        return pageLocalization;
+                },
+            _ => new Dictionary<string, List<string>>()
+        };
     }
-
-    public string GetCulture() => CurrentCultureCode;
-
-    public void ChangeCulture(string code)
-    {
-        CurrentCultureCode = code;
-        var cultureInfo = new CultureInfo(code);
-        CultureInfo.CurrentCulture = cultureInfo;
-        CultureInfo.CurrentUICulture = cultureInfo;
-    }
-
     Dictionary<string, Dictionary<string, string>> CreateLocalization(Dictionary<string, List<string>> subPagesKeys) => 
         subPagesKeys.ToDictionary(
             entry => entry.Key, 
