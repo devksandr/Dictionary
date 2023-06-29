@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
 namespace dict_react.Models.DTO;
 
 public class PhraseCreateRequestDTO
