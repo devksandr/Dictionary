@@ -97,23 +97,25 @@ export class SavePhrasePanel extends Component {
     render() {
         if(!this.props.appearance) return;
         const clickedSentencePhrasesData = this.props.clickedSentencePhrases.map(p => p.data);
-        const submitButtonText = this.state.clickedPhrase.data !== NOT_SELECTED ? 'Update' : 'Add';
-        
+        const isPhraseAdd = this.state.clickedPhrase.data === NOT_SELECTED;
+
         return (
             <div>
                 <SelectPhrasePanel
                     clickedSentencePhrasesData={clickedSentencePhrasesData}
                     clickedPhraseIndex={this.state.clickedPhrase.index}
                     handleClickPhrase={this.handleClickPhrase.bind(this)}
+                    localization={this.props.localization.panelSelectPhrase}
                 />
                 
                 <AddPhrasePanel
                     appearance={this.state.clickedPhrase.state}
+                    isPhraseAdd={isPhraseAdd}
                     sentenceCategories={this.state.sentenceCategories}
                     phraseFormData={this.state.phraseFormData}
-                    submitButtonText={submitButtonText}
                     handleInputChange={this.handleInputChange.bind(this)}
                     handlePhraseFormSubmit={this.handlePhraseFormSubmit.bind(this)}
+                    localization={this.props.localization.panelAddPhrase}
                 />
             </div>
         );

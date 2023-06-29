@@ -201,4 +201,36 @@
     <value>Страница не найдена</value>
     <comment>NotFound.Body Text</comment>
   </data>
+  <data name="FileSelectPhrasePanelHeader" xml:space="preserve">
+    <value>Фразы</value>
+    <comment>File.Panel.SelectPhrase.Header</comment>
+  </data>
+  <data name="FileSelectPhrasePanelButtonAdd" xml:space="preserve">
+    <value>Добавить</value>
+    <comment>File.Panel.SelectPhrase.Button add</comment>
+  </data>
+  <data name="FileAddPhrasePanelInputCategory" xml:space="preserve">
+    <value>Категория</value>
+    <comment>File.Panel.AddPhrase.Input category</comment>
+  </data>
+  <data name="FileAddPhrasePanelInputPhrase" xml:space="preserve">
+    <value>Фраза</value>
+    <comment>File.Panel.AddPhrase.Input phrase</comment>
+  </data>
+  <data name="FileAddPhrasePanelInputMeaning" xml:space="preserve">
+    <value>Значение</value>
+    <comment>File.Panel.AddPhrase.Input meaning</comment>
+  </data>
+  <data name="FileAddPhrasePanelInputComment" xml:space="preserve">
+    <value>Комментарий</value>
+    <comment>File.Panel.AddPhrase.Input comment</comment>
+  </data>
+  <data name="FileAddPhrasePanelButtonUpdate" xml:space="preserve">
+    <value>Обновить</value>
+    <comment>File.Panel.AddPhrase.Button update</comment>
+  </data>
+  <data name="FileAddPhrasePanelButtonAdd" xml:space="preserve">
+    <value>Добавить</value>
+    <comment>File.Panel.AddPhrase.Button add</comment>
+  </data>
 </root>

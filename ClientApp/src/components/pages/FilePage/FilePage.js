@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import '../../../css/Theme.css';
-import { NOT_SELECTED, ApiRequest } from '../../../js/const.js';
+import { NOT_SELECTED, ApiRequest, Pages } from '../../../js/const.js';
 import { Row, Col } from 'reactstrap';
 import { FileSentences } from './FileSentences';
 import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
@@ -11,7 +11,8 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
     constructor(props) {
         super(props);
 
-        this.state = { 
+        this.state = {
+            localization: [],
             file: {name: '', sentences: []},
             sentencesWithPhrases: [],
             clickedSentenceIndex: NOT_SELECTED,
@@ -21,9 +22,18 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
     }
 
     componentDidMount() {
+        this.handleGetLocalization();
         this.handleGetFile();
     }
 
+    async handleGetLocalization() {
+        try {
+            const response = await axios.get(ApiRequest.Localization.GetPage + Pages.File);
+            this.setState({ localization: response.data });
+        } catch (error) {
+            alert('Unable to get localization');
+        }
+    }
     async handleGetFile() {
         try {
             const { id } = this.props.params;
@@ -133,7 +143,7 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
     render() {
         return (
             <div>
-                <h1>File: {this.state.file.name}</h1>
+                <h1>{this.state.file.name}</h1>
                 <Row>
                     <Col xs="9"><FileSentences 
                         sentences={this.state.file.sentences}
@@ -147,6 +157,7 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
                         clickedSentenceIndex={this.state.clickedSentenceIndex}
                         handlePhraseFormSubmit={this.handlePhraseFormSubmit.bind(this)}
                         clickedSentencePhrases={this.state.clickedSentencePhrases}
+                        localization={this.state.localization}
                     /></Col>
                 </Row>
             </div>

@@ -51,12 +51,12 @@ export class SelectPhrasePanel extends Component {
     render() {
         let phrasesData = this.props.clickedSentencePhrasesData.map((phraseData, index) => 
             this.createPhraseOption(phraseData, index, this.handleClickPhrase.bind(this)));
-        const addOption = this.createPhraseOption('Add', phrasesData.length+1, this.handleClickAddPhrase.bind(this))
+        const addOption = this.createPhraseOption(this.props.localization.FileSelectPhrasePanelButtonAdd, phrasesData.length+1, this.handleClickAddPhrase.bind(this))
         phrasesData.push(addOption);
 
         return (
             <div className='panel-selectPhrase'>
-                <p>Phrases</p>
+                <p>{this.props.localization.FileSelectPhrasePanelHeader}</p>
                 <ul>{phrasesData}</ul>
             </div>
         );

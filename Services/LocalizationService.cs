@@ -92,7 +92,23 @@ public class LocalizationService : ILocalizationService
                         {
 
                         }
-                    }
+                    },
+                    {"panelSelectPhrase", new List<string> 
+                        {
+                            "FileSelectPhrasePanelHeader",
+                            "FileSelectPhrasePanelButtonAdd"
+                        }
+                    },
+                    {"panelAddPhrase", new List<string> 
+                        {
+                            "FileAddPhrasePanelInputCategory",
+                            "FileAddPhrasePanelInputPhrase",
+                            "FileAddPhrasePanelInputMeaning",
+                            "FileAddPhrasePanelInputComment",
+                            "FileAddPhrasePanelButtonUpdate",
+                            "FileAddPhrasePanelButtonAdd"
+                        }
+                    },
                 },
             Page.Phrases => new Dictionary<string, List<string>>
                 {
