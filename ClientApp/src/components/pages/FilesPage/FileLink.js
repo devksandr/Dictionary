@@ -31,17 +31,17 @@ export class FileLink extends Component {
                     isOpen={this.state.modalDeleteFileState} 
                     toggle={this.toggleModalDeleteFile}
                 >
-                    <ModalHeader toggle={this.toggleModalDeleteFile}>Удаление файла</ModalHeader>
-                    <ModalBody>Вы действительно хотите удалить файл '{this.props.file.name}'?</ModalBody>
+                    <ModalHeader toggle={this.toggleModalDeleteFile}>{this.props.localization.FilesRemoveModalHeader}</ModalHeader>
+                    <ModalBody>{this.props.localization.FilesRemoveModalText} '{this.props.file.name}'?</ModalBody>
                     <ModalFooter className="justify-content-between">
                         <Button
                             color="danger"
                             onClick={() => this.props.handleDelete(this.props.file.fileId)}
-                        >Да</Button>{' '}
+                        >{this.props.localization.FilesRemoveModalButtonYes}</Button>{' '}
                         <Button
                             color="primary"
                             onClick={this.toggleModalDeleteFile}
-                        >Нет</Button>
+                        >{this.props.localization.FilesRemoveModalButtonNo}</Button>
                     </ModalFooter>
                 </Modal>
             </li>

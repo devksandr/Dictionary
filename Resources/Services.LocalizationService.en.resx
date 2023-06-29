@@ -141,25 +141,41 @@
     <value>Add new files</value>
     <comment>Files.Body.Button Add files</comment>
   </data>
-  <data name="FilesModalHeaderAdd" xml:space="preserve">
+  <data name="FilesAddModalHeaderAdd" xml:space="preserve">
     <value>Adding new files</value>
-    <comment>Files.Modal.Header add files</comment>
+    <comment>Files.Modal.Add.Header add files</comment>
   </data>
-  <data name="FilesModalTextDragAndDrop" xml:space="preserve">
+  <data name="FilesAddModalTextDragAndDrop" xml:space="preserve">
     <value>Click or drop files here</value>
-    <comment>Files.Modal.Text drag and drop</comment>
+    <comment>Files.Modal.Add.Text drag and drop</comment>
   </data>
-  <data name="FilesModalButtonRemove" xml:space="preserve">
+  <data name="FilesAddModalButtonRemove" xml:space="preserve">
     <value>Remove</value>
-    <comment>Files.Modal.Button remove</comment>
+    <comment>Files.Modal.Add.Button remove</comment>
   </data>
-  <data name="FilesModalButtonUpload" xml:space="preserve">
+  <data name="FilesAddModalButtonUpload" xml:space="preserve">
     <value>Upload</value>
-    <comment>Files.Modal.Button upload</comment>
+    <comment>Files.Modal.Add.Button upload</comment>
   </data>
-  <data name="FilesModalButtonCancel" xml:space="preserve">
+  <data name="FilesAddModalButtonCancel" xml:space="preserve">
     <value>Cancel</value>
-    <comment>Files.Modal.Button cancel</comment>
+    <comment>Files.Modal.Add.Button cancel</comment>
+  </data>
+  <data name="FilesRemoveModalHeader" xml:space="preserve">
+    <value>File deletion</value>
+    <comment>Files.Modal.Remove.Header</comment>
+  </data>
+  <data name="FilesRemoveModalText" xml:space="preserve">
+    <value>Are you sure you want to delete the file</value>
+    <comment>Files.Modal.Remove.Text</comment>
+  </data>
+  <data name="FilesRemoveModalButtonYes" xml:space="preserve">
+    <value>Yes</value>
+    <comment>Files.Modal.Remove.Button yes</comment>
+  </data>
+  <data name="FilesRemoveModalButtonNo" xml:space="preserve">
+    <value>No</value>
+    <comment>Files.Modal.Remove.Button no</comment>
   </data>
   <data name="SettingsHeader" xml:space="preserve">
     <value>Settings</value>

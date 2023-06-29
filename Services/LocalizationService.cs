@@ -68,13 +68,21 @@ public class LocalizationService : ILocalizationService
                         "AddFiles"
                     }
                 },
-                {"modal", new List<string> 
+                {"modalAddFiles", new List<string> 
                     { 
-                        "FilesModalHeaderAdd",
-                        "FilesModalTextDragAndDrop",
-                        "FilesModalButtonRemove",
-                        "FilesModalButtonUpload",
-                        "FilesModalButtonCancel"
+                        "FilesAddModalHeaderAdd",
+                        "FilesAddModalTextDragAndDrop",
+                        "FilesAddModalButtonRemove",
+                        "FilesAddModalButtonUpload",
+                        "FilesAddModalButtonCancel"
+                    }
+                },
+                {"modalRemoveFile", new List<string> 
+                    { 
+                        "FilesRemoveModalHeader",
+                        "FilesRemoveModalText",
+                        "FilesRemoveModalButtonYes",
+                        "FilesRemoveModalButtonNo",
                     }
                 }
             },

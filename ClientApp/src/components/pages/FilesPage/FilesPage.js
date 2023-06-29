@@ -100,11 +100,12 @@ export class FilesPage extends Component {
                     modalUploadFilesState={this.state.modalUploadFilesState}
                     handleToggleModalUploadFiles={this.handleToggleModalUploadFiles.bind(this)}
                     handleSubmitUploadFiles={this.handleSubmitUploadFiles.bind(this)}
-                    localization={this.state.localization.modal}
+                    localization={this.state.localization.modalAddFiles}
                 />
                 <FilesVector 
                     vector={this.state.filesInfo} 
                     handleDelete={this.handleDelete.bind(this)}
+                    localization={this.state.localization.modalRemoveFile}
                 />
             </div>
         );
