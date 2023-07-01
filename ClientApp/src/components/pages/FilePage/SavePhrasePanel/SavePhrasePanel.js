@@ -11,7 +11,8 @@ export class SavePhrasePanel extends Component {
         this.state = { 
             clickedPhrase: { index: NOT_SELECTED, data: NOT_SELECTED, state: false },
             sentenceCategories: [],
-            phraseFormData: { categoryId: NOT_SELECTED, phrase: '', meaning: '', comment: '' }
+            phraseFormData: { categoryId: 1, phrase: '', meaning: '', comment: '' },
+            phraseFormValidationError: { phrase: false, meaning: false }
         };
     }
 
@@ -57,6 +58,7 @@ export class SavePhrasePanel extends Component {
             this.setState({ clickedPhrase: { index: index, data: clickedPhraseData, state: true } });
             this.setState({ phraseFormData: { categoryId: clickedPhraseData.categoryId, phrase: clickedPhraseData.data, meaning: clickedPhraseData.meaning, comment: clickedPhraseData.comment } });
         }
+        this.resetPhraseFormValidation();
     }
 
     handleInputChange(event) {
@@ -68,13 +70,49 @@ export class SavePhrasePanel extends Component {
     }
 
     handlePhraseFormSubmit(event) {
+        const addPhraseFormValidationState = this.validateAddPhraseForm();
+        if(addPhraseFormValidationState) {
+            const isAdd = this.state.clickedPhrase.data !== NOT_SELECTED ? false : true;
+            const formData = this.fillPhraseFormData(isAdd);
+            this.props.handlePhraseFormSubmit(formData, isAdd);
+            this.resetPhraseFormData();
+        }
+        event.preventDefault();
+    }
+
+    resetPhraseFormData() {
+        this.setState({ phraseFormData: { categoryId: 1, phrase: '', meaning: '', comment: '' } });
+    }
+
+    resetPhraseFormValidation() {
+        this.setState({ phraseFormValidationError: { phrase: false, meaning: false } });
+    }
+
+    validateAddPhraseForm() {
+        this.resetPhraseFormValidation();
+
+        const phrase = this.state.phraseFormData.phrase;
+        const meaning = this.state.phraseFormData.meaning;
+        let result = true;
+
+        if(!phrase || phrase.length < 3) {
+            this.setState(prevState => ({ phraseFormValidationError: { ...prevState.phraseFormValidationError, phrase: true }}))
+            result = false;
+        }
+        if(!meaning) {
+            this.setState(prevState => ({ phraseFormValidationError: { ...prevState.phraseFormValidationError, meaning: true }}))
+            result = false;
+        }
+
+        return result;
+    }
+
+    fillPhraseFormData(isAdd) {
         const formData = new FormData();
         formData.append("categoryId", this.state.phraseFormData.categoryId);
         formData.append("phrase", this.state.phraseFormData.phrase);
         formData.append("meaning", this.state.phraseFormData.meaning);
         formData.append("comment", this.state.phraseFormData.comment);
-
-        const isAdd = this.state.clickedPhrase.data !== NOT_SELECTED ? false : true;
 
         if(isAdd) {
             formData.append("sentenceId", this.props.clickedSentenceId);
@@ -84,14 +122,7 @@ export class SavePhrasePanel extends Component {
             formData.append("phraseMeaningId", this.state.clickedPhrase.data.phraseMeaningId);
         }
 
-        this.props.handlePhraseFormSubmit(formData, isAdd);
-        
-        event.preventDefault();
-        this.resetPhraseFormData();
-    }
-
-    resetPhraseFormData() {
-        this.setState({ phraseFormData: { categoryId: NOT_SELECTED, phrase: '', meaning: '', comment: '' } });
+        return formData;
     }
 
     render() {
@@ -113,6 +144,7 @@ export class SavePhrasePanel extends Component {
                     isPhraseAdd={isPhraseAdd}
                     sentenceCategories={this.state.sentenceCategories}
                     phraseFormData={this.state.phraseFormData}
+                    phraseFormValidationError={this.state.phraseFormValidationError}
                     handleInputChange={this.handleInputChange.bind(this)}
                     handlePhraseFormSubmit={this.handlePhraseFormSubmit.bind(this)}
                     localization={this.props.localization.panelAddPhrase}
