@@ -53,82 +53,70 @@ import { SavePhrasePanel } from './SavePhrasePanel/SavePhrasePanel';
         }
     }
 
-    async handlePhraseFormSubmit(formData, isAdd) {
-        isAdd ? await this.handleResponseAddPhrase(formData) : await this.handleResponseUpdatePhrase(formData);
+    handlePhraseFormSubmit(response, formData, isAdd) {
+        isAdd ? this.handleResponseAddPhrase(response, formData) : this.handleResponseUpdatePhrase(formData);
 
         this.setState({ clickedSentenceIndex: NOT_SELECTED });
         this.setState({ clickedSentenceId: NOT_SELECTED });
         this.setState({ clickedSentencePhrases: [] });
     }
-    async handleResponseAddPhrase(formData) {
-        try {
-            const response = await axios.post(ApiRequest.Phrases.Add, formData);
+    handleResponseAddPhrase(response, formData) {
+        // Set sentencesWithPhrases after Add new phrase (Add or Update)
+        const newSentencePhrase = response.data;
+        const newPhrase = { 
+            phraseId: newSentencePhrase.phraseId,
+            phraseMeaningId: newSentencePhrase.phraseMeaningId,
+            categoryId: Number(formData.get("categoryId")), 
+            data: formData.get("phrase"),
+            comment: formData.get("comment"),
+            meaning: formData.get("meaning"),
+        };
 
-            // Set sentencesWithPhrases after Add new phrase (Add or Update)
-            const newSentencePhrase = response.data;
-            const newPhrase = { 
-                phraseId: newSentencePhrase.phraseId,
-                phraseMeaningId: newSentencePhrase.phraseMeaningId,
-                categoryId: Number(formData.get("categoryId")), 
-                data: formData.get("phrase"),
-                comment: formData.get("comment"),
-                meaning: formData.get("meaning"),
-            };
-
-            var sentenceWithPhrases = this.state.sentencesWithPhrases.filter(swp => swp.sentenceId === this.state.clickedSentenceId)
-            
-            if(sentenceWithPhrases.length > 0) {
-                this.setState(state => {
-                    const sentencesWithPhrases = state.sentencesWithPhrases.map((swp) => {
-                        if (swp.sentenceId === this.state.clickedSentenceId) {
-                            const phrases = swp.phrases.concat(newPhrase)
-                            swp.phrases = phrases;
-                        }
-                        return swp;
-                    });
-                    return sentencesWithPhrases;
-                });
-            }
-            else {
-                const newSentenceWithPhrase = { 
-                    sentenceId: this.state.clickedSentenceId, 
-                    sentenceNum: newSentencePhrase.sentenceNum,
-                    phrases: [newPhrase]
-                };
-
-                this.setState({ sentencesWithPhrases: this.state.sentencesWithPhrases.concat(newSentenceWithPhrase) });
-            }
-        } catch (error) {
-            alert('Unable to add phrase');
-        }
-    }
-    async handleResponseUpdatePhrase(formData) {
-        try {
-            const phraseId = Number(formData.get("phraseId"));
-            await axios.put(ApiRequest.Phrases.Update + phraseId, formData);
-
-            // Set sentencesWithPhrases after Update phrase
+        var sentenceWithPhrases = this.state.sentencesWithPhrases.filter(swp => swp.sentenceId === this.state.clickedSentenceId)
+        
+        if(sentenceWithPhrases.length > 0) {
             this.setState(state => {
                 const sentencesWithPhrases = state.sentencesWithPhrases.map((swp) => {
                     if (swp.sentenceId === this.state.clickedSentenceId) {
-                        const phrases = swp.phrases.map((phrase) => {
-                            if(phrase.phraseId === phraseId) {
-                                phrase.categoryId = Number(formData.get("categoryId"));
-                                phrase.data = formData.get("phrase");
-                                phrase.comment = formData.get("comment");
-                                phrase.meaning = formData.get("meaning");
-                            }
-                            return phrase;
-                        });
-                        return phrases;
+                        const phrases = swp.phrases.concat(newPhrase)
+                        swp.phrases = phrases;
                     }
                     return swp;
                 });
                 return sentencesWithPhrases;
             });
-        } catch (error) {
-            alert('Unable to update phrase');
         }
+        else {
+            const newSentenceWithPhrase = { 
+                sentenceId: this.state.clickedSentenceId, 
+                sentenceNum: newSentencePhrase.sentenceNum,
+                phrases: [newPhrase]
+            };
+
+            this.setState({ sentencesWithPhrases: this.state.sentencesWithPhrases.concat(newSentenceWithPhrase) });
+        }
+    }
+    handleResponseUpdatePhrase(formData) {
+        const phraseId = Number(formData.get("phraseId"));
+        // Set sentencesWithPhrases after Update phrase
+        this.setState(state => {
+            const sentencesWithPhrases = state.sentencesWithPhrases.map((swp) => {
+                if (swp.sentenceId === this.state.clickedSentenceId) {
+                    const phrases = swp.phrases.map((phrase) => {
+                        if(phrase.phraseId === phraseId) {
+                            phrase.categoryId = Number(formData.get("categoryId"));
+                            phrase.data = formData.get("phrase");
+                            phrase.comment = formData.get("comment");
+                            phrase.meaning = formData.get("meaning");
+                        }
+                        return phrase;
+                    });
+                    return phrases;
+                }
+                return swp;
+            });
+            return sentencesWithPhrases;
+        });
     }
 
     handleClickSentence(sentenceIndex, sentenceId) {

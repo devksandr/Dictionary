@@ -69,15 +69,29 @@ export class SavePhrasePanel extends Component {
         this.setState(prevState => ({ phraseFormData: { ...prevState.phraseFormData, [name]: value }}));
     }
 
-    handlePhraseFormSubmit(event) {
-        const addPhraseFormValidationState = this.validateAddPhraseForm();
-        if(addPhraseFormValidationState) {
+    async handlePhraseFormSubmit(event) {
+        event.preventDefault();
+
+        this.resetPhraseFormValidation();
+        let validateState = this.getPhraseFormValidateState();
+        if(validateState.state) {
             const isAdd = this.state.clickedPhrase.data !== NOT_SELECTED ? false : true;
             const formData = this.fillPhraseFormData(isAdd);
-            this.props.handlePhraseFormSubmit(formData, isAdd);
-            this.resetPhraseFormData();
+            const response = await this.handleRequestPhraseFormSubmit(formData, isAdd);
+
+            if(response.otherError) {
+                // TODO handle exception for form phrase, server error
+                return;
+            }
+            if(response.validation.state) {
+                this.props.handlePhraseFormSubmit(response.data, formData, isAdd);
+                this.resetPhraseFormData();
+                return;
+            }
+
+            validateState = { state: false, data: response.validation.data};
         }
-        event.preventDefault();
+        this.validateAddPhraseForm(validateState.data);
     }
 
     resetPhraseFormData() {
@@ -88,23 +102,28 @@ export class SavePhrasePanel extends Component {
         this.setState({ phraseFormValidationError: { phrase: false, meaning: false } });
     }
 
-    validateAddPhraseForm() {
-        this.resetPhraseFormValidation();
-
+    getPhraseFormValidateState() {
         const phrase = this.state.phraseFormData.phrase;
         const meaning = this.state.phraseFormData.meaning;
-        let result = true;
+        let result = { state: true, data: { Phrase: false, Meaning: false }};
 
         if(!phrase || phrase.length < 3) {
-            this.setState(prevState => ({ phraseFormValidationError: { ...prevState.phraseFormValidationError, phrase: true }}))
-            result = false;
+            result = { ...result, state: false, data: { ...result.data, Phrase: true }};
         }
         if(!meaning) {
-            this.setState(prevState => ({ phraseFormValidationError: { ...prevState.phraseFormValidationError, meaning: true }}))
-            result = false;
+            result = { ...result, state: false, data: { ...result.data, Meaning : true }};
         }
 
         return result;
+    }
+
+    validateAddPhraseForm(formState) {
+        if(formState.Phrase) {
+            this.setState(prevState => ({ phraseFormValidationError: { ...prevState.phraseFormValidationError, phrase: true }}))
+        }
+        if(formState.Meaning) {
+            this.setState(prevState => ({ phraseFormValidationError: { ...prevState.phraseFormValidationError, meaning: true }}))
+        }
     }
 
     fillPhraseFormData(isAdd) {
@@ -123,6 +142,27 @@ export class SavePhrasePanel extends Component {
         }
 
         return formData;
+    }
+
+    async handleRequestPhraseFormSubmit(formData, isAdd) {
+        let result = { 
+            data: null, 
+            validation: { state: true, data: null },
+            otherError: false
+        };
+        
+        try {
+            const response = isAdd ? await axios.post(ApiRequest.Phrases.Add, formData) : await axios.put(ApiRequest.Phrases.Update + Number(formData.get("phraseId")), formData);
+            result = { ...result, data: response };
+        } catch (error) {
+            if(error.response.status == 400) {
+                result = { ...result, validation: {state: false, data: error.response.data.errors }};
+            }
+            else {
+                result = { ...result, otherError: true }
+            }
+        }
+        return result;
     }
 
     render() {
