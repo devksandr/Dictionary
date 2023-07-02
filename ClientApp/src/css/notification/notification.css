@@ -1,0 +1,27 @@
+.notifications-container {
+    border: 2px solid pink;
+    position: absolute;
+    top: 120px;
+    right: 30px;
+    width: 400px;
+    min-height: 300px;
+}
+
+.notification-container {
+    position: relative;
+    min-height: 60px;
+}
+
+/* Types */
+.notification-type-info {
+    background: blue;
+}
+.notification-type-success {
+    background: green;
+}
+.notification-type-warning {
+    background: yellow;
+}
+.notification-type-error {
+    background: red;
+}

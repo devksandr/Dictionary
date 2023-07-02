@@ -3,9 +3,11 @@ import { FilesVector } from './FilesVector';
 import { UploadFilesModal } from './UploadFiles/UploadFilesModal';
 import { Button } from 'reactstrap';
 import axios from "axios";
-import { Pages, ApiRequest } from '../../../js/const.js';
+import { Pages, ApiRequest, NotificationType } from '../../../js/const.js';
+import { NotificationContext } from '../../notification/NotificationProvider';
 
 export class FilesPage extends Component {
+    static contextType = NotificationContext;
 
     constructor(props) {
         super(props);
@@ -25,6 +27,7 @@ export class FilesPage extends Component {
         try {
             const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Files);
             this.setState({ localization: response.data });
+            this.context.showNotification(NotificationType.Success, 'Localization loaded'); // example. del
         } catch (error) {
             alert('Unable to get localization');
         }
