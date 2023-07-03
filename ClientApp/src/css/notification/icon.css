@@ -1,4 +1,8 @@
-.notification-icon {
+.notification-icon-type {
     width: 35px;
     height: 35px;
+}
+.notification-icon-close {
+    width: 21px;
+    height: 21px;
 }

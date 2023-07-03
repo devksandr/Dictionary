@@ -28,6 +28,9 @@ export class FilesPage extends Component {
             const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Files);
             this.setState({ localization: response.data });
             this.context.showNotification(NotificationType.Success, 'Localization loaded'); // example. del
+            this.context.showNotification(NotificationType.Info, 'Localization loaded aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa ');
+            this.context.showNotification(NotificationType.Warning, 'aa');
+            this.context.showNotification(NotificationType.Error, 'aa 2 f3ferfdssdf sd');
         } catch (error) {
             alert('Unable to get localization');
         }

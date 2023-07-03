@@ -31,14 +31,14 @@ class NotificationProvider extends Component {
 
     render() {
         const { children } = this.props;
-
+        const notificationVector = this.state.notifications.length > 0 ? <NotificationVector
+          notificationsVector={this.state.notifications}
+          handleRemove={this.removeNotification.bind(this)}
+        /> : null;
         return (
             <NotificationContext.Provider value={{ showNotification: this.showNotification }}>
                 {children}
-                <NotificationVector
-                  notificationsVector={this.state.notifications}
-                  handleRemove={this.removeNotification.bind(this)}
-                />
+                {notificationVector}
             </NotificationContext.Provider>
         );
     }
