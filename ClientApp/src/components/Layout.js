@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import { NavMenu } from './menu/NavMenu';
 import { NotificationProvider } from './notification/NotificationProvider';
+import { ContextProvider } from './ContextProvider';
 export class Layout extends Component {
   static displayName = Layout.name;
 
@@ -10,9 +11,9 @@ export class Layout extends Component {
           <div>
             <NavMenu />
             <Container tag="main" fluid>
-              <NotificationProvider>
+              <ContextProvider>
                 {this.props.children}
-              </NotificationProvider>
+              </ContextProvider>
             </Container>
           </div>
     );

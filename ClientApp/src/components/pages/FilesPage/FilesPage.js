@@ -4,10 +4,10 @@ import { UploadFilesModal } from './UploadFiles/UploadFilesModal';
 import { Button } from 'reactstrap';
 import axios from "axios";
 import { Pages, ApiRequest, NotificationType } from '../../../js/const.js';
-import { NotificationContext } from '../../notification/NotificationProvider';
+import { Context } from '../../ContextProvider';
 
 export class FilesPage extends Component {
-    static contextType = NotificationContext;
+    static contextType = Context;
 
     constructor(props) {
         super(props);
@@ -25,12 +25,10 @@ export class FilesPage extends Component {
 
     async handleGetLocalization() {
         try {
-            const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Files);
-            this.setState({ localization: response.data });
-            this.context.showNotification(NotificationType.Success, 'Localization loaded'); // example. del
-            this.context.showNotification(NotificationType.Info, 'Localization loaded aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa ');
-            this.context.showNotification(NotificationType.Warning, 'aa');
-            this.context.showNotification(NotificationType.Error, 'aa 2 f3ferfdssdf sd');
+            const responseData = await this.context.localization.getLocalization(Pages.Files);
+            this.setState({ localization: responseData });
+
+            this.context.notification.showNotification(NotificationType.Success, 'Localization loaded');
         } catch (error) {
             alert('Unable to get localization');
         }
