@@ -233,4 +233,8 @@
     <value>Добавить</value>
     <comment>File.Panel.AddPhrase.Button add</comment>
   </data>
+  <data name="FilesNotificationErrorGetFilesList" xml:space="preserve">
+    <value>Не удалось получить список файлов</value>
+    <comment>Files.Notification.Error get files list</comment>
+  </data>
 </root>

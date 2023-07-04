@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Context } from '../../ContextProvider';
-import { Pages, ApiRequest } from '../../../js/const.js';
+import { Pages, ApiRequest, NotificationType } from '../../../js/const.js';
 import { FilesVector } from './FilesVector';
 import { UploadFilesModal } from './UploadFiles/UploadFilesModal';
 import { Button } from 'reactstrap';
@@ -26,7 +26,7 @@ export class FilesPage extends Component {
             const response = await axios.get(ApiRequest.Files.GetAllFilesInfo);
             this.setState({ filesInfo: response.data });
         } catch (error) {
-            alert('Unable to get files info');
+            this.context.notification.showNotification(NotificationType.Error, this.localization.notification.FilesNotificationErrorGetFilesList);
         }
     }
     async handleDelete(fileId) {

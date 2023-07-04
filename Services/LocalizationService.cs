@@ -102,6 +102,11 @@ public class LocalizationService : ILocalizationService
                         "FilesRemoveModalButtonYes",
                         "FilesRemoveModalButtonNo",
                     }
+                },
+                {"notification", new List<string> 
+                    { 
+                        "FilesNotificationErrorGetFilesList"
+                    }
                 }
             },
             Page.File => new Dictionary<string, List<string>>
