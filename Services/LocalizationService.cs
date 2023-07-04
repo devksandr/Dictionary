@@ -37,6 +37,24 @@ public class LocalizationService : ILocalizationService
         }
     }
 
+    public IEnumerable<Dictionary<string, Dictionary<string, string>>> GetAllPagesLocalization()
+    {
+        try
+        {
+            var localization = new List<Dictionary<string, Dictionary<string, string>>>();
+            foreach (Page page in (Page[]) Enum.GetValues(typeof(Page)))
+            {
+                var pageLocalization = GetPageLocalization(page);
+                localization.Add(pageLocalization);
+            }
+            return localization;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
     public string GetCulture() => CurrentCultureCode;
 
     public bool ChangeCulture(string code)

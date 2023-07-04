@@ -26,6 +26,17 @@ public class LocalizationController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet]
+    public ActionResult GetAllPagesLocalization()
+    {
+        var result = _localizationService.GetAllPagesLocalization();
+        if (result is null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        return Ok(result);
+    }
+
     [HttpGet("culture")]
     public ActionResult GetCulture()
     {

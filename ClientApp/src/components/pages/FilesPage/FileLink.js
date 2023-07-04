@@ -1,16 +1,20 @@
 import React, {Component} from 'react';
+import { Context } from '../../ContextProvider';
+import { Pages } from '../../../js/const.js';
 import { Link } from 'react-router-dom';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { makeUrlSlug } from '../../../js/functions.js';
 
 export class FileLink extends Component {
-
-    constructor(props) {
-        super(props);
+    static contextType = Context;
+    constructor(props, context) {
+        super(props, context);
 
         this.state = { 
             modalDeleteFileState: false 
         };
+
+        this.localization = this.context.localization.data[Pages.Files].modalRemoveFile;
     }
 
     toggleModalDeleteFile = () => this.setState({ modalDeleteFileState: !this.state.modalDeleteFileState });
@@ -31,17 +35,17 @@ export class FileLink extends Component {
                     isOpen={this.state.modalDeleteFileState} 
                     toggle={this.toggleModalDeleteFile}
                 >
-                    <ModalHeader toggle={this.toggleModalDeleteFile}>{this.props.localization.FilesRemoveModalHeader}</ModalHeader>
-                    <ModalBody>{this.props.localization.FilesRemoveModalText} '{this.props.file.name}'?</ModalBody>
+                    <ModalHeader toggle={this.toggleModalDeleteFile}>{this.localization.FilesRemoveModalHeader}</ModalHeader>
+                    <ModalBody>{this.localization.FilesRemoveModalText} '{this.props.file.name}'?</ModalBody>
                     <ModalFooter className="justify-content-between">
                         <Button
                             color="danger"
                             onClick={() => this.props.handleDelete(this.props.file.fileId)}
-                        >{this.props.localization.FilesRemoveModalButtonYes}</Button>{' '}
+                        >{this.localization.FilesRemoveModalButtonYes}</Button>{' '}
                         <Button
                             color="primary"
                             onClick={this.toggleModalDeleteFile}
-                        >{this.props.localization.FilesRemoveModalButtonNo}</Button>
+                        >{this.localization.FilesRemoveModalButtonNo}</Button>
                     </ModalFooter>
                 </Modal>
             </li>

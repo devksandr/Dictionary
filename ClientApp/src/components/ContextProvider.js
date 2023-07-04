@@ -10,6 +10,7 @@ class ContextProvider extends Component {
     constructor (props) {
         super(props);
         this.state = {
+            localization: null,
             notifications: []
         };
     }
@@ -19,7 +20,7 @@ class ContextProvider extends Component {
     }
 
     async initContext() {
-        const localization = await this.getLocalization(1);    // TODO get all localization
+        await this.getAllLocalization();
     }
 
     // Notification
@@ -40,17 +41,18 @@ class ContextProvider extends Component {
     }
 
     // Localization
-    async getLocalization(page) {
-        const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Files);
-        const localization = response.data;
-        return localization
+    async getAllLocalization() {
+        const response = await axios.get(ApiRequest.Localization.GetAllPages);
+        this.setState({ localization: response.data });
     }
 
 
     render() {
+        if(this.state.localization === null) return;
+
         const { children } = this.props;
         const contextValue = {
-            localization: { getLocalization: async (page) => await this.getLocalization(page) },
+            localization: { data: this.state.localization },    // getLocalization: async (page) => await this.getLocalization(page)
             notification: { showNotification: (type, message) => this.addNotification(type, message) }
         }
         const notificationVector = this.state.notifications.length > 0 ? <NotificationVector

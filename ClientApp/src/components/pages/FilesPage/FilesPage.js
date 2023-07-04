@@ -1,38 +1,26 @@
 import React, { Component } from 'react';
+import { Context } from '../../ContextProvider';
+import { Pages, ApiRequest } from '../../../js/const.js';
 import { FilesVector } from './FilesVector';
 import { UploadFilesModal } from './UploadFiles/UploadFilesModal';
 import { Button } from 'reactstrap';
 import axios from "axios";
-import { Pages, ApiRequest, NotificationType } from '../../../js/const.js';
-import { Context } from '../../ContextProvider';
 
 export class FilesPage extends Component {
     static contextType = Context;
-
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
         this.state = { 
-            localization: [],
             filesInfo: [],
             modalUploadFilesState: false
         };
+        this.localization = this.context.localization.data[Pages.Files];
     }
 
     componentDidMount() {
-        this.handleGetLocalization();
         this.handleGetFilesInfo();
     }
 
-    async handleGetLocalization() {
-        try {
-            const responseData = await this.context.localization.getLocalization(Pages.Files);
-            this.setState({ localization: responseData });
-
-            this.context.notification.showNotification(NotificationType.Success, 'Localization loaded');
-        } catch (error) {
-            alert('Unable to get localization');
-        }
-    }
     async handleGetFilesInfo() {
         try {
             const response = await axios.get(ApiRequest.Files.GetAllFilesInfo);
@@ -89,27 +77,23 @@ export class FilesPage extends Component {
     }
 
     render() {
-        if(this.state.localization.length === 0) return;
-
         return (
             <div>
-                <h1>{this.state.localization.body.FilesList}</h1>
-                <p>{this.state.localization.body.FilesCount} : {this.state.filesInfo.length}</p>
+                <h1>{this.localization.body.FilesList}</h1>
+                <p>{this.localization.body.FilesCount} : {this.state.filesInfo.length}</p>
                 <Button
                     color="primary"
                     onClick={this.handleOpenModalUploadFiles.bind(this)}>
-                    {this.state.localization.body.AddFiles}
+                    {this.localization.body.AddFiles}
                 </Button>
                 <UploadFilesModal
                     modalUploadFilesState={this.state.modalUploadFilesState}
                     handleToggleModalUploadFiles={this.handleToggleModalUploadFiles.bind(this)}
                     handleSubmitUploadFiles={this.handleSubmitUploadFiles.bind(this)}
-                    localization={this.state.localization.modalAddFiles}
                 />
                 <FilesVector 
                     vector={this.state.filesInfo} 
                     handleDelete={this.handleDelete.bind(this)}
-                    localization={this.state.localization.modalRemoveFile}
                 />
             </div>
         );

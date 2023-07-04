@@ -21,12 +21,12 @@ export const PhraseMeaningCategory = {
 };
 
 export const Pages = {
-    Files: 1,
-    File: 2,
-    Phrases: 3,
-    Menu: 4,
-    Settings: 5,
-    NotFound: 6
+    Files: 0,
+    File: 1,
+    Phrases: 2,
+    Menu: 3,
+    Settings: 4,
+    NotFound: 5
 };
 
 export const CultureCode = {
@@ -37,6 +37,7 @@ export const CultureCode = {
 export const ApiRequest = {
     Localization: {
         GetPage: 'api/localization/page/',
+        GetAllPages: 'api/localization/',
         GetCulture: 'api/localization/culture/',
         UpdateCulture: 'api/localization/culture/'
     },

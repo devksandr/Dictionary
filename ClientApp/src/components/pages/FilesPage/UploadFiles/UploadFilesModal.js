@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
+import { Context } from '../../../ContextProvider';
 import { DragAndDropFiles } from './DragAndDropFiles';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import '../../../../css/pages/FilesPage/DragAndDropFiles.css';
+import { Pages } from '../../../../js/const.js';
 
 export class UploadFilesModal extends Component {
-
-    constructor(props) {
-        super(props);
-
+    static contextType = Context;
+    constructor(props, context) {
+        super(props, context);
         this.state = { 
             uploadButtonState: false
         };
-
+        this.localization = this.context.localization.data[Pages.Files].modalAddFiles;
         this.handleToggleModalUploadFiles = this.handleToggleModalUploadFiles.bind(this);
         this.dndRef = React.createRef();
     }
@@ -38,14 +39,14 @@ export class UploadFilesModal extends Component {
                     className='modal-lg'>
                     <ModalHeader 
                         toggle={this.handleToggleModalUploadFiles}>
-                        {this.props.localization.FilesAddModalHeaderAdd}
+                        {this.localization.FilesAddModalHeaderAdd}
                     </ModalHeader>
                     <ModalBody>
                         <DragAndDropFiles 
                             ref={this.dndRef}
                             handleUpdateDropFilesCount={this.handleUpdateDropFilesCount.bind(this)}
-                            text={this.props.localization.FilesAddModalTextDragAndDrop}
-                            removeButtonText={this.props.localization.FilesAddModalButtonRemove}
+                            text={this.localization.FilesAddModalTextDragAndDrop}
+                            removeButtonText={this.localization.FilesAddModalButtonRemove}
                         />
                     </ModalBody>
                     <ModalFooter className="justify-content-between">
@@ -53,12 +54,12 @@ export class UploadFilesModal extends Component {
                             color="primary"
                             disabled={!this.state.uploadButtonState}
                             onClick={() => this.handleSubmitUploadFiles(this.dndRef.current.state.dropfiles)}>
-                            {this.props.localization.FilesAddModalButtonUpload}
+                            {this.localization.FilesAddModalButtonUpload}
                         </Button>{' '}
                         <Button
                             color="danger"
                             onClick={this.handleToggleModalUploadFiles}>
-                            {this.props.localization.FilesAddModalButtonCancel}
+                            {this.localization.FilesAddModalButtonCancel}
                         </Button>
                     </ModalFooter>
                 </Modal>

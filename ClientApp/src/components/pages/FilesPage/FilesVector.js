@@ -8,7 +8,6 @@ export class FilesVector extends Component {
                 file={file} 
                 key={index} 
                 handleDelete={this.props.handleDelete.bind(this)}
-                localization={this.props.localization}
             />
         );
 
