@@ -1,72 +1,57 @@
 import React, { Component } from 'react';
-import axios from "axios";
-import { Pages, CultureCode, ApiRequest } from '../../../js/const.js';
+import { Context } from '../../ContextProvider';
+import { Pages, CultureCode } from '../../../js/const.js';
 import { Button, FormGroup, Label, Input } from 'reactstrap';
 
 export class SettingsPage extends Component {
-
-    constructor(props) {
-        super(props);
+    static contextType = Context;
+    constructor(props, context) {
+        super(props, context);
         this.state = { 
             localization: [],
             currentCulture: null
         };
+
+        //this.localization = this.context.localization.data[Pages.Settings];
     }
 
     componentDidMount() {
         this.handleGetCultureCode();
     }
 
-    async handleGetCultureCode() {
-        try {
-            const response = await axios.get(ApiRequest.Localization.GetCulture);
-            this.setState({ currentCulture: response.data });
-            this.handleGetLocalization();
-        } catch (error) {
-            alert('Unable to get localization code');
-        }
+    handleGetCultureCode() {
+        this.setState({ currentCulture: this.context.localization.language });
     }
-    async handleGetLocalization() {
-        try {
-            const response = await axios.get(ApiRequest.Localization.GetPage + Pages.Settings);
-            this.setState({ localization: response.data });
-        } catch (error) {
-            alert('Unable to get localization');
-        }
-    }
+    
     async handleSubmitChangeCulture() {
         try {
-            await axios.put(ApiRequest.Localization.UpdateCulture + this.state.currentCulture);
-            window.location.reload(false);  // Fast way to update menu localization
-            // TODO find way to pass params to menu from page
-            //this.handleGetLocalization();
+            await this.context.localization.changeLanguage(this.state.currentCulture);
+            await this.context.localization.getAllLocalization();
         } catch (error) {
             alert('Unable to update language');
         }
     }
 
-    handleChangeCulture(event) {
+    handleRadioChangeCulture(event) {
         const lang = event.target.value;
         this.setState({ currentCulture: lang });
     }
 
     render() {
-        if(this.state.localization.length === 0) return;
-
         return (
             <div>
-                <h1>{this.state.localization.body.SettingsHeader}</h1>
+                <h1>{this.context.localization.data[Pages.Settings].body.SettingsHeader}</h1>
                 <div>
-                    <legend>{this.state.localization.body.SettingsLanguageLabel}</legend>
+                    <legend>{this.context.localization.data[Pages.Settings].body.SettingsLanguageLabel}</legend>
                     <FormGroup check>
                         <Label check>
                             <Input 
                                 type="radio" 
                                 name="radio-lang-ru"
                                 value={CultureCode.Russian}
-                                onChange={this.handleChangeCulture.bind(this)}
+                                onChange={this.handleRadioChangeCulture.bind(this)}
                                 checked={this.state.currentCulture === CultureCode.Russian} />
-                                {this.state.localization.body.SettingsLanguageRussian}
+                                {this.context.localization.data[Pages.Settings].body.SettingsLanguageRussian}
                         </Label>
                     </FormGroup>
                     <FormGroup check>
@@ -75,12 +60,12 @@ export class SettingsPage extends Component {
                                 type="radio" 
                                 name="radio-lang-en"
                                 value={CultureCode.English}
-                                onChange={this.handleChangeCulture.bind(this)}
+                                onChange={this.handleRadioChangeCulture.bind(this)}
                                 checked={this.state.currentCulture === CultureCode.English} />
-                                {this.state.localization.body.SettingsLanguageEnglish}
+                                {this.context.localization.data[Pages.Settings].body.SettingsLanguageEnglish}
                         </Label>
                     </FormGroup>
-                    <Button onClick={this.handleSubmitChangeCulture.bind(this)}>{this.state.localization.body.SettingsButtonSave}</Button>
+                    <Button onClick={this.handleSubmitChangeCulture.bind(this)}>{this.context.localization.data[Pages.Settings].body.SettingsButtonSave}</Button>
                 </div>
             </div>
         );

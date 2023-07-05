@@ -1,7 +1,7 @@
 import React, { Component, createContext } from 'react';
 import '../css/notification/notification.css';
 import { NotificationVector } from './notification/NotificationVector';
-import { Pages, ApiRequest } from '../js/const.js';
+import { ApiRequest } from '../js/const.js';
 import axios from "axios";
 
 const Context = createContext();
@@ -10,7 +10,7 @@ class ContextProvider extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            localization: null,
+            localization: { data: null, language: null },
             notifications: []
         };
     }
@@ -20,6 +20,7 @@ class ContextProvider extends Component {
     }
 
     async initContext() {
+        await this.getLanguage();
         await this.getAllLocalization();
     }
 
@@ -43,16 +44,29 @@ class ContextProvider extends Component {
     // Localization
     async getAllLocalization() {
         const response = await axios.get(ApiRequest.Localization.GetAllPages);
-        this.setState({ localization: response.data });
+        this.setState(prevState => ({ localization: { ...prevState.localization, data: response.data }}))
+    }
+    async getLanguage() {
+        const response = await axios.get(ApiRequest.Localization.GetCulture);
+        const language = response.data;
+        this.setState(prevState => ({ localization: { ...prevState.localization, language: language }}))
+    }
+    async changeLanguage(language) {
+        await axios.put(ApiRequest.Localization.UpdateCulture + language);
+        this.setState(prevState => ({ localization: { ...prevState.localization, language: language }}))
     }
 
-
     render() {
-        if(this.state.localization === null) return;
+        if(this.state.localization.data === null) return;
 
         const { children } = this.props;
         const contextValue = {
-            localization: { data: this.state.localization },    // getLocalization: async (page) => await this.getLocalization(page)
+            localization: { 
+                data: this.state.localization.data,
+                language: this.state.localization.language,
+                getAllLocalization: async () => await this.getAllLocalization(),
+                changeLanguage: async (language) => await this.changeLanguage(language)
+            },
             notification: { showNotification: (type, message) => this.addNotification(type, message) }
         }
         const notificationVector = this.state.notifications.length > 0 ? <NotificationVector
