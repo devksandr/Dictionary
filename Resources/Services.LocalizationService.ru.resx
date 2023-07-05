@@ -237,4 +237,16 @@
     <value>Не удалось получить список файлов</value>
     <comment>Files.Notification.Error get files list</comment>
   </data>
+  <data name="PhrasesBodyHeader" xml:space="preserve">
+    <value>Фразы</value>
+    <comment>Phrases.Body.Header</comment>
+  </data>
+  <data name="FileAddPhrasePanelInputValidationPhrase" xml:space="preserve">
+    <value>Длина фразы должна быть больше</value>
+    <comment>File.Panel.AddPhrase.InputValidation phrase</comment>
+  </data>
+  <data name="FileAddPhrasePanelInputValidationMeaning" xml:space="preserve">
+    <value>Значение обязательно</value>
+    <comment>File.Panel.AddPhrase.InputValidation meaning</comment>
+  </data>
 </root>

@@ -10,7 +10,7 @@ import NotificationIconInfo from '../../img/notification/notification-info.png';
 import NotificationIconWarning from '../../img/notification/notification-warning.png';
 
 
-const notificationAppearTime = 3000;
+const NOTIFICATION_APPEAR_TIME = 3000;
 
 export class Notification extends Component {
     constructor (props) {
@@ -18,7 +18,7 @@ export class Notification extends Component {
 
         this.state = {
             notification: null,
-            timer: setTimeout(this.remove.bind(this), notificationAppearTime)
+            timer: setTimeout(this.remove.bind(this), NOTIFICATION_APPEAR_TIME)
         };
     }
 

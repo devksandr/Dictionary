@@ -129,7 +129,9 @@ public class LocalizationService : ILocalizationService
                             "FileAddPhrasePanelInputMeaning",
                             "FileAddPhrasePanelInputComment",
                             "FileAddPhrasePanelButtonUpdate",
-                            "FileAddPhrasePanelButtonAdd"
+                            "FileAddPhrasePanelButtonAdd",
+                            "FileAddPhrasePanelInputValidationPhrase",
+                            "FileAddPhrasePanelInputValidationMeaning"
                         }
                     },
                 },
@@ -137,7 +139,7 @@ public class LocalizationService : ILocalizationService
                 {
                     {"body", new List<string> 
                         {
-
+                            "PhrasesBodyHeader"
                         }
                     }
                 },

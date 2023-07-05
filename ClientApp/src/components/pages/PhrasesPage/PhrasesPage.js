@@ -63,7 +63,7 @@ export class PhrasesPage extends Component {
     render() {
         return (
             <div>
-                <p>phrases</p>
+                <h1>{this.localization.PhrasesBodyHeader}</h1>
                 <PhrasesVector 
                     vector={this.state.phrasesList}
                     handleDelete={this.handleDelete.bind(this)}

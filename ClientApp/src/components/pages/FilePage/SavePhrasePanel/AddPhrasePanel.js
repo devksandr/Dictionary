@@ -5,6 +5,8 @@ import '../../../../css/pages/FilePage/AddPhrasePanel.css';
 import '../../../../css/pages/FilePage/AddPhraseValidation.css';
 import { Pages } from '../../../../js/const.js';
 
+const MIN_PHRASE_LENGTH = 3;
+
 export class AddPhrasePanel extends Component {
     static contextType = Context;
     constructor(props, context) {
@@ -18,8 +20,8 @@ export class AddPhrasePanel extends Component {
     render() {
         if(!this.props.appearance) return;  // TODO replace with another flag (by panel add/update)
         const submitButtonText = this.props.isPhraseAdd ? this.localization.FileAddPhrasePanelButtonAdd : this.localization.FileAddPhrasePanelButtonUpdate;
-        const phraseValidation = this.createValidationElement(this.props.phraseFormValidationError.phrase, 'Phrase length must be more than 3');
-        const meaningValidation = this.createValidationElement(this.props.phraseFormValidationError.meaning, 'Meaning is required');
+        const phraseValidation = this.createValidationElement(this.props.phraseFormValidationError.phrase, this.localization.FileAddPhrasePanelInputValidationPhrase + ' ' + MIN_PHRASE_LENGTH);
+        const meaningValidation = this.createValidationElement(this.props.phraseFormValidationError.meaning, this.localization.FileAddPhrasePanelInputValidationMeaning);
 
         return (
             <Form className='form-addPhrase' onSubmit={this.props.handlePhraseFormSubmit}>

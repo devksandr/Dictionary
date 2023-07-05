@@ -237,4 +237,16 @@
     <value>Unable to get files list</value>
     <comment>Files.Notification.Error get files list</comment>
   </data>
+  <data name="PhrasesBodyHeader" xml:space="preserve">
+    <value>Phrases</value>
+    <comment>Phrases.Body.Header</comment>
+  </data>
+  <data name="FileAddPhrasePanelInputValidationPhrase" xml:space="preserve">
+    <value>Phrase length must be more than</value>
+    <comment>File.Panel.AddPhrase.InputValidation phrase</comment>
+  </data>
+  <data name="FileAddPhrasePanelInputValidationMeaning" xml:space="preserve">
+    <value>Meaning is required</value>
+    <comment>File.Panel.AddPhrase.InputValidation meaning</comment>
+  </data>
 </root>

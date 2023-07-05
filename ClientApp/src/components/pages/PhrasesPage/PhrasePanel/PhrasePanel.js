@@ -26,7 +26,6 @@ export class PhrasePanel extends Component {
                 <div className='tags'></div>
                 <Row className='phrase-data'>
                     <Col className='phrase-meaning-panel' xs="6">
-                        <p>meanings list</p>
                         <ol>{phraseMeaningsVector}</ol>
                     </Col>
                     <Col className='phrase-reference-panel'>
