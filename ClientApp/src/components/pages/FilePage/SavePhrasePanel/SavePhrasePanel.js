@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
+import { Context } from '../../../ContextProvider';
 import { SelectPhrasePanel } from './SelectPhrasePanel';
 import { AddPhrasePanel } from './AddPhrasePanel';
-import { Category, ApiRequest, NOT_SELECTED } from '../../../../js/const.js';
+import { Category, ApiRequest, NOT_SELECTED, NotificationType, Pages } from '../../../../js/const.js';
 import axios from "axios";
 export class SavePhrasePanel extends Component {
-
-    constructor(props) {
-        super(props);
+    static contextType = Context;
+    constructor(props, context) {
+        super(props, context);
 
         this.state = { 
             clickedPhrase: { index: NOT_SELECTED, data: NOT_SELECTED, state: false },
@@ -14,6 +15,8 @@ export class SavePhrasePanel extends Component {
             phraseFormData: { categoryId: 1, phrase: '', meaning: '', comment: '' },
             phraseFormValidationError: { phrase: false, meaning: false }
         };
+
+        this.localization = this.context.localization.data[Pages.File].notification;
     }
 
     componentDidMount() {
@@ -81,11 +84,16 @@ export class SavePhrasePanel extends Component {
 
             if(response.otherError) {
                 // TODO handle exception for form phrase, server error
+                this.context.notification.showNotification(NotificationType.Error, 'Phrase form error');
                 return;
             }
             if(response.validation.state) {
                 this.props.handlePhraseFormSubmit(response.data, formData, isAdd);
                 this.resetPhraseFormData();
+
+                const phraseFormSuccessNotificationText = isAdd ? this.localization.FileNotificationPhrasePanelAdd : this.localization.FileNotificationPhrasePanelUpdate;
+                this.context.notification.showNotification(NotificationType.Success, phraseFormSuccessNotificationText);
+
                 return;
             }
 

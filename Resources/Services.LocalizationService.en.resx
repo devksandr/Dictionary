@@ -249,4 +249,56 @@
     <value>Meaning is required</value>
     <comment>File.Panel.AddPhrase.InputValidation meaning</comment>
   </data>
+  <data name="FileNotificationPhrasePanelAdd" xml:space="preserve">
+    <value>Phrase added</value>
+    <comment>File.Notification.PhrasePanel add</comment>
+  </data>
+  <data name="FileNotificationPhrasePanelUpdate" xml:space="preserve">
+    <value>Phrase updated</value>
+    <comment>File.Notification.PhrasePanel update</comment>
+  </data>
+  <data name="FilesNotificationModalAddSelectDuplicate" xml:space="preserve">
+    <value>The selected files contain the same names. Addition canceled</value>
+    <comment>Files.Notification.Modal add select duplicate</comment>
+  </data>
+  <data name="FilesNotificationModalDelete" xml:space="preserve">
+    <value>File deleted</value>
+    <comment>Files.Notification.Modal delete</comment>
+  </data>
+  <data name="FilesNotificationModalDeleteError" xml:space="preserve">
+    <value>Unable to delete file</value>
+    <comment>Files.Notification.Modal delete error</comment>
+  </data>
+  <data name="FilesNotificationModalAdd" xml:space="preserve">
+    <value>File added</value>
+    <comment>Files.Notification.Modal add</comment>
+  </data>
+  <data name="FilesNotificationModalAddError" xml:space="preserve">
+    <value>Unable to add file</value>
+    <comment>Files.Notification.Modal add error</comment>
+  </data>
+  <data name="FilesNotificationModalAddSubmitDuplicate" xml:space="preserve">
+    <value>Files to be added contain the same names. Addition canceled</value>
+    <comment>Files.Notification.Modal add submit duplicate</comment>
+  </data>
+  <data name="SettingsNotificationLanguageChange" xml:space="preserve">
+    <value>Language changed</value>
+    <comment>Settings.Notification.Language change</comment>
+  </data>
+  <data name="SettingsNotificationLanguageChangeError" xml:space="preserve">
+    <value>Unable to update language</value>
+    <comment>Settings.Notification.Language change error</comment>
+  </data>
+  <data name="PhrasesNotificationDelete" xml:space="preserve">
+    <value>Phrase deleted</value>
+    <comment>Phrases.Notification.Delete</comment>
+  </data>
+  <data name="PhrasesNotificationDeleteError" xml:space="preserve">
+    <value>Unable to delete phrase</value>
+    <comment>Phrases.Notification.Delete error</comment>
+  </data>
+  <data name="PhrasesNotificationGetPhraseInfoError" xml:space="preserve">
+    <value>Unable to get phrase data</value>
+    <comment>Phrases.Notification.GetPhraseInfo error</comment>
+  </data>
 </root>

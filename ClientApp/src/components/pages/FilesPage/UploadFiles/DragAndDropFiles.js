@@ -1,17 +1,22 @@
 import React, { Component } from "react";
+import { Context } from '../../../ContextProvider';
 import { DragAndDropFile } from "./DragAndDropFile";
 import "../../../../css/pages/FilesPage/DragAndDropFiles.css";
 import DragAndDropIcon from '../../../../img/drag-and-drop-icon.png';
 import { renameFile, getFileNameWithoutExtension } from '../../../../js/functions.js';
+import { NotificationType, Pages } from '../../../../js/const.js';
 export class DragAndDropFiles extends Component {
-    constructor(props) {
-        super(props);
+    static contextType = Context;
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             drag: false,
             dropfiles: []
         };
         
         this.inputFileRef = React.createRef();
+
+        this.localization = this.context.localization.data[Pages.Files].notification;
     }
 
     handleEventDefaultOptions = (e) => {
@@ -66,7 +71,7 @@ export class DragAndDropFiles extends Component {
     handleDropFiles(dropfiles) {
         const filesWithoutExtension = this.dropFilesExtension(dropfiles);
         if(!this.validateDuplicatesDropFiles(filesWithoutExtension)) {
-            alert('Drop files have duplicates. Reselect files');
+            this.context.notification.showNotification(NotificationType.Warning,  this.localization.FilesNotificationModalAddSelectDuplicate);
             return;
         }
         

@@ -105,7 +105,13 @@ public class LocalizationService : ILocalizationService
                 },
                 {"notification", new List<string> 
                     { 
-                        "FilesNotificationErrorGetFilesList"
+                        "FilesNotificationErrorGetFilesList",
+                        "FilesNotificationModalAddSelectDuplicate",
+                        "FilesNotificationModalDelete",
+                        "FilesNotificationModalDeleteError",
+                        "FilesNotificationModalAdd",
+                        "FilesNotificationModalAddError",
+                        "FilesNotificationModalAddSubmitDuplicate"
                     }
                 }
             },
@@ -134,12 +140,25 @@ public class LocalizationService : ILocalizationService
                             "FileAddPhrasePanelInputValidationMeaning"
                         }
                     },
+                    {"notification", new List<string> 
+                    { 
+                        "FileNotificationPhrasePanelAdd",
+                        "FileNotificationPhrasePanelUpdate"
+                    }
+                }
                 },
             Page.Phrases => new Dictionary<string, List<string>>
                 {
                     {"body", new List<string> 
                         {
                             "PhrasesBodyHeader"
+                        }
+                    },
+                    {"notification", new List<string> 
+                        {
+                            "PhrasesNotificationDelete",
+                            "PhrasesNotificationDeleteError",
+                            "PhrasesNotificationGetPhraseInfoError"
                         }
                     }
                 },
@@ -162,6 +181,12 @@ public class LocalizationService : ILocalizationService
                             "SettingsLanguageRussian", 
                             "SettingsLanguageEnglish", 
                             "SettingsButtonSave"
+                        }
+                    },
+                    {"notification", new List<string> 
+                        { 
+                            "SettingsNotificationLanguageChange",
+                            "SettingsNotificationLanguageChangeError"
                         }
                     }
                 },

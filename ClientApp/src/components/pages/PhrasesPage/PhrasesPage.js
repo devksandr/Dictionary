@@ -3,7 +3,7 @@ import { Context } from '../../ContextProvider';
 import axios from "axios";
 import { PhrasesVector } from './PhrasesVector';
 import { PhrasePanel } from './PhrasePanel/PhrasePanel.js';
-import { Pages, NOT_SELECTED, ApiRequest } from '../../../js/const.js';
+import { Pages, NOT_SELECTED, ApiRequest, NotificationType } from '../../../js/const.js';
 
 export class PhrasesPage extends Component {
     static contextType = Context;
@@ -15,7 +15,7 @@ export class PhrasesPage extends Component {
             clickedPhrase: null
         };
 
-        this.localization = this.context.localization.data[Pages.Phrases].body;
+        this.localization = this.context.localization.data[Pages.Phrases];
     }
 
     componentDidMount() {
@@ -34,8 +34,9 @@ export class PhrasesPage extends Component {
         try {
             await axios.delete(ApiRequest.Phrases.Delete + phraseId);
             this.setState({ phrasesList: [...this.state.phrasesList].filter((p) => p.phraseId !== phraseId) });
+            this.context.notification.showNotification(NotificationType.Success, this.localization.notification.PhrasesNotificationDelete);
         } catch (error) {
-            alert('Unable to delete phrase');
+            this.context.notification.showNotification(NotificationType.Error, this.localization.notification.PhrasesNotificationDeleteError);
         }
     }
     async handleGetPhrase(phraseId) {
@@ -43,7 +44,7 @@ export class PhrasesPage extends Component {
             const response = await axios.get(ApiRequest.Phrases.Get + phraseId);
             this.setState({ clickedPhrase: response.data });
         } catch (error) {
-            alert('Unable to get phrase');
+            this.context.notification.showNotification(NotificationType.Error, this.localization.notification.PhrasesNotificationGetPhraseInfoError);
         }
     }
     
@@ -63,7 +64,7 @@ export class PhrasesPage extends Component {
     render() {
         return (
             <div>
-                <h1>{this.localization.PhrasesBodyHeader}</h1>
+                <h1>{this.localization.body.PhrasesBodyHeader}</h1>
                 <PhrasesVector 
                     vector={this.state.phrasesList}
                     handleDelete={this.handleDelete.bind(this)}

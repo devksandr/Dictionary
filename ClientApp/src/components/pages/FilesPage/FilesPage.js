@@ -33,8 +33,9 @@ export class FilesPage extends Component {
         try {
             await axios.delete(ApiRequest.Files.Delete + fileId);
             this.setState({ filesInfo: [...this.state.filesInfo].filter((f) => f.fileId !== fileId) });
+            this.context.notification.showNotification(NotificationType.Success, this.localization.notification.FilesNotificationModalDelete);
         } catch (error) {
-            alert('Unable to delete file');
+            this.context.notification.showNotification(NotificationType.Error, this.localization.notification.FilesNotificationModalDeleteError);
         }
     }
     async handleSubmit(formData) {
@@ -42,8 +43,9 @@ export class FilesPage extends Component {
             const response = await axios.post(ApiRequest.Files.Add, formData);
             const newFilesInfo = response.data;
             this.setState({ filesInfo: this.state.filesInfo.concat(newFilesInfo) });
+            this.context.notification.showNotification(NotificationType.Success, this.localization.notification.FilesNotificationModalAdd);
         } catch (error) {
-            alert('Unable to create file');
+            this.context.notification.showNotification(NotificationType.Error, this.localization.notification.FilesNotificationModalAddError);
         }
     }
 
@@ -52,7 +54,7 @@ export class FilesPage extends Component {
 
     handleSubmitUploadFiles(dropFiles) {
         if(!this.validateDuplicatesUploadDropFiles(dropFiles)) {
-            alert('Duplicate found. Upload canceled');
+            this.context.notification.showNotification(NotificationType.Warning, this.localization.notification.FilesNotificationModalAddSubmitDuplicate);
             return;
         }
 

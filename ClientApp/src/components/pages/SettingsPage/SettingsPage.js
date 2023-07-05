@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Context } from '../../ContextProvider';
-import { Pages, CultureCode } from '../../../js/const.js';
+import { Pages, CultureCode, NotificationType } from '../../../js/const.js';
 import { Button, FormGroup, Label, Input } from 'reactstrap';
 
 export class SettingsPage extends Component {
@@ -12,7 +12,7 @@ export class SettingsPage extends Component {
             currentCulture: null
         };
 
-        //this.localization = this.context.localization.data[Pages.Settings];
+        this.localization = this.context.localization.data[Pages.Settings].notification;
     }
 
     componentDidMount() {
@@ -27,8 +27,11 @@ export class SettingsPage extends Component {
         try {
             await this.context.localization.changeLanguage(this.state.currentCulture);
             await this.context.localization.getAllLocalization();
+
+            // TODO change notification language
+            this.context.notification.showNotification(NotificationType.Success, this.context.localization.data[Pages.Settings].notification.SettingsNotificationLanguageChange);
         } catch (error) {
-            alert('Unable to update language');
+            this.context.notification.showNotification(NotificationType.Error, this.context.localization.data[Pages.Settings].notification.SettingsNotificationLanguageChangeError);
         }
     }
 
