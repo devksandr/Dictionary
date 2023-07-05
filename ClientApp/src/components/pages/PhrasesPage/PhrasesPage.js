@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
+import { Context } from '../../ContextProvider';
 import axios from "axios";
 import { PhrasesVector } from './PhrasesVector';
 import { PhrasePanel } from './PhrasePanel/PhrasePanel.js';
-import { NOT_SELECTED, ApiRequest } from '../../../js/const.js';
+import { Pages, NOT_SELECTED, ApiRequest } from '../../../js/const.js';
 
 export class PhrasesPage extends Component {
-
-    constructor(props) {
-        super(props);
+    static contextType = Context;
+    constructor(props, context) {
+        super(props, context);
         this.state = { 
             phrasesList: [],
             clickedPhraseId: NOT_SELECTED,
             clickedPhrase: null
         };
+
+        this.localization = this.context.localization.data[Pages.Phrases].body;
     }
 
     componentDidMount() {

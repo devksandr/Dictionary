@@ -30,8 +30,7 @@ export class PhrasePanel extends Component {
                         <ol>{phraseMeaningsVector}</ol>
                     </Col>
                     <Col className='phrase-reference-panel'>
-                        <p>references to other phrases</p>
-                        <p>testSyninim1 TODO LATER</p>
+                        <p>TODO references to other phrases</p>
                     </Col>
                 </Row>
             </div>

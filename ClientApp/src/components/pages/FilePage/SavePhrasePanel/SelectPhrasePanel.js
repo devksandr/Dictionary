@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
+import { Context } from '../../../ContextProvider';
 import '../../../../css/pages/FilePage/SelectPhrasePanel.css';
 import '../../../../css/Theme.css';
-import { NOT_SELECTED } from '../../../../js/const.js';
+import { Pages, NOT_SELECTED } from '../../../../js/const.js';
 
 export class SelectPhrasePanel extends Component {
-
-    constructor(props) {
-        super(props);
+    static contextType = Context;
+    constructor(props, context) {
+        super(props, context);
 
         this.state = { 
             hoverPhraseIndex: NOT_SELECTED,
         };
+
+        this.localization = this.context.localization.data[Pages.File].panelSelectPhrase;
     }
 
     handleMouseEnter(event, index) {
@@ -51,12 +54,12 @@ export class SelectPhrasePanel extends Component {
     render() {
         let phrasesData = this.props.clickedSentencePhrasesData.map((phraseData, index) => 
             this.createPhraseOption(phraseData, index, this.handleClickPhrase.bind(this)));
-        const addOption = this.createPhraseOption(this.props.localization.FileSelectPhrasePanelButtonAdd, phrasesData.length+1, this.handleClickAddPhrase.bind(this))
+        const addOption = this.createPhraseOption(this.localization.FileSelectPhrasePanelButtonAdd, phrasesData.length+1, this.handleClickAddPhrase.bind(this))
         phrasesData.push(addOption);
 
         return (
             <div className='panel-selectPhrase'>
-                <p>{this.props.localization.FileSelectPhrasePanelHeader}</p>
+                <p>{this.localization.FileSelectPhrasePanelHeader}</p>
                 <ul>{phrasesData}</ul>
             </div>
         );

@@ -176,7 +176,6 @@ export class SavePhrasePanel extends Component {
                     clickedSentencePhrasesData={clickedSentencePhrasesData}
                     clickedPhraseIndex={this.state.clickedPhrase.index}
                     handleClickPhrase={this.handleClickPhrase.bind(this)}
-                    localization={this.props.localization.panelSelectPhrase}
                 />
                 
                 <AddPhrasePanel
@@ -187,7 +186,6 @@ export class SavePhrasePanel extends Component {
                     phraseFormValidationError={this.state.phraseFormValidationError}
                     handleInputChange={this.handleInputChange.bind(this)}
                     handlePhraseFormSubmit={this.handlePhraseFormSubmit.bind(this)}
-                    localization={this.props.localization.panelAddPhrase}
                 />
             </div>
         );
