@@ -3,6 +3,7 @@
     top: 100px;
     right: 20px;
     width: 400px;
+    z-index: 1051; /* fix notification above modal */
 
     .notification-container {
         position: relative;
@@ -30,8 +31,6 @@
         }
     }
 }
-
-
 
 /* Types */
 .notification-type-info {
