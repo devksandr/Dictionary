@@ -2,6 +2,7 @@ using System.Globalization;
 using dict_react.Database;
 using dict_react.Services;
 using dict_react.Services.Interfaces;
+using dict_react.Services.Validation;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 
@@ -14,6 +15,7 @@ builder.Services.AddScoped<IPhrasesService, PhrasesService>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 builder.Services.AddScoped<ISentencesService, SentencesService>();
 builder.Services.AddScoped<IFilesService, FilesService>();
+builder.Services.AddScoped<UniqueFileName>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerGen();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");

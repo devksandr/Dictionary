@@ -99,7 +99,7 @@ export class SavePhrasePanel extends Component {
 
             validateState = { state: false, data: response.validation.data};
         }
-        this.validateAddPhraseForm(validateState.data);
+        this.showValidateErrorForAddPhraseForm(validateState.data);
     }
 
     resetPhraseFormData() {
@@ -125,7 +125,7 @@ export class SavePhrasePanel extends Component {
         return result;
     }
 
-    validateAddPhraseForm(formState) {
+    showValidateErrorForAddPhraseForm(formState) {
         if(formState.Phrase) {
             this.setState(prevState => ({ phraseFormValidationError: { ...prevState.phraseFormValidationError, phrase: true }}))
         }
@@ -163,7 +163,7 @@ export class SavePhrasePanel extends Component {
             const response = isAdd ? await axios.post(ApiRequest.Phrases.Add, formData) : await axios.put(ApiRequest.Phrases.Update + Number(formData.get("phraseId")), formData);
             result = { ...result, data: response };
         } catch (error) {
-            if(error.response.status == 400) {
+            if(error.response.status === 400) {
                 result = { ...result, validation: {state: false, data: error.response.data.errors }};
             }
             else {

@@ -38,32 +38,72 @@ export class FilesPage extends Component {
             this.context.notification.showNotification(NotificationType.Error, this.localization.notification.FilesNotificationModalDeleteError);
         }
     }
-    async handleSubmit(formData) {
+    async handleRequestFilesAddSubmit(formData) {
+        let result = { 
+            data: null, 
+            validation: { state: true, data: null },
+            otherError: false
+        };
+        
         try {
             const response = await axios.post(ApiRequest.Files.Add, formData);
-            const newFilesInfo = response.data;
-            this.setState({ filesInfo: this.state.filesInfo.concat(newFilesInfo) });
-            this.context.notification.showNotification(NotificationType.Success, this.localization.notification.FilesNotificationModalAdd);
+            result = { ...result, data: response.data };
         } catch (error) {
-            this.context.notification.showNotification(NotificationType.Error, this.localization.notification.FilesNotificationModalAddError);
+            if(error.response.status === 400) {
+                result = { ...result, validation: {state: false, data: error.response.data.errors }};
+            }
+            else {
+                result = { ...result, otherError: true }
+            }
         }
+        return result;
     }
 
     handleOpenModalUploadFiles = () => this.setState({ modalUploadFilesState: true });
     handleToggleModalUploadFiles = () => this.setState({ modalUploadFilesState: !this.state.modalUploadFilesState });
 
-    handleSubmitUploadFiles(dropFiles) {
-        if(!this.validateDuplicatesUploadDropFiles(dropFiles)) {
-            this.context.notification.showNotification(NotificationType.Warning, this.localization.notification.FilesNotificationModalAddSubmitDuplicate);
-            return;
+    async handleSubmitUploadFiles(dropFiles) {
+        let validateState = this.getDropFilesValidateState(dropFiles);
+        if(validateState.state) {
+            const files = dropFiles;
+            const formData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                formData.append("formFiles", files[i]);
+            }
+            const response = await this.handleRequestFilesAddSubmit(formData);
+    
+            if(response.otherError) {
+                // TODO handle exception
+                this.context.notification.showNotification(NotificationType.Error, this.localization.notification.FilesNotificationModalAddError);
+                return;
+            }
+            if(response.validation.state) {
+                const newFilesInfo = response.data;
+                this.setState({ filesInfo: this.state.filesInfo.concat(newFilesInfo) });
+                this.context.notification.showNotification(NotificationType.Success, this.localization.notification.FilesNotificationModalAdd);
+                return;
+            }
+
+            validateState = { state: false, data: response.validation.data};
         }
 
-        const files = dropFiles;
-        const formData = new FormData();
-        for (var i = 0; i < files.length; i++) {
-            formData.append("formFiles", files[i]);
+        this.handleValidationErrorForAddFilesSubmit(validateState);
+    }
+
+    handleValidationErrorForAddFilesSubmit(validateState) {
+        this.context.notification.showNotification(NotificationType.Warning, this.localization.notification.FilesNotificationModalAddSubmitDuplicate);
+    }
+
+    getDropFilesValidateState(dropfiles) {
+        const duplicateState = this.validateDuplicatesUploadDropFiles(dropfiles);
+        let result = { state: true, data: { Duplicate: false, MaxSize: false, MaxName: false }};
+
+        if(!duplicateState) {
+            result = { ...result, state: false, data: { ...result.data, Duplicate: true }};
         }
-        this.handleSubmit(formData);
+        // ...
+
+        return result;
     }
 
     validateDuplicatesUploadDropFiles(dropfiles) {
