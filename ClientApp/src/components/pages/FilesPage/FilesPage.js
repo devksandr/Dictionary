@@ -99,10 +99,10 @@ export class FilesPage extends Component {
             this.context.notification.showNotification(NotificationType.Warning, this.localization.notification.FilesNotificationModalAddSubmitDuplicate);
         }
         if (validateData.MaxSize) {
-            this.context.notification.showNotification(NotificationType.Warning, this.localization.notification.FilesNotificationModalAddSubmitMaxSize + ': ' + formatBytes(52428800));
+            this.context.notification.showNotification(NotificationType.Warning, this.localization.notification.FilesNotificationModalAddSubmitMaxSize + ': ' + formatBytes(MAX_FILE_SIZE_BYTES));
         }
         if (validateData.MaxName) {
-            alert('MaxName');
+            this.context.notification.showNotification(NotificationType.Warning, this.localization.notification.FilesNotificationModalAddSubmitMaxName + ': ' + MAX_FILE_NAME_LENGTH);
         }
     }
 
@@ -124,17 +124,17 @@ export class FilesPage extends Component {
     getDropFilesValidateState(dropfiles) {
         const duplicateState = this.validateDuplicatesUploadDropFiles(dropfiles);
         const maxSizeState = this.validateMaxSizeUploadDropFiles(dropfiles);
-        let result = { state: true, data: { Duplicate: false, MaxSize: false, MaxName: false }};
+        const maxNameState = this.validateMaxNameUploadDropFiles(dropfiles);
+        const resultState = !(duplicateState || maxSizeState || maxNameState);
 
-        if(!duplicateState) {
-            result = { ...result, state: false, data: { ...result.data, Duplicate: true }};
-        }
-        if(!maxSizeState) {
-            result = { ...result, state: false, data: { ...result.data, MaxSize: true }};
-        }
-        // ...
-
-        return result;
+        return { 
+            state: resultState, 
+            data: { 
+                Duplicate: duplicateState, 
+                MaxSize: maxSizeState, 
+                MaxName: maxNameState 
+            }
+        };
     }
 
     validateDuplicatesUploadDropFiles(dropfiles) {
@@ -142,20 +142,29 @@ export class FilesPage extends Component {
         for (let i = 0; i < dropfiles.length; i++) {
             for (let j = 0; j < currentfiles.length; j++) {
                 if(dropfiles[i].name === currentfiles[j].name) {
-                    return false;
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
     validateMaxSizeUploadDropFiles(dropfiles) {
         let currentfiles = this.state.filesInfo;
         for (let i = 0; i < dropfiles.length; i++) {
             if(dropfiles[i].size > MAX_FILE_SIZE_BYTES) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
+    }
+    validateMaxNameUploadDropFiles(dropfiles) {
+        let currentfiles = this.state.filesInfo;
+        for (let i = 0; i < dropfiles.length; i++) {
+            if(dropfiles[i].name.length > MAX_FILE_NAME_LENGTH) {
+                return true;
+            }
+        }
+        return false;
     }
     
 

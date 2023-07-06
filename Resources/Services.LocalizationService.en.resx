@@ -305,4 +305,8 @@
     <value>Addition canceled: Files being added exceed the maximum size</value>
     <comment>Files.Notification.Modal add submit max size</comment>
   </data>
+  <data name="FilesNotificationModalAddSubmitMaxName" xml:space="preserve">
+    <value>Addition canceled: Names of files being added exceed the maximum size</value>
+    <comment>Files.Notification.Modal add submit max name</comment>
+  </data>
 </root>

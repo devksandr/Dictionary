@@ -305,4 +305,8 @@
     <value>Добавление отменено: Добавляемые файлы превышают максимальный размер</value>
     <comment>Files.Notification.Modal add submit max size</comment>
   </data>
+  <data name="FilesNotificationModalAddSubmitMaxName" xml:space="preserve">
+    <value>Добавление отменено: Имена добавляемых файлов превышают максимальный размер</value>
+    <comment>Files.Notification.Modal add submit max name</comment>
+  </data>
 </root>

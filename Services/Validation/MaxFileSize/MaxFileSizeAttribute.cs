@@ -18,7 +18,7 @@ public class MaxFileSizeAttribute : ValidationAttribute
         var fileMaxSize = files.Max(f => f.Length);
         if (fileMaxSize > _maxAllowedSize)
         {
-            return new ValidationResult($"Добавляемые файлы содержат существующие дублирующие имена", new string[] { "MaxSize" });
+            return new ValidationResult($"Добавляемые файлы превышают максимальный размер", new string[] { "MaxSize" });
         }
 
         return ValidationResult.Success;

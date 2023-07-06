@@ -112,7 +112,8 @@ public class LocalizationService : ILocalizationService
                         "FilesNotificationModalAdd",
                         "FilesNotificationModalAddError",
                         "FilesNotificationModalAddSubmitDuplicate",
-                        "FilesNotificationModalAddSubmitMaxSize"
+                        "FilesNotificationModalAddSubmitMaxSize",
+                        "FilesNotificationModalAddSubmitMaxName"
                     }
                 }
             },

@@ -7,5 +7,6 @@ public class FileCreateRequestDTO
 {
     [UniqueFileName]
     [MaxFileSize(52428800)]
+    [MaxFileNameLength(50)]
     public List<IFormFile>? FormFiles { get; set; }
 }
