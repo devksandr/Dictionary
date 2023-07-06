@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Context } from '../../ContextProvider';
 import { Pages, ApiRequest, NotificationType } from '../../../js/const.js';
+import { formatBytes } from '../../../js/functions';
 import { FilesVector } from './FilesVector';
 import { UploadFilesModal } from './UploadFiles/UploadFilesModal';
 import { Button } from 'reactstrap';
 import axios from "axios";
 
+const MAX_FILE_SIZE_BYTES = 52428800;
+const MAX_FILE_NAME_LENGTH = 50;
 export class FilesPage extends Component {
     static contextType = Context;
     constructor(props, context) {
@@ -84,22 +87,50 @@ export class FilesPage extends Component {
                 return;
             }
 
-            validateState = { state: false, data: response.validation.data};
+            const validationData = this.getValidationDataErrorForAddFilesSubmit(response.validation.data);
+            validateState = { state: false, data: validationData};
         }
 
-        this.handleValidationErrorForAddFilesSubmit(validateState);
+        this.handleValidationErrorForAddFilesSubmit(validateState.data);
     }
 
-    handleValidationErrorForAddFilesSubmit(validateState) {
-        this.context.notification.showNotification(NotificationType.Warning, this.localization.notification.FilesNotificationModalAddSubmitDuplicate);
+    handleValidationErrorForAddFilesSubmit(validateData) {
+        if (validateData.Duplicate) {
+            this.context.notification.showNotification(NotificationType.Warning, this.localization.notification.FilesNotificationModalAddSubmitDuplicate);
+        }
+        if (validateData.MaxSize) {
+            this.context.notification.showNotification(NotificationType.Warning, this.localization.notification.FilesNotificationModalAddSubmitMaxSize + ': ' + formatBytes(52428800));
+        }
+        if (validateData.MaxName) {
+            alert('MaxName');
+        }
+    }
+
+    getValidationDataErrorForAddFilesSubmit(validationData) {
+        const validationKeys = Object.keys(validationData);
+        let data = { Duplicate: false, MaxSize: false, MaxName: false };
+        if (validationKeys.includes('FormFiles.Duplicate')) {
+            data = { ...data, Duplicate: true };
+        }
+        if (validationKeys.includes('FormFiles.MaxSize')) {
+            data = { ...data, MaxSize: true };
+        }
+        if (validationKeys.includes('FormFiles.MaxName')) {
+            data = { ...data, MaxName: true };
+        }
+        return data;
     }
 
     getDropFilesValidateState(dropfiles) {
         const duplicateState = this.validateDuplicatesUploadDropFiles(dropfiles);
+        const maxSizeState = this.validateMaxSizeUploadDropFiles(dropfiles);
         let result = { state: true, data: { Duplicate: false, MaxSize: false, MaxName: false }};
 
         if(!duplicateState) {
             result = { ...result, state: false, data: { ...result.data, Duplicate: true }};
+        }
+        if(!maxSizeState) {
+            result = { ...result, state: false, data: { ...result.data, MaxSize: true }};
         }
         // ...
 
@@ -117,6 +148,16 @@ export class FilesPage extends Component {
         }
         return true;
     }
+    validateMaxSizeUploadDropFiles(dropfiles) {
+        let currentfiles = this.state.filesInfo;
+        for (let i = 0; i < dropfiles.length; i++) {
+            if(dropfiles[i].size > MAX_FILE_SIZE_BYTES) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
 
     render() {
         return (

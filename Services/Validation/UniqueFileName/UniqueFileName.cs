@@ -19,7 +19,7 @@ public class UniqueFileName
         bool hasDuplicate = _db.Documents.Any(d => fileNames.Contains(d.Name));
         if (hasDuplicate)
         {
-            return new ValidationResult($"Добавляемые файлы содержат существующие дублирующие имена");
+            return new ValidationResult($"Добавляемые файлы содержат существующие дублирующие имена", new string[] { "Duplicate" });
         }
 
         return ValidationResult.Success;

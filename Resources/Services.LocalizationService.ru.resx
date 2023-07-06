@@ -278,7 +278,7 @@
     <comment>Files.Notification.Modal add error</comment>
   </data>
   <data name="FilesNotificationModalAddSubmitDuplicate" xml:space="preserve">
-    <value>Добавляемые файлы содержат одинаковые имена. Добавление отменено</value>
+    <value>Добавление отменено: Добавляемые файлы содержат одинаковые имена</value>
     <comment>Files.Notification.Modal add submit duplicate</comment>
   </data>
   <data name="SettingsNotificationLanguageChange" xml:space="preserve">
@@ -300,5 +300,9 @@
   <data name="PhrasesNotificationGetPhraseInfoError" xml:space="preserve">
     <value>Не удалось получить данные для фразы</value>
     <comment>Phrases.Notification.GetPhraseInfo error</comment>
+  </data>
+  <data name="FilesNotificationModalAddSubmitMaxSize" xml:space="preserve">
+    <value>Добавление отменено: Добавляемые файлы превышают максимальный размер</value>
+    <comment>Files.Notification.Modal add submit max size</comment>
   </data>
 </root>

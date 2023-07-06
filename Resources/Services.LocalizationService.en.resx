@@ -278,7 +278,7 @@
     <comment>Files.Notification.Modal add error</comment>
   </data>
   <data name="FilesNotificationModalAddSubmitDuplicate" xml:space="preserve">
-    <value>Files to be added contain the same names. Addition canceled</value>
+    <value>Addition canceled: Files to be added contain the same names</value>
     <comment>Files.Notification.Modal add submit duplicate</comment>
   </data>
   <data name="SettingsNotificationLanguageChange" xml:space="preserve">
@@ -300,5 +300,9 @@
   <data name="PhrasesNotificationGetPhraseInfoError" xml:space="preserve">
     <value>Unable to get phrase data</value>
     <comment>Phrases.Notification.GetPhraseInfo error</comment>
+  </data>
+  <data name="FilesNotificationModalAddSubmitMaxSize" xml:space="preserve">
+    <value>Addition canceled: Files being added exceed the maximum size</value>
+    <comment>Files.Notification.Modal add submit max size</comment>
   </data>
 </root>

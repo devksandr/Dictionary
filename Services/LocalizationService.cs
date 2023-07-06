@@ -111,7 +111,8 @@ public class LocalizationService : ILocalizationService
                         "FilesNotificationModalDeleteError",
                         "FilesNotificationModalAdd",
                         "FilesNotificationModalAddError",
-                        "FilesNotificationModalAddSubmitDuplicate"
+                        "FilesNotificationModalAddSubmitDuplicate",
+                        "FilesNotificationModalAddSubmitMaxSize"
                     }
                 }
             },
