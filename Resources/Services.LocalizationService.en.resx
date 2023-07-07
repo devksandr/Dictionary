@@ -242,11 +242,11 @@
     <comment>Phrases.Body.Header</comment>
   </data>
   <data name="FileAddPhrasePanelInputValidationPhrase" xml:space="preserve">
-    <value>Phrase length must be more than</value>
+    <value>Phrase length must be in range</value>
     <comment>File.Panel.AddPhrase.InputValidation phrase</comment>
   </data>
   <data name="FileAddPhrasePanelInputValidationMeaning" xml:space="preserve">
-    <value>Meaning is required</value>
+    <value>Meaning length must be less</value>
     <comment>File.Panel.AddPhrase.InputValidation meaning</comment>
   </data>
   <data name="FileNotificationPhrasePanelAdd" xml:space="preserve">
@@ -308,5 +308,9 @@
   <data name="FilesNotificationModalAddSubmitMaxName" xml:space="preserve">
     <value>Addition canceled: Names of files being added exceed the maximum size</value>
     <comment>Files.Notification.Modal add submit max name</comment>
+  </data>
+  <data name="FileAddPhrasePanelInputValidationComment" xml:space="preserve">
+    <value>Comment length must be less</value>
+    <comment>File.Panel.AddPhrase.InputValidation comment</comment>
   </data>
 </root>

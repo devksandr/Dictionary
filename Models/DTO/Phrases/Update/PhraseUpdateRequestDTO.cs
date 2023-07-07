@@ -6,10 +6,13 @@ public class PhraseUpdateRequestDTO
     public int PhraseId { get; set; }
     public int PhraseMeaningId { get; set; }
     public int CategoryId { get; set; }
-    [MinLength(3)]
     [Required]
+    [MinLength(3)]
+    [MaxLength(128)]
     public string? Phrase { get; set; }
     [Required]
+    [MaxLength(128)]
     public string? Meaning { get; set; }
+    [MaxLength(255)]
     public string? Comment { get; set; }
 }

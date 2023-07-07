@@ -139,7 +139,8 @@ public class LocalizationService : ILocalizationService
                             "FileAddPhrasePanelButtonUpdate",
                             "FileAddPhrasePanelButtonAdd",
                             "FileAddPhrasePanelInputValidationPhrase",
-                            "FileAddPhrasePanelInputValidationMeaning"
+                            "FileAddPhrasePanelInputValidationMeaning",
+                            "FileAddPhrasePanelInputValidationComment"
                         }
                     },
                     {"notification", new List<string> 

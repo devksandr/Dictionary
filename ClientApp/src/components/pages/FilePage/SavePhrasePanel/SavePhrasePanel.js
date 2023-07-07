@@ -13,7 +13,7 @@ export class SavePhrasePanel extends Component {
             clickedPhrase: { index: NOT_SELECTED, data: NOT_SELECTED, state: false },
             sentenceCategories: [],
             phraseFormData: { categoryId: 1, phrase: '', meaning: '', comment: '' },
-            phraseFormValidationError: { phrase: false, meaning: false }
+            phraseFormValidationError: { phrase: false, meaning: false, comment: false }
         };
 
         this.localization = this.context.localization.data[Pages.File].notification;
@@ -107,19 +107,23 @@ export class SavePhrasePanel extends Component {
     }
 
     resetPhraseFormValidation() {
-        this.setState({ phraseFormValidationError: { phrase: false, meaning: false } });
+        this.setState({ phraseFormValidationError: { phrase: false, meaning: false, comment: false } });
     }
 
     getPhraseFormValidateState() {
         const phrase = this.state.phraseFormData.phrase;
         const meaning = this.state.phraseFormData.meaning;
-        let result = { state: true, data: { Phrase: false, Meaning: false }};
+        const comment = this.state.phraseFormData.comment;
+        let result = { state: true, data: { Phrase: false, Meaning: false, Comment: false }};
 
-        if(!phrase || phrase.length < 3) {
+        if(!phrase || phrase.length < 3 || phrase.length > 128) {
             result = { ...result, state: false, data: { ...result.data, Phrase: true }};
         }
-        if(!meaning) {
+        if(!meaning || meaning.length > 128) {
             result = { ...result, state: false, data: { ...result.data, Meaning : true }};
+        }
+        if(comment.length > 255) {
+            result = { ...result, state: false, data: { ...result.data, Comment : true }};
         }
 
         return result;
@@ -131,6 +135,9 @@ export class SavePhrasePanel extends Component {
         }
         if(formState.Meaning) {
             this.setState(prevState => ({ phraseFormValidationError: { ...prevState.phraseFormValidationError, meaning: true }}))
+        }
+        if(formState.Comment) {
+            this.setState(prevState => ({ phraseFormValidationError: { ...prevState.phraseFormValidationError, comment: true }}))
         }
     }
 
