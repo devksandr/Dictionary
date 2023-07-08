@@ -1,75 +1,65 @@
 import React, { Component } from 'react';
 import { Context } from '../../ContextProvider';
-import { Pages, CultureCode, NotificationType } from '../../../js/const.js';
-import { Button, FormGroup, Label, Input } from 'reactstrap';
+import { Pages, ThemeType, NotificationType } from '../../../js/const.js';
+import { Theme } from './Parameters/Theme';
+import { Language } from './Parameters/Language';
 
 export class SettingsPage extends Component {
     static contextType = Context;
     constructor(props, context) {
         super(props, context);
         this.state = { 
-            localization: [],
-            currentCulture: null
+            currentCulture: null,
+            theme: null
         };
 
         this.localization = this.context.localization.data[Pages.Settings].notification;
     }
 
     componentDidMount() {
-        this.handleGetCultureCode();
+        this.initSettings();
     }
 
-    handleGetCultureCode() {
+    initSettings() {
         this.setState({ currentCulture: this.context.localization.language });
+        this.setState({ theme: this.context.theme.type.code });
     }
-    
-    async handleSubmitChangeCulture() {
-        try {
-            await this.context.localization.changeLanguage(this.state.currentCulture);
-            await this.context.localization.getAllLocalization();
 
-            // TODO change notification language
-            this.context.notification.showNotification(NotificationType.Success, this.context.localization.data[Pages.Settings].notification.SettingsNotificationLanguageChange);
+    async handleRadioChangeCulture(event) {
+        const lang = event.target.value;
+        this.setState({ currentCulture: lang });
+
+        try {
+            await this.context.localization.changeLanguage(lang);
+            await this.context.localization.getAllLocalization();
         } catch (error) {
             this.context.notification.showNotification(NotificationType.Error, this.context.localization.data[Pages.Settings].notification.SettingsNotificationLanguageChangeError);
         }
     }
+    async handleRadioChangeTheme(event) {
+        const themeCode = event.target.value;
+        const theme = ThemeType[themeCode];
+        this.setState({ theme: theme.code });
 
-    handleRadioChangeCulture(event) {
-        const lang = event.target.value;
-        this.setState({ currentCulture: lang });
+        try {
+            await this.context.theme.changeTheme(theme.code);
+        } catch (error) {
+            this.context.notification.showNotification(NotificationType.Error, this.context.localization.data[Pages.Settings].theme.SettingsThemeNotificationChangeError);
+        }
     }
 
     render() {
         return (
             <div>
                 <h1>{this.context.localization.data[Pages.Settings].body.SettingsHeader}</h1>
-                <div>
-                    <legend>{this.context.localization.data[Pages.Settings].body.SettingsLanguageLabel}</legend>
-                    <FormGroup check>
-                        <Label check>
-                            <Input 
-                                type="radio" 
-                                name="radio-lang-ru"
-                                value={CultureCode.Russian}
-                                onChange={this.handleRadioChangeCulture.bind(this)}
-                                checked={this.state.currentCulture === CultureCode.Russian} />
-                                {this.context.localization.data[Pages.Settings].body.SettingsLanguageRussian}
-                        </Label>
-                    </FormGroup>
-                    <FormGroup check>
-                        <Label check>
-                            <Input 
-                                type="radio" 
-                                name="radio-lang-en"
-                                value={CultureCode.English}
-                                onChange={this.handleRadioChangeCulture.bind(this)}
-                                checked={this.state.currentCulture === CultureCode.English} />
-                                {this.context.localization.data[Pages.Settings].body.SettingsLanguageEnglish}
-                        </Label>
-                    </FormGroup>
-                    <Button onClick={this.handleSubmitChangeCulture.bind(this)}>{this.context.localization.data[Pages.Settings].body.SettingsButtonSave}</Button>
-                </div>
+                <Language
+                    currentCulture={this.state.currentCulture}
+                    handleRadioChangeCulture={this.handleRadioChangeCulture.bind(this)}
+                />
+                <Theme
+                    theme={this.state.theme}
+                    handleRadioChangeTheme={this.handleRadioChangeTheme.bind(this)}
+                />
             </div>
         );
     }

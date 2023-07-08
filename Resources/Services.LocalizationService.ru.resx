@@ -313,4 +313,20 @@
     <value>Длина комментария должна быть меньше</value>
     <comment>File.Panel.AddPhrase.InputValidation comment</comment>
   </data>
+  <data name="SettingsThemeHeader" xml:space="preserve">
+    <value>Тема</value>
+    <comment>Settings.Theme.Header</comment>
+  </data>
+  <data name="SettingsThemeSelectLight" xml:space="preserve">
+    <value>Светлая</value>
+    <comment>Settings.Theme.Select light</comment>
+  </data>
+  <data name="SettingsThemeSelectDark" xml:space="preserve">
+    <value>Тёмная</value>
+    <comment>Settings.Theme.Select dark</comment>
+  </data>
+  <data name="SettingsThemeNotificationChangeError" xml:space="preserve">
+    <value>Не удалось сменить тему</value>
+    <comment>Settings.Theme.Notification.ChangeError</comment>
+  </data>
 </root>

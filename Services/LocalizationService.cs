@@ -186,6 +186,18 @@ public class LocalizationService : ILocalizationService
                             "SettingsButtonSave"
                         }
                     },
+                    {"language", new List<string> 
+                        { 
+                        }
+                    },
+                    {"theme", new List<string> 
+                        {
+                            "SettingsThemeHeader",
+                            "SettingsThemeSelectLight",
+                            "SettingsThemeSelectDark",
+                            "SettingsThemeNotificationChangeError"
+                        }
+                    },
                     {"notification", new List<string> 
                         { 
                             "SettingsNotificationLanguageChange",

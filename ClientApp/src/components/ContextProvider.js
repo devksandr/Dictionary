@@ -1,7 +1,7 @@
 import React, { Component, createContext } from 'react';
 import '../css/notification/notification.css';
 import { NotificationVector } from './notification/NotificationVector';
-import { ApiRequest } from '../js/const.js';
+import { ApiRequest, ThemeType } from '../js/const.js';
 import axios from "axios";
 
 const Context = createContext();
@@ -11,7 +11,8 @@ class ContextProvider extends Component {
         super(props);
         this.state = {
             localization: { data: null, language: null },
-            notifications: []
+            notifications: [],
+            theme: { code: null, backcolor: null }
         };
     }
 
@@ -22,6 +23,7 @@ class ContextProvider extends Component {
     async initContext() {
         await this.getLanguage();
         await this.getAllLocalization();
+        this.changeTheme('Light');
     }
 
     // Notification
@@ -56,6 +58,13 @@ class ContextProvider extends Component {
         this.setState(prevState => ({ localization: { ...prevState.localization, language: language }}))
     }
 
+    // Theme
+    changeTheme(themeCode) {
+        var theme = ThemeType[themeCode];
+        this.setState({ theme: theme });
+        document.body.style = 'background: ' + theme.backcolor + ' ;';
+    }
+
     render() {
         if(this.state.localization.data === null) return;
 
@@ -67,7 +76,13 @@ class ContextProvider extends Component {
                 getAllLocalization: async () => await this.getAllLocalization(),
                 changeLanguage: async (language) => await this.changeLanguage(language)
             },
-            notification: { showNotification: (type, message) => this.addNotification(type, message) }
+            notification: { 
+                showNotification: (type, message) => this.addNotification(type, message) 
+            },
+            theme: {
+                type: this.state.theme,
+                changeTheme: async (theme) => await this.changeTheme(theme)
+            }
         }
         const notificationVector = this.state.notifications.length > 0 ? <NotificationVector
           notificationsVector={this.state.notifications}

@@ -313,4 +313,20 @@
     <value>Comment length must be less</value>
     <comment>File.Panel.AddPhrase.InputValidation comment</comment>
   </data>
+  <data name="SettingsThemeHeader" xml:space="preserve">
+    <value>Theme</value>
+    <comment>Settings.Theme.Header</comment>
+  </data>
+  <data name="SettingsThemeSelectLight" xml:space="preserve">
+    <value>Light</value>
+    <comment>Settings.Theme.Select light</comment>
+  </data>
+  <data name="SettingsThemeSelectDark" xml:space="preserve">
+    <value>Dark</value>
+    <comment>Settings.Theme.Select dark</comment>
+  </data>
+  <data name="SettingsThemeNotificationChangeError" xml:space="preserve">
+    <value>Unable to update theme</value>
+    <comment>Settings.Theme.Notification.ChangeError</comment>
+  </data>
 </root>

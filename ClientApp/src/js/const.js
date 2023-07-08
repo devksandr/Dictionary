@@ -33,6 +33,16 @@ export const CultureCode = {
     Russian: 'ru',
     English: 'en'
 };
+export const ThemeType = {
+    Light: { 
+        code: 'Light',
+        backcolor: 'white'
+    },
+    Dark: { 
+        code: 'Dark',
+        backcolor: '#536872'
+    }
+};
 
 export const ApiRequest = {
     Localization: {
