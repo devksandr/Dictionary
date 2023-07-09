@@ -49,7 +49,8 @@ export const ThemeType = {
 };
 
 export const CookieValue = {
-    Theme: 'theme'
+    Theme: 'theme',
+    Language: 'language'
 }
 
 export const ApiRequest = {

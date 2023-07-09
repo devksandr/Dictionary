@@ -1,7 +1,7 @@
 import React, { Component, createContext } from 'react';
 import '../css/notification/notification.css';
 import { NotificationVector } from './notification/NotificationVector';
-import { ApiRequest, ThemeType, CookieValue } from '../js/const.js';
+import { ApiRequest, ThemeType, CookieValue, CultureCode } from '../js/const.js';
 import { getCookie, setCookie } from '../js/functions';
 import axios from "axios";
 
@@ -22,11 +22,11 @@ class ContextProvider extends Component {
     }
 
     async initContext() {
-        const theme = getCookie(CookieValue.Theme) ?? ThemeType.Light.code;
+        const themeCode = getCookie(CookieValue.Theme) ?? ThemeType.Light.code;
+        const languageCode = getCookie(CookieValue.Language) ?? CultureCode.Russian;
 
-        this.changeTheme(theme);
-        await this.getLanguage();
-        await this.getAllLocalization();
+        this.changeTheme(themeCode);
+        await this.changeLanguage(languageCode);
     }
 
     // Notification
@@ -47,18 +47,11 @@ class ContextProvider extends Component {
     }
 
     // Localization
-    async getAllLocalization() {
-        const response = await axios.get(ApiRequest.Localization.GetAllPages);
-        this.setState(prevState => ({ localization: { ...prevState.localization, data: response.data }}))
-    }
-    async getLanguage() {
-        const response = await axios.get(ApiRequest.Localization.GetCulture);
-        const language = response.data;
-        this.setState(prevState => ({ localization: { ...prevState.localization, language: language }}))
-    }
-    async changeLanguage(language) {
-        await axios.put(ApiRequest.Localization.UpdateCulture + language);
-        this.setState(prevState => ({ localization: { ...prevState.localization, language: language }}))
+    async changeLanguage(languageCode) {
+        const response = await axios.get(ApiRequest.Localization.GetAllPages + languageCode);
+        this.setState({ localization: { data: response.data, language: languageCode }});
+
+        setCookie(CookieValue.Language, languageCode);
     }
 
     // Theme
@@ -82,8 +75,7 @@ class ContextProvider extends Component {
             localization: { 
                 data: this.state.localization.data,
                 language: this.state.localization.language,
-                getAllLocalization: async () => await this.getAllLocalization(),
-                changeLanguage: async (language) => await this.changeLanguage(language)
+                changeLanguage: async (languageCode) => await this.changeLanguage(languageCode)
             },
             notification: { 
                 showNotification: (type, message) => this.addNotification(type, message) 

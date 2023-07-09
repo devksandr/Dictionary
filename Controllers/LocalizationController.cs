@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using dict_react.Services.Interfaces;
-using dict_react.Models.DTO;
-using dict_react.Models.Enum;
 
 namespace dict_react.Controllers;
 
@@ -15,47 +13,14 @@ public class LocalizationController : ControllerBase
         _localizationService = localizationService;
     }
 
-    [HttpGet("page/{page}")]
-    public ActionResult GetPageLocalization(Page page)
+    [HttpGet("{code}")]
+    public ActionResult GetAllPagesLocalization(string code)
     {
-        var result = _localizationService.GetPageLocalization(page);
+        var result = _localizationService.GetAllPagesLocalization(code);
         if (result is null)
         {
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
         return Ok(result);
-    }
-
-    [HttpGet]
-    public ActionResult GetAllPagesLocalization()
-    {
-        var result = _localizationService.GetAllPagesLocalization();
-        if (result is null)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-        return Ok(result);
-    }
-
-    [HttpGet("culture")]
-    public ActionResult GetCulture()
-    {
-        var result = _localizationService.GetCulture();
-        if (result is null)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-        return Ok(result);
-    }
-
-    [HttpPut("culture/{code}")]
-    public ActionResult ChangeCulture(string code)
-    {
-        var result = _localizationService.ChangeCulture(code);
-        if(!result)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-        return NoContent();
     }
 }

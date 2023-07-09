@@ -26,12 +26,11 @@ export class SettingsPage extends Component {
     }
 
     async handleRadioChangeCulture(event) {
-        const lang = event.target.value;
-        this.setState({ currentCulture: lang });
+        const languageCode = event.target.value;
+        this.setState({ currentCulture: languageCode });
 
         try {
-            await this.context.localization.changeLanguage(lang);
-            await this.context.localization.getAllLocalization();
+            await this.context.localization.changeLanguage(languageCode);
         } catch (error) {
             this.context.notification.showNotification(NotificationType.Error, this.context.localization.data[Pages.Settings].notification.SettingsNotificationLanguageChangeError);
         }

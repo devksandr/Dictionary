@@ -4,8 +4,6 @@ namespace dict_react.Services.Interfaces;
 
 public interface ILocalizationService
 {
-    Dictionary<string, Dictionary<string, string>> GetPageLocalization(Page page);
-    IEnumerable<Dictionary<string, Dictionary<string, string>>> GetAllPagesLocalization();
-    string GetCulture();
-    bool ChangeCulture(string code);
+    Dictionary<string, Dictionary<string, string>> GetPageLocalization(Page page, string code);
+    IEnumerable<Dictionary<string, Dictionary<string, string>>> GetAllPagesLocalization(string code);
 }

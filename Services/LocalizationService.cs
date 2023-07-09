@@ -8,25 +8,17 @@ namespace dict_react.Services;
 public class LocalizationService : ILocalizationService
 {
     private readonly IStringLocalizer<LocalizationService> _localizer;
-    string _currentCultureCode;
-    public string CurrentCultureCode 
-    {
-        get => _currentCultureCode; 
-        set => _currentCultureCode = value;
-    }
-
 
     public LocalizationService(IStringLocalizer<LocalizationService> localizer)
     {
         _localizer = localizer;
-        CurrentCultureCode = CultureInfo.CurrentCulture.Name;
     }
 
-    public Dictionary<string, Dictionary<string, string>> GetPageLocalization(Page page)
+    public Dictionary<string, Dictionary<string, string>> GetPageLocalization(Page page, string code)
     {
         try
         {
-            ChangeCulture(CurrentCultureCode);
+            ChangeCulture(code);
             var subPagesKeys = SelectPageLocalization(page);
             var pageLocalization = CreateLocalization(subPagesKeys);
             return pageLocalization;
@@ -37,14 +29,14 @@ public class LocalizationService : ILocalizationService
         }
     }
 
-    public IEnumerable<Dictionary<string, Dictionary<string, string>>> GetAllPagesLocalization()
+    public IEnumerable<Dictionary<string, Dictionary<string, string>>> GetAllPagesLocalization(string code)
     {
         try
         {
             var localization = new List<Dictionary<string, Dictionary<string, string>>>();
             foreach (Page page in (Page[]) Enum.GetValues(typeof(Page)))
             {
-                var pageLocalization = GetPageLocalization(page);
+                var pageLocalization = GetPageLocalization(page, code);
                 localization.Add(pageLocalization);
             }
             return localization;
@@ -55,13 +47,11 @@ public class LocalizationService : ILocalizationService
         }
     }
 
-    public string GetCulture() => CurrentCultureCode;
 
-    public bool ChangeCulture(string code)
+    bool ChangeCulture(string code)
     {
         try
         {
-            CurrentCultureCode = code;
             var cultureInfo = new CultureInfo(code);
             CultureInfo.CurrentCulture = cultureInfo;
             CultureInfo.CurrentUICulture = cultureInfo;
@@ -72,7 +62,7 @@ public class LocalizationService : ILocalizationService
         }
         return true;
     }
-
+    
     Dictionary<string, List<string>> SelectPageLocalization(Page page)
     {
         return page switch
