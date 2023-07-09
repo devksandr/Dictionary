@@ -12,11 +12,11 @@ public class UniqueFileName
         _db = db;
     }
 
-    public ValidationResult Validate(object value, ValidationContext validationContext)
+    public ValidationResult? Validate(object value, ValidationContext validationContext)
     {
         var files = (List<IFormFile>)value;
         var fileNames = files.Select(f => f.FileName).ToList();
-        bool hasDuplicate = _db.Documents.Any(d => fileNames.Contains(d.Name));
+        bool hasDuplicate = _db.Documents.Any(d => fileNames.Contains(d.Name!));
         if (hasDuplicate)
         {
             return new ValidationResult($"Добавляемые файлы содержат существующие дублирующие имена", new string[] { "Duplicate" });

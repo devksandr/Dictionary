@@ -43,7 +43,7 @@ builder.Services.Configure<RequestLocalizationOptions>(
 var app = builder.Build();
 
 var localizeOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
-app.UseRequestLocalization(localizeOptions.Value);
+app.UseRequestLocalization(localizeOptions!.Value);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

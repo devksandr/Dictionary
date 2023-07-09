@@ -14,17 +14,18 @@ public class CategoriesService : ICategoriesService
         _db = db;
     }
 
-    public IEnumerable<ICategory> GetCategories(Category category)
+    public IEnumerable<ICategory>? GetCategories(Category category)
     {
         try
         {
             return category switch
             {
                 Category.SentenceCategory => _db.SentenceCategories,
-                Category.PhraseMeaningCategory => _db.PhraseMeaningCategories
+                Category.PhraseMeaningCategory => _db.PhraseMeaningCategories,
+                _ => throw new Exception("Wrong category")
             };
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }

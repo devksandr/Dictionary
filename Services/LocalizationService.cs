@@ -14,7 +14,7 @@ public class LocalizationService : ILocalizationService
         _localizer = localizer;
     }
 
-    public Dictionary<string, Dictionary<string, string>> GetPageLocalization(Page page, string code)
+    public Dictionary<string, Dictionary<string, string>>? GetPageLocalization(Page page, string code)
     {
         try
         {
@@ -23,13 +23,13 @@ public class LocalizationService : ILocalizationService
             var pageLocalization = CreateLocalization(subPagesKeys);
             return pageLocalization;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
     }
 
-    public IEnumerable<Dictionary<string, Dictionary<string, string>>> GetAllPagesLocalization(string code)
+    public IEnumerable<Dictionary<string, Dictionary<string, string>>>? GetAllPagesLocalization(string code)
     {
         try
         {
@@ -37,11 +37,15 @@ public class LocalizationService : ILocalizationService
             foreach (Page page in (Page[]) Enum.GetValues(typeof(Page)))
             {
                 var pageLocalization = GetPageLocalization(page, code);
+                if (pageLocalization is null)
+                {
+                    throw new Exception("Localization for page not found");
+                }
                 localization.Add(pageLocalization);
             }
             return localization;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
@@ -56,7 +60,7 @@ public class LocalizationService : ILocalizationService
             CultureInfo.CurrentCulture = cultureInfo;
             CultureInfo.CurrentUICulture = cultureInfo;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return false;
         }

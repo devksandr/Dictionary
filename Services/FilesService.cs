@@ -15,14 +15,17 @@ public class FilesService : IFilesService
         _db = db;
     }
 
-    public IEnumerable<FileCreateResponseDTO> AddFiles(FileCreateRequestDTO filesModel)
+    public IEnumerable<FileCreateResponseDTO>? AddFiles(FileCreateRequestDTO filesModel)
     {
-        // TODO Check duplicate
-
         using(var transaction = _db.Database.BeginTransaction())
         {
             try
             {
+                if (filesModel.FormFiles is null)
+                {
+                    throw new Exception("Files model is null");
+                }
+
                 var documentsDTO = new List<FileCreateResponseDTO>();
                 foreach (var file in filesModel.FormFiles)
                 {
@@ -62,18 +65,22 @@ public class FilesService : IFilesService
 
                 return documentsDTO;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 transaction.Rollback();
                 return null;
             }
         }
     }
-    public FileGetResponseDTO GetFile(int fileId)
+    public FileGetResponseDTO? GetFile(int fileId)
     {
         try
         {
-            var documentName = _db.Documents.Find(fileId).Name;
+            var document = _db.Documents.Find(fileId);
+            if (document is null)
+            {
+                throw new Exception("File not found");
+            }
 
             var sentences = _db.Sentences
                 .Where(s => s.DocumentId == fileId)
@@ -84,18 +91,18 @@ public class FilesService : IFilesService
             FileGetResponseDTO documentDTO = new FileGetResponseDTO
             {
                 FileId = fileId,
-                Name = documentName,
+                Name = document.Name,
                 Sentences = sentences
             };
 
             return documentDTO;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
     }
-    public IEnumerable<FileGetInfoResponseDTO> GetAllFilesInfo()
+    public IEnumerable<FileGetInfoResponseDTO>? GetAllFilesInfo()
     {
         try
         {
@@ -112,7 +119,7 @@ public class FilesService : IFilesService
             } 
             return documentsDTO;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
@@ -124,6 +131,10 @@ public class FilesService : IFilesService
             try
             {
                 var document = _db.Documents.Find(fileId);
+                if (document is null)
+                {
+                    throw new Exception("File not found");
+                }
                 _db.Documents.Remove(document);
                 _db.SaveChanges();
 
@@ -146,7 +157,7 @@ public class FilesService : IFilesService
 
                 transaction.Commit();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 transaction.Rollback();
                 return false;

@@ -12,10 +12,16 @@ public class MaxFileSizeAttribute : ValidationAttribute
         _maxAllowedSize = maxAllowedSize;
     }
 
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
+        if (value is null)
+        {
+            return new ValidationResult("Параметр атрибута = null");
+        }
+        
         var files = (List<IFormFile>)value;
         var fileMaxSize = files.Max(f => f.Length);
+
         if (fileMaxSize > _maxAllowedSize)
         {
             return new ValidationResult($"Добавляемые файлы превышают максимальный размер", new string[] { "MaxSize" });

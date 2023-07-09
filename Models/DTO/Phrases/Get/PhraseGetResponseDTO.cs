@@ -6,5 +6,5 @@ public class PhraseGetResponseDTO
     public string? Data { get; set; }
     public string? SentenceCategory { get; set; }
 
-    public List<PhraseMeaningGetResponseDTO>? PhraseMeanings { get; set; } = new();
+    public List<PhraseMeaningGetResponseDTO> PhraseMeanings { get; set; } = new();
 }

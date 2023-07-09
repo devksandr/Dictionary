@@ -17,7 +17,7 @@ public class PhrasesService : IPhrasesService
         _environment = environment;
     }
 
-    public PhraseCreateResponseDTO AddPhrase(PhraseCreateRequestDTO phraseModel)
+    public PhraseCreateResponseDTO? AddPhrase(PhraseCreateRequestDTO phraseModel)
     {
         using(var transaction = _db.Database.BeginTransaction())
         {
@@ -36,7 +36,11 @@ public class PhrasesService : IPhrasesService
                 _db.SaveChanges();
 
                 var sentence = _db.Sentences.Find(phraseModel.SentenceId);
-                
+                if (sentence is null)
+                {
+                    throw new Exception("Sentence not found");
+                }
+
                 var phraseDTO = new PhraseCreateResponseDTO()
                 {
                     PhraseId = phrase.Id,
@@ -47,7 +51,7 @@ public class PhrasesService : IPhrasesService
                 transaction.Commit();
                 return phraseDTO;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 transaction.Rollback();
                 return null;
@@ -55,17 +59,30 @@ public class PhrasesService : IPhrasesService
         }
     }
 
-    public PhraseGetResponseDTO GetPhrase(int phraseId)
+    public PhraseGetResponseDTO? GetPhrase(int phraseId)
     {
         try
         {
-            var phrase = _db.Phrases
-                .Include(p => p.SentenceCategory)
-                .Include(p => p.PhraseMeaning)
-                    .ThenInclude(pm => pm.PhraseMeaningExample)
+            var phrase = _db.Phrases!
+                .Include(p => p.SentenceCategory!)
+                .Include(p => p.PhraseMeaning!)
+                    .ThenInclude(pm => pm.PhraseMeaningExample!)
                         .ThenInclude(pme => pme.Sentence)
                 .FirstOrDefault(p => p.Id == phraseId);
+            
+            if (phrase is null)
+            {
+                throw new Exception("Phrase not found");
+            }
+            if (phrase.PhraseMeaning is null)
+            {
+                throw new Exception("Phrase meaning not found");
+            }
             var sentenceCategory = _db.SentenceCategories.Find(phrase.SentenceCategoryId);
+            if (sentenceCategory is null)
+            {
+                throw new Exception("Sentence category not found");
+            }
 
             var phraseDTO = new PhraseGetResponseDTO
             {
@@ -75,9 +92,17 @@ public class PhrasesService : IPhrasesService
             };
             foreach (var pm in phrase.PhraseMeaning)
             {
+                if (pm.PhraseMeaningExample is null)
+                {
+                    throw new Exception("Phrase meaning example not found");
+                }
                 var phraseMeaningExamplesDTO = new List<PhraseMeaningExampleGetResponseDTO>();
                 foreach (var pme in pm.PhraseMeaningExample)
                 {
+                    if (pme.Sentence is null)
+                    {
+                        throw new Exception("Sentence not found");
+                    }
                     var phraseMeaningExampleDTO = new PhraseMeaningExampleGetResponseDTO
                     {
                         PhraseMeaningExampleId = pme.Id,
@@ -97,13 +122,13 @@ public class PhrasesService : IPhrasesService
 
             return phraseDTO;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
     }
 
-    public IEnumerable<PhraseGetInfoResponseDTO> GetAllPhrasesInfo()
+    public IEnumerable<PhraseGetInfoResponseDTO>? GetAllPhrasesInfo()
     {
         try
         {
@@ -120,30 +145,42 @@ public class PhrasesService : IPhrasesService
             } 
             return phrasesDTO;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
     }
 
-    public IEnumerable<SentenceGetForFileResponseDTO> GetAllPhrasesForFile(int fileId)
+    public IEnumerable<SentenceGetForFileResponseDTO>? GetAllPhrasesForFile(int fileId)
     {
         try
         {
-            var sentences = _db.Sentences
-                .Include(s => s.PhraseMeaningExample)
+            var sentences = _db.Sentences!
+                .Include(s => s.PhraseMeaningExample!)
                     .ThenInclude(pme => pme.PhraseMeaning)
-                        .ThenInclude(pm => pm.Phrase)
-                .Where(s => s.DocumentId == fileId && s.PhraseMeaningExample.Count > 0)
+                        .ThenInclude(pm => pm!.Phrase)
+                .Where(s => s.DocumentId == fileId && s.PhraseMeaningExample!.Count > 0)
                 .ToList();
             
             var sentencesDTO = new List<SentenceGetForFileResponseDTO>();
 
             foreach (var sentence in sentences)
             {
+                if (sentence.PhraseMeaningExample is null)
+                {
+                    throw new Exception("Phrase meaning example not found");
+                }
                 var PhrasesDTO = new List<PhraseGetForFileResponseDTO>();
                 foreach (var PhraseMeaningExample in sentence.PhraseMeaningExample)
                 {
+                    if (PhraseMeaningExample.PhraseMeaning is null)
+                    {
+                        throw new Exception("Phrase meaning not found");
+                    }
+                    if (PhraseMeaningExample.PhraseMeaning.Phrase is null)
+                    {
+                        throw new Exception("Phrase not found");
+                    }
                     var PhraseDTO = new PhraseGetForFileResponseDTO()
                     {
                         PhraseId = PhraseMeaningExample.PhraseMeaning.PhraseId,
@@ -166,7 +203,7 @@ public class PhrasesService : IPhrasesService
 
             return sentencesDTO;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
@@ -179,11 +216,19 @@ public class PhrasesService : IPhrasesService
             try
             {
                 var phrase = _db.Phrases.Find(phraseModel.PhraseId);
+                if (phrase is null)
+                {
+                    throw new Exception("Phrase not found");
+                }
                 var sentenceCategory = _db.SentenceCategories.Find(phraseModel.CategoryId);
                 phrase.Data = phraseModel.Phrase;
                 phrase.SentenceCategory = sentenceCategory;
                 
                 var phraseMeaning = _db.PhraseMeanings.Find(phraseModel.PhraseMeaningId);
+                if (phraseMeaning is null)
+                {
+                    throw new Exception("Phrase meaning not found");
+                }
                 phraseMeaning.Meaning = phraseModel.Meaning;
                 phraseMeaning.Comment = phraseModel.Comment;
 
@@ -192,7 +237,7 @@ public class PhrasesService : IPhrasesService
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 transaction.Rollback();
                 return false;
@@ -206,13 +251,15 @@ public class PhrasesService : IPhrasesService
         {
             try
             {
-                var phrase = _db.Phrases
-                    .Include(p => p.PhraseMeaning)
-                        .ThenInclude(pm => pm.PhraseMeaningExample)
+                var phrase = _db.Phrases!
+                    .Include(p => p.PhraseMeaning!)
+                        .ThenInclude(pm => pm.PhraseMeaningExample!)
                         .ThenInclude(pme => pme.Sentence)
                     .First(p => p.Id == phraseId);
                 HashSet<Sentence> sentences = new HashSet<Sentence>();
-                phrase.PhraseMeaning.ForEach(pm => pm.PhraseMeaningExample.ForEach(pme => sentences.Add(pme.Sentence)));
+                phrase.PhraseMeaning!
+                    .ForEach(pm => pm.PhraseMeaningExample!
+                        .ForEach(pme => sentences.Add(pme.Sentence!)));
                 foreach (var sentence in sentences.ToList())
                 {
                     if (!_db.Documents.Any(d => d.Id == sentence.DocumentId))
