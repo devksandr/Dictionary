@@ -11,6 +11,7 @@ export class NotificationVector extends Component {
                 type={notification.type}
                 message={notification.message}
                 handleRemove={this.props.handleRemove.bind(this)}
+                theme={this.props.theme}
             />
         );
 

@@ -34,13 +34,13 @@
 
 /* Types */
 .notification-type-info {
-    background: blue;
+    background: #6969FF;
 }
 .notification-type-success {
-    background: green;
+    background: #00CC00;
 }
 .notification-type-warning {
-    background: yellow;
+    background: #EF7400;
 }
 .notification-type-error {
     background: red;

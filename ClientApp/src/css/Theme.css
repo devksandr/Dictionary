@@ -1,6 +1,6 @@
 .element-hasData-theme {
     color: black;
-    background-color: blue;
+    background-color: #C7C9FF;
 }
 .element-hover-theme {
     color: black;
@@ -8,5 +8,5 @@
 }
 .element-click-theme {
     color: black;
-    background-color: green;
+    background-color: #70CC70;
 }

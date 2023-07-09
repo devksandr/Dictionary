@@ -1,6 +1,6 @@
 .panel-dragAndDropFiles {
     position: relative;
-    border: 2px dashed black;
+    border: 2px dashed;
     text-align: center;
     height: 300px;
     user-select: none;

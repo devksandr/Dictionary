@@ -1,7 +1,8 @@
 import React, { Component, createContext } from 'react';
 import '../css/notification/notification.css';
 import { NotificationVector } from './notification/NotificationVector';
-import { ApiRequest, ThemeType } from '../js/const.js';
+import { ApiRequest, ThemeType, CookieValue } from '../js/const.js';
+import { getCookie, setCookie } from '../js/functions';
 import axios from "axios";
 
 const Context = createContext();
@@ -12,7 +13,7 @@ class ContextProvider extends Component {
         this.state = {
             localization: { data: null, language: null },
             notifications: [],
-            theme: { code: null, backcolor: null }
+            theme: null
         };
     }
 
@@ -21,9 +22,11 @@ class ContextProvider extends Component {
     }
 
     async initContext() {
+        const theme = getCookie(CookieValue.Theme) ?? ThemeType.Light.code;
+
+        this.changeTheme(theme);
         await this.getLanguage();
         await this.getAllLocalization();
-        this.changeTheme('Light');
     }
 
     // Notification
@@ -62,7 +65,13 @@ class ContextProvider extends Component {
     changeTheme(themeCode) {
         var theme = ThemeType[themeCode];
         this.setState({ theme: theme });
-        document.body.style = 'background: ' + theme.backcolor + ' ;';
+
+        document.body.style = `
+            background: ${theme.backgroundColor};
+            color: ${theme.fontColor};
+        `;
+
+        setCookie(CookieValue.Theme, themeCode);
     }
 
     render() {
@@ -85,8 +94,9 @@ class ContextProvider extends Component {
             }
         }
         const notificationVector = this.state.notifications.length > 0 ? <NotificationVector
-          notificationsVector={this.state.notifications}
-          handleRemove={this.removeNotification.bind(this)}
+            notificationsVector={this.state.notifications}
+            handleRemove={this.removeNotification.bind(this)}
+            theme={this.state.theme}
         /> : null;
         return (
             <Context.Provider value={contextValue}>

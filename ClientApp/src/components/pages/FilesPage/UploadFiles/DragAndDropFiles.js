@@ -4,7 +4,7 @@ import { DragAndDropFile } from "./DragAndDropFile";
 import "../../../../css/pages/FilesPage/DragAndDropFiles.css";
 import DragAndDropIcon from '../../../../img/drag-and-drop-icon.png';
 import { renameFile, getFileNameWithoutExtension } from '../../../../js/functions.js';
-import { NotificationType, Pages } from '../../../../js/const.js';
+import { NotificationType, Pages, ThemeType } from '../../../../js/const.js';
 export class DragAndDropFiles extends Component {
     static contextType = Context;
     constructor(props, context) {
@@ -133,6 +133,9 @@ export class DragAndDropFiles extends Component {
                 />
         );
 
+        const imgInvertValue = this.context.theme.type.code == ThemeType.Light.code ? 0 : 1;
+        const imgThemeStyle = { filter: `invert(${imgInvertValue})` };
+
         return (
             <div>
                 <input 
@@ -151,7 +154,7 @@ export class DragAndDropFiles extends Component {
                     onDrop={this.handleDropEvent}
                     className="panel-dragAndDropFiles">
                     <span>
-                        <img src={DragAndDropIcon} className="icon-dragAndDropFiles" />
+                        <img src={DragAndDropIcon} className="icon-dragAndDropFiles" style={imgThemeStyle} />
                         <p>{this.props.text}</p>
                     </span>
                 </div>

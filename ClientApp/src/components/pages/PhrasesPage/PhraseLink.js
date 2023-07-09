@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
+import { Context } from '../../ContextProvider';
 import { Link } from 'react-router-dom';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { NOT_SELECTED } from '../../../js/const.js';
 
 export class PhraseLink extends Component {
-
-    constructor(props) {
-        super(props);
+    static contextType = Context;
+    constructor(props, context) {
+        super(props, context);
         this.state = { 
             modalDeletePhraseState: false 
         };
@@ -15,6 +16,8 @@ export class PhraseLink extends Component {
     toggleModalDeletePhrase = () => this.setState({ modalDeletePhraseState: !this.state.modalDeletePhraseState });
 
     render() {
+        const themeModalStyle = { backgroundColor: this.context.theme.type.backgroundColor };
+
         return (
             <li>
                 <Button
@@ -29,10 +32,11 @@ export class PhraseLink extends Component {
                 <Modal 
                     isOpen={this.state.modalDeletePhraseState} 
                     toggle={this.toggleModalDeletePhrase}
+                    style={themeModalStyle}
                 >
-                    <ModalHeader toggle={this.toggleModalDeletePhrase}>Удаление фразы</ModalHeader>
-                    <ModalBody>Вы действительно хотите удалить фразу '{this.props.phrase.data}'?</ModalBody>
-                    <ModalFooter className="justify-content-between">
+                    <ModalHeader toggle={this.toggleModalDeletePhrase} style={themeModalStyle}>Удаление фразы</ModalHeader>
+                    <ModalBody style={themeModalStyle}>Вы действительно хотите удалить фразу '{this.props.phrase.data}'?</ModalBody>
+                    <ModalFooter className="justify-content-between" style={themeModalStyle}>
                         <Button
                             color="danger"
                             onClick={() => this.props.handleDelete(this.props.phrase.phraseId)}

@@ -1,6 +1,6 @@
 import React, { Component, createContext } from 'react';
 import { Row, Col } from 'reactstrap';
-import { NotificationType } from '../../js/const';
+import { NotificationType, ThemeType } from '../../js/const';
 import '../../css/notification/notification.css';
 import '../../css/notification/icon.css';
 import NotificationIconClose from '../../img/notification/notification-close.png';
@@ -45,12 +45,17 @@ export class Notification extends Component {
         const notificationType = this.getClassType(this.props.type);
         const message = this.props.message;
 
+        const imgInvertValue = this.props.theme.code == ThemeType.Light.code ? 0 : 1;
+        const imgThemeStyle = { filter: `invert(${imgInvertValue})` };
+
+        const textStyle = { color: ThemeType.Light.fontColorInversion };
+
         return (
             <Row className={`notification-container ${notificationType.classStyle}`}>
                 <Col xs="2" className="notification-icon-type-container">
-                    <img src={notificationType.icon} className="notification-icon-type" />
+                    <img src={notificationType.icon} className="notification-icon-type" style={imgThemeStyle} />
                 </Col>
-                <Col xs="9" className="notification-text-container">
+                <Col xs="9" className="notification-text-container" style={textStyle}>
                     {message}
                 </Col>
                 <Col xs="1" className="notification-icon-close-container" onClick={this.remove.bind(this)}>

@@ -20,6 +20,8 @@ export class FileLink extends Component {
     toggleModalDeleteFile = () => this.setState({ modalDeleteFileState: !this.state.modalDeleteFileState });
 
     render() {
+        const themeModalStyle = { backgroundColor: this.context.theme.type.backgroundColor };
+
         return (
             <li>
                 <Button
@@ -29,15 +31,17 @@ export class FileLink extends Component {
                 <Link 
                     to={"/file/" + this.props.file.fileId + '/' + makeUrlSlug(this.props.file.name)} 
                     state={{mydata: "myvalue"}}
+                    style={{ color: this.context.theme.type.fontColor }}
                 >{this.props.file.name}</Link>
 
                 <Modal 
                     isOpen={this.state.modalDeleteFileState} 
                     toggle={this.toggleModalDeleteFile}
+                    style={themeModalStyle}
                 >
-                    <ModalHeader toggle={this.toggleModalDeleteFile}>{this.localization.FilesRemoveModalHeader}</ModalHeader>
-                    <ModalBody>{this.localization.FilesRemoveModalText} '{this.props.file.name}'?</ModalBody>
-                    <ModalFooter className="justify-content-between">
+                    <ModalHeader toggle={this.toggleModalDeleteFile} style={themeModalStyle}>{this.localization.FilesRemoveModalHeader}</ModalHeader>
+                    <ModalBody style={themeModalStyle}>{this.localization.FilesRemoveModalText} '{this.props.file.name}'?</ModalBody>
+                    <ModalFooter className="justify-content-between" style={themeModalStyle}>
                         <Button
                             color="danger"
                             onClick={() => this.props.handleDelete(this.props.file.fileId)}

@@ -32,16 +32,20 @@ export class UploadFilesModal extends Component {
     }
 
     render() {
+        const themeModalStyle = { backgroundColor: this.context.theme.type.backgroundColor };
         return (
                 <Modal 
                     isOpen={this.props.modalUploadFilesState} 
                     toggle={this.handleToggleModalUploadFiles}
+                    style={themeModalStyle}
                     className='modal-lg'>
-                    <ModalHeader 
+                    <ModalHeader
+                        style={themeModalStyle}
                         toggle={this.handleToggleModalUploadFiles}>
                         {this.localization.FilesAddModalHeaderAdd}
                     </ModalHeader>
-                    <ModalBody>
+                    <ModalBody 
+                        style={themeModalStyle}>
                         <DragAndDropFiles 
                             ref={this.dndRef}
                             handleUpdateDropFilesCount={this.handleUpdateDropFilesCount.bind(this)}
@@ -49,7 +53,9 @@ export class UploadFilesModal extends Component {
                             removeButtonText={this.localization.FilesAddModalButtonRemove}
                         />
                     </ModalBody>
-                    <ModalFooter className="justify-content-between">
+                    <ModalFooter 
+                        style={themeModalStyle}
+                        className="justify-content-between">
                         <Button
                             color="primary"
                             disabled={!this.state.uploadButtonState}

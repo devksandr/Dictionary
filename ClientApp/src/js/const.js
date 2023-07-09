@@ -36,13 +36,21 @@ export const CultureCode = {
 export const ThemeType = {
     Light: { 
         code: 'Light',
-        backcolor: 'white'
+        backgroundColor: '#EDEDED',
+        fontColor: 'black',
+        fontColorInversion: 'white'
     },
     Dark: { 
         code: 'Dark',
-        backcolor: '#536872'
+        backgroundColor: '#121212',
+        fontColor: 'white',
+        fontColorInversion: 'black'
     }
 };
+
+export const CookieValue = {
+    Theme: 'theme'
+}
 
 export const ApiRequest = {
     Localization: {
