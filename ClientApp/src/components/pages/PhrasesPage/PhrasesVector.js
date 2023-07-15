@@ -13,7 +13,7 @@ export class PhrasesVector extends Component {
     }
 
     handlePhraseClick(event, index) {
-        let clickedPhraseId = this.state.clickedPhraseId == index ? NOT_SELECTED : index;
+        let clickedPhraseId = this.state.clickedPhraseId === index ? NOT_SELECTED : index;
         this.setState({ clickedPhraseId: clickedPhraseId });
         this.props.clickPhrase(clickedPhraseId);
     }

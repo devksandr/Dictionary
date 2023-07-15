@@ -133,7 +133,7 @@ export class DragAndDropFiles extends Component {
                 />
         );
 
-        const imgInvertValue = this.context.theme.type.code == ThemeType.Light.code ? 0 : 1;
+        const imgInvertValue = this.context.theme.type.code === ThemeType.Light.code ? 0 : 1;
         const imgThemeStyle = { filter: `invert(${imgInvertValue})` };
 
         return (
@@ -154,7 +154,7 @@ export class DragAndDropFiles extends Component {
                     onDrop={this.handleDropEvent}
                     className="panel-dragAndDropFiles">
                     <span>
-                        <img src={DragAndDropIcon} className="icon-dragAndDropFiles" style={imgThemeStyle} />
+                        <img src={DragAndDropIcon} className="icon-dragAndDropFiles" style={imgThemeStyle} alt="" />
                         <p>{this.props.text}</p>
                     </span>
                 </div>

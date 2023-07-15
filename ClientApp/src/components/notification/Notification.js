@@ -1,4 +1,4 @@
-import React, { Component, createContext } from 'react';
+import React, { Component } from 'react';
 import { Row, Col } from 'reactstrap';
 import { NotificationType, ThemeType } from '../../js/const';
 import '../../css/notification/notification.css';
@@ -38,6 +38,8 @@ export class Notification extends Component {
                 return { classStyle: 'notification-type-warning', icon: NotificationIconWarning };
             case NotificationType.Error:
                 return { classStyle: 'notification-type-error', icon: NotificationIconError };
+            default:
+                alert('Wrong notification type use');
         }
     }
 
@@ -45,7 +47,7 @@ export class Notification extends Component {
         const notificationType = this.getClassType(this.props.type);
         const message = this.props.message;
 
-        const imgInvertValue = this.props.theme.code == ThemeType.Light.code ? 0 : 1;
+        const imgInvertValue = this.props.theme.code === ThemeType.Light.code ? 0 : 1;
         const imgThemeStyle = { filter: `invert(${imgInvertValue})` };
 
         const textStyle = { color: ThemeType.Light.fontColorInversion };
@@ -53,13 +55,13 @@ export class Notification extends Component {
         return (
             <Row className={`notification-container ${notificationType.classStyle}`}>
                 <Col xs="2" className="notification-icon-type-container">
-                    <img src={notificationType.icon} className="notification-icon-type" style={imgThemeStyle} />
+                    <img src={notificationType.icon} className="notification-icon-type" style={imgThemeStyle} alt="" />
                 </Col>
                 <Col xs="9" className="notification-text-container" style={textStyle}>
                     {message}
                 </Col>
                 <Col xs="1" className="notification-icon-close-container" onClick={this.remove.bind(this)}>
-                    <img src={NotificationIconClose}  className="notification-icon-close" />
+                    <img src={NotificationIconClose}  className="notification-icon-close" alt="X" />
                 </Col>
             </Row>
         );

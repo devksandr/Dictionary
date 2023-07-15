@@ -4,11 +4,6 @@ import { Row, Col } from 'reactstrap';
 import { PhraseMeaning } from './PhraseMeaning';
 
 export class PhrasePanel extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         if(!this.props.appearance) return;
 

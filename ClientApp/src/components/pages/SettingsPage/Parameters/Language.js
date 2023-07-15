@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Context } from '../../../ContextProvider';
-import { Pages, CultureCode, ThemeType, NotificationType } from '../../../../js/const.js';
-import { Button, FormGroup, Label, Input } from 'reactstrap';
+import { Pages, CultureCode } from '../../../../js/const.js';
+import { FormGroup, Label, Input } from 'reactstrap';
 
 export class Language extends Component {
     static contextType = Context;

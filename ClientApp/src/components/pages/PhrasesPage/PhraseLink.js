@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import { Context } from '../../ContextProvider';
-import { Link } from 'react-router-dom';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { NOT_SELECTED } from '../../../js/const.js';
 
 export class PhraseLink extends Component {
     static contextType = Context;

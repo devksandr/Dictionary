@@ -30,14 +30,14 @@ export class SelectPhrasePanel extends Component {
         this.clickPhrase(index, true);
     }
     clickPhrase(index, isAdd) {
-        let clickedPhraseIndex = this.props.clickedPhraseIndex == index ? NOT_SELECTED : index;
+        let clickedPhraseIndex = this.props.clickedPhraseIndex === index ? NOT_SELECTED : index;
         this.props.handleClickPhrase(clickedPhraseIndex, isAdd);
     }
 
 
     createPhraseOption(phraseData, index, onClickHandler) {
-        const hoverClass = this.state.hoverPhraseIndex==index ? 'element-hover-theme' : '';
-        const clickClass = this.props.clickedPhraseIndex==index ? 'element-click-theme' : '';
+        const hoverClass = this.state.hoverPhraseIndex===index ? 'element-hover-theme' : '';
+        const clickClass = this.props.clickedPhraseIndex===index ? 'element-click-theme' : '';
 
         return(
             <li 

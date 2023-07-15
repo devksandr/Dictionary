@@ -14,13 +14,13 @@ export class DragAndDropFile extends Component {
     }
 
     render() {
-        const imgInvertValue = this.context.theme.type.code == ThemeType.Light.code ? 0 : 1;
+        const imgInvertValue = this.context.theme.type.code === ThemeType.Light.code ? 0 : 1;
         const imgThemeStyle = { filter: `invert(${imgInvertValue})` };
 
         return (
             <Row className="row-dragAndDropFile noSideMargin">
                 <Col xs="1" className="noSidePadding">
-                    <img src={DocumentIcon} className="icon-dragAndDropFile" style={imgThemeStyle} />
+                    <img src={DocumentIcon} className="icon-dragAndDropFile" style={imgThemeStyle} alt="" />
                 </Col>
                 <Col xs="9" className="noSidePadding">
                     <div>{this.props.file.name}</div>

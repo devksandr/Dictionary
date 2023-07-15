@@ -28,17 +28,17 @@ export class NavMenu extends Component {
   }
 
   render() {
-    const textTheme = this.context.theme.type.code == ThemeType.Light.code ? ThemeType.Dark.code.toLowerCase() : ThemeType.Light.code.toLowerCase();
+    const textTheme = this.context.theme.type.code === ThemeType.Light.code ? ThemeType.Dark.code.toLowerCase() : ThemeType.Light.code.toLowerCase();
     const itemsTextThemeClass = `text-${textTheme}`;
 
-    const logoInvertValue = this.context.theme.type.code == ThemeType.Light.code ? 0 : 1;
+    const logoInvertValue = this.context.theme.type.code === ThemeType.Light.code ? 0 : 1;
     const logoThemeStyle = { filter: `invert(${logoInvertValue})` };
     
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
           <NavbarBrand tag={Link} to="/">
-            <img src={DictionaryLogo} className="logo-dictionary" style={logoThemeStyle} />
+            <img src={DictionaryLogo} className="logo-dictionary" style={logoThemeStyle} alt="Dictionary" />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>

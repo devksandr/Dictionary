@@ -1,4 +1,4 @@
-import React, { Component, createContext } from 'react';
+import React, { Component } from 'react';
 import '../../css/notification/notification.css';
 import { Notification } from './Notification';
 

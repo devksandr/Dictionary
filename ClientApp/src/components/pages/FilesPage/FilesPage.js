@@ -149,7 +149,6 @@ export class FilesPage extends Component {
         return false;
     }
     validateMaxSizeUploadDropFiles(dropfiles) {
-        let currentfiles = this.state.filesInfo;
         for (let i = 0; i < dropfiles.length; i++) {
             if(dropfiles[i].size > MAX_FILE_SIZE_BYTES) {
                 return true;
@@ -158,7 +157,6 @@ export class FilesPage extends Component {
         return false;
     }
     validateMaxNameUploadDropFiles(dropfiles) {
-        let currentfiles = this.state.filesInfo;
         for (let i = 0; i < dropfiles.length; i++) {
             if(dropfiles[i].name.length > MAX_FILE_NAME_LENGTH) {
                 return true;

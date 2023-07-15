@@ -18,14 +18,14 @@ export class FileSentences extends Component {
         this.setState({ hoverSentenceId: NOT_SELECTED });
     }
     handleClick(event, index, sentenceId) {
-        let clickedSentenceIndex = this.props.clickedSentenceIndex == index ? NOT_SELECTED : index;
+        let clickedSentenceIndex = this.props.clickedSentenceIndex === index ? NOT_SELECTED : index;
         this.props.handleClickSentence(clickedSentenceIndex, sentenceId);
     }
     
     render() {
         const sentences = this.props.sentences.map((sentence, index) => {
-            const hoverClass = this.state.hoverSentenceId==index ? 'element-hover-theme' : '';
-            const clickClass = this.props.clickedSentenceIndex==index ? 'element-click-theme' : '';
+            const hoverClass = this.state.hoverSentenceId===index ? 'element-hover-theme' : '';
+            const clickClass = this.props.clickedSentenceIndex===index ? 'element-click-theme' : '';
             const hasPhraseClass = this.props.sentencesWithPhrasesIndexes.some(i => i === index) ? 'element-hasData-theme' : '';
             
             return (

@@ -2,11 +2,6 @@ import React, {Component} from 'react';
 import { Row, Col } from 'reactstrap';
 import { PhraseExample } from './PhraseExample';
 export class PhraseMeaning extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const phraseExamplesVector = this.props.phraseMeaning.phraseMeaningExamples.map(
             (phraseExample, index) => <PhraseExample 
